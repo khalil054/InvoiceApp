@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_rateus"
+        android:icon="@drawable/ic_rateus"
+        android:title="Rate US" />
+
+    <item
+        android:id="@+id/navigation_share"
+        android:icon="@drawable/ic_share"
+        android:title="Share App" />
+
+    <item
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_more"
+        android:title="More Apps" />
+
+    <item
+        android:id="@+id/navigation_privacy"
+        android:icon="@drawable/ic_privacy_policy"
+        android:title="Privacy Policy" />
+
+</menu>
