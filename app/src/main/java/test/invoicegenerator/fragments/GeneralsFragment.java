@@ -175,7 +175,6 @@ public class GeneralsFragment extends BaseFragment  {
 
     private void loadCompanyGeneralData()
     {
-        showProgressDialog(getString(R.string.loading_company_detail));
 
         DocumentReference user =  db.collection("InvoiceDB").document(Util.auth_idOfLoggedInUser(getActivity())).
                 collection(Constants.GENERAL).document(Util.auth_idOfLoggedInUser(getActivity()));
@@ -240,7 +239,7 @@ public class GeneralsFragment extends BaseFragment  {
                     }
                 });
 
-        company_name.setText(getCompanyName(showProgressDialog(getString(R.string.loading_company_detail))));
+
     }
 
     private void saveGeneralData() {
@@ -301,7 +300,6 @@ public class GeneralsFragment extends BaseFragment  {
            String PhNumber=etPhone.getText().toString();
            if(!StrCountryName.isEmpty()||!PhNumber.isEmpty()){
 
-               ProgressDialog dialog=showProgressDialog(getString(R.string.saving_company_detail));
 
            }else {
                Toast.makeText(getActivity(), "Enter All Informations", Toast.LENGTH_SHORT).show();

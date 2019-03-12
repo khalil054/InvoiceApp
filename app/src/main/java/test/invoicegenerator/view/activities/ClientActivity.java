@@ -43,14 +43,6 @@ public class ClientActivity extends AppCompatActivity {
 
 
     EditText contact_text;
-    EditText city;
-
-    EditText state;
-
-    EditText country;
-
-    @BindView(R.id.client_zip)
-    EditText client_zip;
 
     DBHelper db;
     private String is_new;
@@ -77,11 +69,7 @@ public class ClientActivity extends AppCompatActivity {
         //initializing components
         name=(EditText)findViewById(R.id.client_name);
         contact_text=(EditText)findViewById(R.id.client_address);
-        city=(EditText)findViewById(R.id.client_city);
-        state=(EditText)(EditText)findViewById(R.id.client_state);
-        country=(EditText)findViewById(R.id.client_country);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
-      // setActionBar(toolbar);
+
 
         /*setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -117,10 +105,7 @@ public class ClientActivity extends AppCompatActivity {
             email.setText(clientInfo.getClientEmail());
             phone.setText(clientInfo.getClientPhone());
             contact_text.setText(clientInfo.getClientAddress());
-            city.setText(clientInfo.getClientCity());
-            state.setText(clientInfo.getClientState());
-            country.setText(clientInfo.getClientCountry());
-            client_zip.setText(clientInfo.getClientZipCode());
+
         }
     }
 
@@ -185,25 +170,6 @@ public class ClientActivity extends AppCompatActivity {
             contact_text.setError(getString(R.string.error_field_required));
             contact_text.requestFocus();
         }
-        else if(city.getText().toString().equals(""))
-        {
-            city.setError(getString(R.string.error_field_required));
-            city.requestFocus();
-        }
-        else if(state.getText().toString().equals(""))
-        {
-            state.setError(getString(R.string.error_field_required));
-            state.requestFocus();
-        }
-        else if(country.getText().toString().equals("")) {
-            country.setError(getString(R.string.error_field_required));
-            country.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(client_zip.getText().toString()))
-        {
-            client_zip.setError(getString(R.string.error_field_required));
-            client_zip.requestFocus();
-        }
         else
         {
           /*  User user = new User();
@@ -224,10 +190,6 @@ public class ClientActivity extends AppCompatActivity {
             contentValues.put(DBHelper.CLIENT_EMAIL,email.getText().toString());
             contentValues.put(DBHelper.CLIENT_PHONE,phone.getText().toString());
             contentValues.put(DBHelper.CLIENT_ADDRESS,contact_text.getText().toString());
-            contentValues.put(DBHelper.CLIENT_CITY,city.getText().toString());
-            contentValues.put(DBHelper.CLIENT_STATE,state.getText().toString());
-            contentValues.put(DBHelper.CLIENT_COUNTRY,country.getText().toString());
-            contentValues.put(DBHelper.CLIENT_ZIPCODE,client_zip.getText().toString());
             contentValues.put("invoice_key", FragmentEditReport.invoice_id);
           long client_key=db.AddNewClient(contentValues);
             if(client_key!=0)

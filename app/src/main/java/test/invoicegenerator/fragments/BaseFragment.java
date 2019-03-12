@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import butterknife.Unbinder;
+import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.R;
 
 /**
@@ -28,6 +29,7 @@ public class BaseFragment extends Fragment {
     public Dialog adminChangeDialog;
     DatabaseReference databaseReference;
     public StorageReference storageReference;
+    Progressbar progressbar;
 
 
 
@@ -36,7 +38,6 @@ public class BaseFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.header_fragment,null);
         db = FirebaseFirestore.getInstance();
-       // storageReference = FirebaseStorage.getInstance().getReference();
         return null;
     }
     ProgressDialog progressDialog;
@@ -47,13 +48,13 @@ public class BaseFragment extends Fragment {
         }
     }
     //show progress dialog within the app
-    public ProgressDialog showProgressDialog(String message) {
-        dismissProgress();
-        progressDialog = new ProgressDialog(getActivity(),0);//Utils.getProgressDialog(this, message);
-        progressDialog.setMessage(message);
-        progressDialog.show();
-        progressDialog.setCancelable(false);
-        return progressDialog;
+    public void showProgressBar() {
+        progressbar = new Progressbar(getActivity());
+        progressbar.ShowProgress();
+    }
+
+    public void hideProgressBar() {
+        progressbar.HideProgress();
     }
 
 
@@ -67,5 +68,7 @@ public class BaseFragment extends Fragment {
 
 
     }
+
+
 
 }

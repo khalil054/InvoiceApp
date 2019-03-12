@@ -4,6 +4,7 @@ package test.invoicegenerator.fragments;
  * Created by User on 1/4/2019.
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -18,9 +19,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.chaos.view.PinView;
+import com.goodiebag.pinview.Pinview;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -36,17 +39,20 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.model.SharedPref;
+import test.invoicegenerator.view.activities.MainActivity;
 
 public class FragmentOTP extends BaseFragment{
     //Snackbar snackbar;
     //ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
-    Progressbar cdd;
 
+    @BindView(R.id.confirmationView)
+    LottieAnimationView confirmationView;
+
+    Pinview pin;
    Button verify_btn;
-   PinView pinView;
-   EditText code_text;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,45 +60,19 @@ public class FragmentOTP extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
 
         verify_btn=(Button)view.findViewById(R.id.verify_btn);
-         pinView = view.findViewById(R.id.PinView);
-         code_text=(EditText)view.findViewById(R.id.code_text);
+        pin=(Pinview)view.findViewById(R.id.pinview);
 
 
-        cdd=new Progressbar(getActivity());
 
-        pinView.setItemCount(4);
-        pinView.setItemHeight(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
-        pinView.setItemWidth(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_item_size));
-        pinView.setItemRadius(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_item_radius));
-        pinView.setItemSpacing(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_item_spacing));
-        pinView.setLineWidth(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_item_line_width));
-        pinView.setAnimationEnable(true);// start animation when adding text
-        pinView.setCursorVisible(false);
-        pinView.setCursorWidth(getResources().getDimensionPixelSize(R.dimen.pv_pin_view_cursor_width));
-        pinView.addTextChangedListener(new TextWatcher() {
+        verify_btn.setOnClickListener( new View.OnClickListener() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        pinView.setHideLineWhenFilled(false);
-
-        verify_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataSendToServerForVerification();
+
+                if(!(pin.getValue().toString().length()<4))
+                {
+                    DataSendToServerForVerification();
+                }
             }
         });
 
@@ -103,25 +83,17 @@ public class FragmentOTP extends BaseFragment{
     void DataSendToServerForVerification()
     {
 
-        cdd.ShowProgress();
 
 
+        showProgressBar();
         initVolleyCallbackForVerification();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
+
         Map<String, String> data = new HashMap<String, String>();
+        data.put("code",pin.getValue());
 
-        data.put("code",/*pinView.getText().toString()*/code_text.getText().toString());
 
-        SharedPref.init(getActivity());
-        String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
-        String client=SharedPref.read(Constants.CLIENT,"");
-        String uid=SharedPref.read(Constants.UID,"");
-        HashMap<String, String>  headers = new HashMap<String, String>();
-        headers.put("access-token", access_token);
-        headers.put("client",client );
-        headers.put("uid",uid);
-
-        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.Confirm_User,data,headers );
+        mVolleyService.putDataVolleyWithHeader("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.Confirm_User,data );
 
 
     }
@@ -133,30 +105,40 @@ public class FragmentOTP extends BaseFragment{
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data=jsonObject.getJSONObject("data");
-                    String status = jsonObject.getString("status");
+                    Boolean status = jsonObject.getBoolean("status");
 
-
-                    if(status.equals("true"))
+                    if(status)
                     {
+                        JSONObject data = jsonObject.getJSONObject("data");
 
-                        cdd.HideProgress();
+                        String login_id = data.getString("id");
+
+                        SharedPref.init(getActivity());
+                        SharedPref.write(SharedPref.LoginID, login_id);
+
+
+
+                        confirmationView.setVisibility(View.VISIBLE);
+                        confirmationView.playAnimation();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
-                                loadFragment(new FragmentLogin());
-                                // finish();
+
+
+
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
 
                             }
-                        }, 1000);//1000
-                    }else {
+                        }, 1000);
 
-                        cdd.HideProgress();
+                    } else {
+
+
                         String error = jsonObject.getString("Error");
-                        String err="";
-                        if(error.contains("AuthFail"))
-                        err=getString(R.string.verification_code);
-                        Toasty.error(getActivity(),err, Toast.LENGTH_SHORT).show();
+
+                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -171,17 +153,7 @@ public class FragmentOTP extends BaseFragment{
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-//                Log.d(TAG, "Volley requester " + requestType);
-//                Log.d(TAG, "Volley JSON post" + "That didn't work!");
-               // cdd.HideProgress();
-                error.printStackTrace();
-                String err="";
-              //  if(error.toString().contains("AuthFail"))
-                    err=getString(R.string.verification_code);
-
-                Toasty.error(getActivity(),err, Toast.LENGTH_SHORT).show();
-
-
+                hideProgressBar();
             }
 
             @Override
@@ -190,18 +162,6 @@ public class FragmentOTP extends BaseFragment{
             }
         };
     }
-
-
-
-    private void loadFragment(Fragment dashboardFragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(dashboardFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
-
 
 }
 

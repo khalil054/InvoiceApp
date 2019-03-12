@@ -70,7 +70,6 @@ public class MainActivity extends BaseActivity  implements
     ListView menulist;
     VolleyService mVolleyService;
     IResult mResultCallback = null;
-    private Button BtnBack;
     boolean doubleBackToExitPressedOnce = false;
 
     ArrayList<String> Name = new ArrayList<>();
@@ -116,18 +115,12 @@ public class MainActivity extends BaseActivity  implements
         db=new DBHelper(this);
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            BtnBack=findViewById(R.id.back_btn);
         menu_icon =  findViewById(R.id.menu_icon);
         leftMenuView = findViewById(R.id.leftDrawerLayout);
         mDrawerLayout =  findViewById(R.id.drawer_layout);
         menulist = findViewById(R.id.menu_list);
 
-        BtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
     }
 
@@ -345,8 +338,8 @@ public class MainActivity extends BaseActivity  implements
                 .message("You really want to logout?")
                 .positiveText("LOGOUT")
                 .neutralText("NOT NOW")
-                .positiveColor(R.color.pink_700)
-                .neutralColor(R.color.yellow_700)
+                .positiveColor(R.color.colorAccent)
+                .neutralColor(R.color.colorPrimaryDark)
                 .showListener(new MaterialDialog.ShowListener() {
                     @Override
                     public void onShow(AlertDialog d) {

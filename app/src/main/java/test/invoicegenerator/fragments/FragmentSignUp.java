@@ -41,20 +41,14 @@ import test.invoicegenerator.model.SharedPref;
 
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener{
-    private static final int REQUEST_READ_CONTACTS = 0;
 
     Snackbar snackbar;
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
-    LottieAnimationView progressView,confirmationView;
+    LottieAnimationView confirmationView;
     public Unbinder unbinder;
 
-
-
-
-
-    Progressbar cdd;
 
     @BindView(R.id.name)
     EditText name;
@@ -79,8 +73,6 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_sign_up,container,false);
         unbinder= ButterKnife.bind(this,view);
-        cdd=new Progressbar(getActivity());
-        progressView = view.findViewById(R.id.progressView);
         confirmationView =  view.findViewById(R.id.confirmationView);
 
         Button mEmailSignInButton =  view.findViewById(R.id.sign_up_button);
@@ -178,26 +170,20 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     void DataSendToServerForSignUp()
     {
 
-        progressView.setVisibility(View.VISIBLE);
+        showProgressBar();
 
 
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        //Map<String, String> data = new HashMap<String, String>();
-        Map<String, String> headers = new HashMap<String, String>();
-        JSONObject data=new JSONObject();
+
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("password",password.getText().toString());
+        data.put("email",email.getText().toString());
+        data.put("name",name.getText().toString());
+        data.put("company_attributes[name]",company_name.getText().toString());
 
 
-        try {
-            data.put("password",password.getText().toString());
-            data.put("email",email.getText().toString());
-            data.put("name",name.getText().toString());
-            data.put("company_attributes[name]",company_name.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignUp,data );
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignUp,data );
     }
 
     void initVolleyCallbackForSignUp(){
@@ -207,31 +193,19 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
+                    Boolean status = jsonObject.getBoolean("status");
 
-                    JSONObject data=jsonObject.getJSONObject("data");
-                    String status = data.getString("status");
-
-                    if(status.equals("true"))
+                    if(status)
                     {
-                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-
-                        JSONObject inner_data = jsonObject1.getJSONObject("data");
-                        JSONObject header_obj = jsonObject.getJSONObject("headers");
+                        JSONObject data=jsonObject.getJSONObject("data");
 
 
                         SharedPref.init(getActivity().getApplicationContext());
-                        String login_id = inner_data.getString("id");
+                        String login_id = data.getString("id");
                         SharedPref.write(SharedPref.LoginID, login_id);
 
-                        String access_token=header_obj.getString("access-token");
-                        String client=header_obj.getString("client");
-                        String uid=header_obj.getString("uid");
-                        //Headers values
-                        SharedPref.write(Constants.ACCESS_TOKEN,access_token);
-                        SharedPref.write(Constants.CLIENT,client);
-                        SharedPref.write(Constants.UID,uid);
 
-                        progressView.setVisibility(View.GONE);
+                        hideProgressBar();
                         confirmationView.setVisibility(View.VISIBLE);
                         confirmationView.playAnimation();
 
@@ -247,7 +221,6 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
                     }else {
 
-                        progressView.setVisibility(View.GONE);
                         String error = jsonObject.getString("Error");
 
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
@@ -257,6 +230,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                     e.printStackTrace();
                 }
 
+                hideProgressBar();
 
 
 
@@ -265,28 +239,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             @Override
             public void notifyError(String requestType,VolleyError error) {
                 {
-                    progressView.setVisibility(View.INVISIBLE);
-                    if(error.networkResponse != null && error.networkResponse.data != null){
-                        VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
-                        if(error.networkResponse.statusCode==422) {
-                            String error_response = new String(error.networkResponse.data);
-                            try {
-                                JSONObject response_obj = new JSONObject(error_response);
-                                String status = response_obj.getString("status");
-                                if (status.equals("false")) {
-                                    JSONObject error_obj = response_obj.getJSONObject("error");
-                                    String message = error_obj.getString("full_messages");
-                                    if(message.contains("already been taken"))
-                                    Toasty.error(getActivity(), "Email has already been taken", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        else
-                            Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
-                    }
+                    hideProgressBar();
 
                 }
             }

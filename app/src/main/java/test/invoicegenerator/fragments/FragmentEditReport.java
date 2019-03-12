@@ -596,6 +596,5 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
             sign_path=rs.getString(rs.getColumnIndex("signature"));
             rs.moveToNext();
         }
-
     }
 }

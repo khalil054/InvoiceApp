@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/blur_bg">
 
+
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -39,43 +41,18 @@
             android:textColor="@color/white"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/code_text"
+        <com.goodiebag.pinview.Pinview
+            android:id="@+id/pinview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:cursorVisible="true"
-            android:hint="Hint."
-            android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-        <com.chaos.view.PinView
-            android:id="@+id/PinView"
-            android:visibility="gone"
-            style="@style/PinWidget.PinView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:cursorVisible="true"
-            android:hint="Hint."
-            android:inputType="text"
-            android:padding="10dp"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:cursorColor="@color/white"
-            app:cursorWidth="2dp"
-            app:hideLineWhenFilled="true"
-            app:itemCount="5"
-            app:itemHeight="48dp"
-            app:itemRadius="4dp"
-            app:itemSpacing="0dp"
-            app:itemWidth="48dp"
-            app:lineColor="@color/white"
-            app:lineWidth="2dp"
-            app:viewType="rectangle" />
+            app:pinWidth="40dp"
+            app:pinHeight="40dp"
+            app:pinLength="4"
+            app:cursorVisible="true"
+            app:forceKeyboard="true"
+            app:hint=" "
+            app:inputType="number"
+            app:password="false"/>
 
     </LinearLayout>
 
@@ -98,4 +75,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/confirmationView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        app:lottie_autoPlay="false"
+        app:lottie_colorFilter="@color/white"
+        app:lottie_fileName="check_animation.json"
+        app:lottie_loop="true" />
+
 </android.support.constraint.ConstraintLayout>

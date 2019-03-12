@@ -127,7 +127,7 @@ public class FragmentForgotPassword extends BaseFragment{
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
-                                    loadFragment(new FragmentOTPForgotPassword());
+                                   // loadFragment(new FragmentOTPForgotPassword());
 
                                     // finish();
 

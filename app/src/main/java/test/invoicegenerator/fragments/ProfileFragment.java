@@ -297,7 +297,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         if (FilePathUri != null) {
 
             // Setting progressDialog Title.
-            showProgressDialog(getString(R.string.image_uploading));
             // Showing progressDialog.
 
             SharedPreferenceHelper helper=new SharedPreferenceHelper(getActivity());
@@ -374,7 +373,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     private void UpdateData() {
         SharedPreferenceHelper helper=new SharedPreferenceHelper(getActivity());
         String email=helper.getValue(EMAIL_KEY);
-        showProgressDialog(getString(R.string.updating_profile));
 
         final DocumentReference docRef = db.collection(SIGN_UP_COLLECTION).document(email);
         docRef.update(NAME_KEY, edit_name.getText().toString());
