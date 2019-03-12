@@ -1,6 +1,7 @@
 package test.invoicegenerator.NetworksCall;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -23,6 +24,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import es.dmoral.toasty.Toasty;
+import test.invoicegenerator.general.Constants;
+import test.invoicegenerator.general.Util;
+import test.invoicegenerator.model.SharedPref;
+
 
 /**
  * Created by apple on 04/10/2018.
@@ -39,8 +45,8 @@ public class VolleyService {
     }
 
 
-    public void postDataVolley(final String requestType, String url, final Map<String, String> params,final Map<String,String> headers){
-        try {
+    public void postDataVolley(final String requestType, String url, final Map<String, String> params){
+
             RequestQueue queue = Volley.newRequestQueue(mContext);
 
             StringRequest strRequest = new StringRequest(Request.Method.POST, url,
@@ -65,6 +71,27 @@ public class VolleyService {
                         {
                             if(mResultCallback != null)
                                 mResultCallback.notifyError(requestType,error);
+
+                            if(error.networkResponse != null && error.networkResponse.data != null){
+                                String error_response=new String(error.networkResponse.data);
+                                try {
+                                    JSONObject response_obj=new JSONObject(error_response);
+                                    String status=response_obj.getString("status");
+                                    if(status.equals("false"))
+                                    {
+                                        JSONObject error_obj=response_obj.getJSONObject("error");
+                                        String message=error_obj.getString("message");
+                                        Toasty.error(mContext,message, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                            else
+                                Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+
                         }
                     }
                     )
@@ -72,21 +99,28 @@ public class VolleyService {
                 @Override
                 protected Map<String, String> getParams()
                 {
+
                     return params;
                 }
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
 
-                    return headers;
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+
+
+                    SharedPref.init(mContext);
+                    SharedPref.write(Constants.ACCESS_TOKEN, response.headers.get("access-token"));
+                    SharedPref.write(Constants.CLIENT, response.headers.get("client"));
+                    SharedPref.write(Constants.UID, response.headers.get("uid"));
+
+                    return super.parseNetworkResponse(response);
                 }
+
 
             };
             strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             queue.add(strRequest);
 
-        }catch(Exception e){
 
-        }
     }
     public void DeleteDataVolley(final String requestType, String url, final Map<String, String> params,final Map<String,String> headers){
         try {
@@ -360,6 +394,69 @@ public class VolleyService {
                 }
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
+
+                    return headers;
+                }
+
+            };
+            strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(strRequest);
+
+        }catch(Exception e){
+
+        }
+    }
+
+    public void putDataVolleyWithHeader(final String requestType, String url, final Map<String, String> params){
+        try {
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+
+            StringRequest strRequest = new StringRequest(Request.Method.PUT, url,
+                    new Response.Listener<String>()
+                    {
+                        @Override
+                        public void onResponse(String response)
+                        {
+                            if(mResultCallback != null)
+                                mResultCallback.notifySuccess(requestType,response);
+
+
+
+                        }
+
+
+                    },
+                    new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error)
+                        {
+                            if(mResultCallback != null)
+                                mResultCallback.notifyError(requestType,error);
+                        }
+                    }
+            )
+
+            {
+
+                @Override
+                protected Map<String, String> getParams()
+                {
+
+                    return params;
+                }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+
+                    SharedPref.init(mContext);
+                    String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
+                    String client=SharedPref.read(Constants.CLIENT,"");
+                    String uid=SharedPref.read(Constants.UID,"");
+                    HashMap<String, String>  headers = new HashMap<String, String>();
+                    headers.put("access-token", access_token);
+                    headers.put("client",client );
+                    headers.put("uid",uid);
+
 
                     return headers;
                 }

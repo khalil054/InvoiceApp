@@ -27,6 +27,9 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,19 +51,6 @@ import test.invoicegenerator.view.activities.MainActivity;
  */
 
 public class FragmentLogin extends BaseFragment{
-
-    Progressbar cdd;
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-
 
     Snackbar snackbar;
     ConstraintLayout main_layout;
@@ -94,7 +84,6 @@ public class FragmentLogin extends BaseFragment{
     }
 
     private void init(View view) {
-        cdd=new Progressbar(getActivity());
 
         password_txt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -106,14 +95,15 @@ public class FragmentLogin extends BaseFragment{
                 return false;
             }
         });
-        //setRememberedCredential();
+        setRememberedCredential();
         Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),MainActivity.class);
-                startActivity(intent);
-               // attemptLogin();
+//                Intent intent=new Intent(getActivity(),MainActivity.class);
+//                startActivity(intent);
+                //attemptLogin();
+                loadFragment(new FragmentOTP());
             }
         });
 
@@ -177,27 +167,17 @@ public class FragmentLogin extends BaseFragment{
     }
     void DataSendToServerForSignIn()
     {
-        cdd.ShowProgress();
-
+        showProgressBar();
 
         initVolleyCallbackForSignIn();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        /*Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<String, String>();
 
         data.put("email",email_txt.getText().toString());
         data.put("password",password_txt.getText().toString());
-*/
-        JSONObject data=new JSONObject();
 
-        try {
-            data.put("email",email_txt.getText().toString());
 
-            data.put("password",password_txt.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
 
 
     }
@@ -210,32 +190,20 @@ public class FragmentLogin extends BaseFragment{
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data=jsonObject.getJSONObject("data");
-                    String status = data.getString("status");
+                    Boolean status = jsonObject.getBoolean("status");
 
 
-                    if(status.equals("true"))
+                    if(status)
                     {
-                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        JSONObject data = jsonObject.getJSONObject("data");
 
-                        JSONObject inner_data = jsonObject1.getJSONObject("data");
-                        JSONObject header_obj = jsonObject.getJSONObject("headers");
+                        String login_id = data.getString("id");
 
-                        String access_token=header_obj.getString("access-token");
-                        String client=header_obj.getString("client");
-                        String uid=header_obj.getString("uid");
-
-                        String login_id = inner_data.getString("id");
-                        String active_user = inner_data.getString("active");
-                      //  if(active_user.equals("true")) {
                             SharedPref.init(getActivity());
                             SharedPref.write(SharedPref.LoginID, login_id);
-                            SharedPref.write(Constants.ACCESS_TOKEN, access_token);
-                            SharedPref.write(Constants.CLIENT, client);
-                            SharedPref.write(Constants.UID, uid);
 
 
-                            cdd.HideProgress();
+
                             confirmationView.setVisibility(View.VISIBLE);
                             confirmationView.playAnimation();
                             Handler handler = new Handler();
@@ -243,35 +211,17 @@ public class FragmentLogin extends BaseFragment{
                                 public void run() {
 
 
-                                    //  loadFragment(new FragmentOTP());
+
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
-                                    // finish();
-
-                                }
-                            }, 1000);//1000
-                        //checking verfication
-                     /*   }
-                        else if(active_user.equals("false"))
-                        {
-                            cdd.HideProgress();
-                            Toasty.error(getActivity(),"Please verifiy your account first",Toast.LENGTH_SHORT).show();
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-
-
-                                    //  loadFragment(new FragmentOTP());
-                                    loadFragment(new FragmentOTP());
-                                    // finish();
+                                    getActivity().finish();
 
                                 }
                             }, 1000);
-                        }*/
-                        //close verification
-                    }else {
 
-                        cdd.HideProgress();
+                    } else {
+
+
                         String error = jsonObject.getString("Error");
 
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
@@ -284,41 +234,24 @@ public class FragmentLogin extends BaseFragment{
                 }
 
 
+                hideProgressBar();
+
+
 
 
             }
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                cdd.HideProgress();
-                error.printStackTrace();
-
-                if(error.networkResponse != null && error.networkResponse.data != null){
-                    VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
-                    String error_response=new String(error.networkResponse.data);
-                    try {
-                        JSONObject response_obj=new JSONObject(error_response);
-                        String status=response_obj.getString("status");
-                        if(status.equals("false"))
-                        {
-                            JSONObject error_obj=response_obj.getJSONObject("error");
-                            String message=error_obj.getString("message");
-                            Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                else
-                    Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                hideProgressBar();
             }
 
             @Override
             public void notifySuccessResponseHeader(NetworkResponse response) {
 
             }
+
+
         };
     }
     private void rememberCredential()

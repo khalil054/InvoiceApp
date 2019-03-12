@@ -55,17 +55,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
-            <Button
-                android:id="@+id/back_btn"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="Go Back"
-                android:visibility="gone"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
+
 
 
         </RelativeLayout>
@@ -74,7 +64,8 @@
         <LinearLayout
             android:id="@+id/fragment_frame"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +78,6 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="?android:attr/windowBackground"
-            android:foreground="?attr/selectableItemBackground"
             app:itemBackground="@color/bgBottomNavigation"
             app:itemIconTint="@android:color/white"
             app:itemTextColor="@android:color/white"

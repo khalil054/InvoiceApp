@@ -89,7 +89,7 @@ public class LogoFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void getStampFromFirebase() {
-        showProgressDialog(getString(R.string.loading_stamp));
+
         DocumentReference doc=db.collection("InvoiceDB").document(Util.auth_idOfLoggedInUser(getActivity())).
                 collection(Constants.STAMP_COLLECTION).document(Util.auth_idOfLoggedInUser(getActivity()));
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -246,7 +246,6 @@ public class LogoFragment extends BaseFragment implements View.OnClickListener{
         // ByteArrayOutputStream baos = new ByteArrayOutputStream();
         // bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         // String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        showProgressDialog(getString(R.string.loading_header_detail));
         db.collection("InvoiceDB").document(Util.auth_idOfLoggedInUser(getActivity())).collection(Constants.SIGNATURE).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -306,7 +305,7 @@ public class LogoFragment extends BaseFragment implements View.OnClickListener{
                 });
     }
     public void encodeBitmapAndSaveToFirebase(Bitmap bitmap, final Context context, String col_name, String entity_name,boolean state) {
-        showProgressDialog(getString(R.string.saving_visual_detail));
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte [] byte_arr = baos.toByteArray();
@@ -382,7 +381,6 @@ public class LogoFragment extends BaseFragment implements View.OnClickListener{
         // ByteArrayOutputStream baos = new ByteArrayOutputStream();
         // bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         // String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        showProgressDialog(getString(R.string.loading_logo));
         DocumentReference doc=db.collection("InvoiceDB").document(Util.auth_idOfLoggedInUser(getActivity())).
                 collection(Constants.LOGO_COLLECTION).document(Util.auth_idOfLoggedInUser(getActivity()));
         doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

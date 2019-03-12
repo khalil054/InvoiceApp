@@ -37,14 +37,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     EditText Et_Client_Phone;
     @BindView(R.id.client_address)
     EditText Et_Client_Address;
-    @BindView(R.id.client_city)
-    EditText Et_Client_City;
-    @BindView(R.id.client_state)
-    EditText Et_Client_State;
-    @BindView(R.id.client_country)
-    EditText Et_Client_Country;
-    @BindView(R.id.client_zip)
-    EditText Et_Client_ZipCode;
     private OnItemSelectedListener listener;
     private Client client;
 
@@ -63,10 +55,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         Et_Client_Email.setText(client.getClientEmail());
         Et_Client_Phone.setText(client.getClientPhone());
         Et_Client_Address.setText(client.getClientAddress());
-        Et_Client_City.setText(client.getClientCity());
-        Et_Client_State.setText(client.getClientState());
-        Et_Client_Country.setText(client.getClientCountry());
-        Et_Client_ZipCode.setText(client.getClientZipCode());
+
 
         Btn_AddClient.setText("Update");
     }
@@ -81,10 +70,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         Et_Client_Email.setOnClickListener(this);
         Et_Client_Phone.setOnClickListener(this);
         Et_Client_Address.setOnClickListener(this);
-        Et_Client_City.setOnClickListener(this);
-        Et_Client_State.setOnClickListener(this);
-        Et_Client_Country.setOnClickListener(this);
-        Et_Client_ZipCode.setOnClickListener(this);
+
     }
 
     @Override
@@ -98,11 +84,8 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 String StrEmail=Et_Client_Email.getText().toString();
                 String StrPhone=Et_Client_Phone.getText().toString();
                 String StrAddress=Et_Client_Address.getText().toString();
-                String StrCity=Et_Client_City.getText().toString();
-                String StrState=Et_Client_State.getText().toString();
-                String StrCountry=Et_Client_Country.getText().toString();
-                String StrPostalCode=Et_Client_ZipCode.getText().toString();
-                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
+
+                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress);
                 //  loadFragment(new FragmentLogin());
 
 
@@ -110,8 +93,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         }
     }
 
-    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
-                                     String StrState,String StrCountry,String StrPostalCode) {
+    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress) {
         if(StrEmail.equals(""))
         {
             Et_Client_Email.setError(getString(R.string.error_field_required));
@@ -138,25 +120,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
             Et_Client_Address.setError(getString(R.string.error_field_required));
             Et_Client_Address.requestFocus();
         }
-        else if(StrCity.equals(""))
-        {
-            Et_Client_City.setError(getString(R.string.error_field_required));
-            Et_Client_City.requestFocus();
-        }
-        else if(StrState.equals(""))
-        {
-            Et_Client_State.setError(getString(R.string.error_field_required));
-            Et_Client_State.requestFocus();
-        }
-        else if(StrCountry.equals("")) {
-            Et_Client_Country.setError(getString(R.string.error_field_required));
-            Et_Client_Country.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(StrPostalCode))
-        {
-            Et_Client_ZipCode.setError(getString(R.string.error_invalid_zip_code));
-            Et_Client_ZipCode.requestFocus();
-        }
         else
         {
           /*  User user = new User();
@@ -177,20 +140,12 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
             contentValues.put(DBHelper.CLIENT_EMAIL,StrEmail);
             contentValues.put(DBHelper.CLIENT_PHONE,StrPhone);
             contentValues.put(DBHelper.CLIENT_ADDRESS,StrAddress);
-            contentValues.put(DBHelper.CLIENT_CITY,StrCity);
-            contentValues.put(DBHelper.CLIENT_STATE,StrState);
-            contentValues.put(DBHelper.CLIENT_COUNTRY,StrCountry);
-            contentValues.put(DBHelper.CLIENT_ZIPCODE,StrPostalCode);
 
             if(sqliteHelper.UpdateClient(contentValues,client.getClientID())>0){
 
                 Et_Client_Name.getText().clear();
                 Et_Client_Email.getText().clear();
                 Et_Client_Address.getText().clear();
-                Et_Client_City.getText().clear();
-                Et_Client_Country.getText().clear();
-                Et_Client_State.getText().clear();
-                Et_Client_ZipCode.getText().clear();
                 Et_Client_Phone.getText().clear();
 
                 listener.onAddClientFragCallBack(1);
