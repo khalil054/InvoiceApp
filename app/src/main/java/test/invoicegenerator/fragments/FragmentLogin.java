@@ -100,10 +100,10 @@ public class FragmentLogin extends BaseFragment{
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent=new Intent(getActivity(),MainActivity.class);
-//                startActivity(intent);
-                //attemptLogin();
-                loadFragment(new FragmentOTP());
+                Intent intent=new Intent(getActivity(),MainActivity.class);
+                startActivity(intent);
+
+                //loadFragment(new FragmentOTP());
             }
         });
 
