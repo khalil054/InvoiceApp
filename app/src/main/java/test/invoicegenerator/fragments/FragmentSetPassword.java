@@ -117,7 +117,7 @@ public class FragmentSetPassword extends BaseFragment{
             e.printStackTrace();
         }
 
-        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.password,data,headers );
+        //mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.password,data,headers );
     }
 
     private void initVolleyCallbackForSettingPassword() {

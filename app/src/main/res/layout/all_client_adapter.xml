@@ -1,50 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginBottom="15dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_margin="7dp"
-    android:background="@drawable/rectangle"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<LinearLayout
+<android.support.constraint.ConstraintLayout android:id="@+id/main_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#66000000">
-        <ImageView
-            android:scaleType="fitXY"
-            android:clickable="false"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/p_logo_saved_location"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_client_def"
-            android:contentDescription="@string/app_name"
-          />
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/rectangle"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#66000000">
+
+            <ImageView
+                android:id="@+id/p_logo_saved_location"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_client_def"
+                android:clickable="false"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY" />
 
 
             <LinearLayout
-                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical"
-
                 tools:ignore="UselessParent">
 
                 <TextView
                     android:id="@+id/tv_client_name_adapter"
-                    android:text="Khalil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_marginStart="1dp"
+                    android:layout_marginTop="5dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:text="Khalil"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
                     tools:ignore="RtlCompat" />
@@ -64,18 +76,19 @@
                     tools:ignore="RtlCompat,SmallSp" />
 
                 <TextView
-                    android:layout_marginTop="2dp"
                     android:id="@+id/tv_client_address"
-                    android:text="21 3rd Floor,Ross Residentia"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
+                    android:layout_marginTop="2dp"
                     android:clickable="true"
                     android:focusable="true"
+                    android:text="21 3rd Floor,Ross Residentia"
                     android:textColor="#ffffff"
                     android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
             </LinearLayout>
-</LinearLayout>
-</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
+</android.support.constraint.ConstraintLayout>

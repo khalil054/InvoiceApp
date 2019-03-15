@@ -8,34 +8,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Client;
+import test.invoicegenerator.model.ClientModel;
 
 public class AllClientsAdapter extends RecyclerView.Adapter<AllClientsAdapter.MyViewHolder> {
 
     private List<Client> ItemList;
+    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
     private Context context;
-    // private RelativeLayout LayoutRemove;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvName,tvPhone,tvAddress;
-        //ImageView imageViewLogo;
         MyViewHolder(View view) {
             super(view);
             tvName=view.findViewById(R.id.tv_client_name_adapter);
             tvPhone=view.findViewById(R.id.tv_client_phone);
             tvAddress=view.findViewById(R.id.tv_client_address);
-            //imageViewLogo=view.findViewById(R.id.p_logo_saved_location);
-          //  LayoutRemove=view.findViewById(R.id.layout_remove_client);
         }
     }
 
-    public AllClientsAdapter(List<Client> itemList, Context context) {
+    public AllClientsAdapter(List<Client> itemList, Context context,ArrayList<ClientModel> clientModels) {
         this.ItemList = itemList;
         this.context=context;
+        this.clientModels = clientModels;
 
     }
 
@@ -50,11 +50,13 @@ public class AllClientsAdapter extends RecyclerView.Adapter<AllClientsAdapter.My
   //on Bind View holder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final Client info = ItemList.get(position);
 
-        holder.tvName.setText(info.getClientName());
-        holder.tvPhone.setText(info.getClientPhone());
-        holder.tvAddress.setText(info.getClientAddress());
+        Client info = ItemList.get(position);
+        ClientModel clientModel = clientModels.get(position);
+
+        holder.tvName.setText(clientModel.getName());
+        holder.tvPhone.setText(clientModel.getEmail());
+        holder.tvAddress.setText(clientModel.getAddress());
 
 
 
@@ -62,7 +64,13 @@ public class AllClientsAdapter extends RecyclerView.Adapter<AllClientsAdapter.My
 
     @Override
     public int getItemCount() {
-        return ItemList.size();
+
+        return clientModels.size();
     }
+
+
+
+
+
 
 }

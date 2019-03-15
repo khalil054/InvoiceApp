@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">@android:color/transparent</color>
+    <declare-styleable name="InkPageIndicator"><attr format="dimension" name="dotDiameter"/><attr format="dimension" name="dotGap"/><attr format="integer" name="animationDuration"/><attr format="color" name="pageIndicatorColor"/><attr format="color" name="currentPageIndicatorColor"/></declare-styleable>
+    <declare-styleable name="ParallaxLayout_Layout"><attr format="float" name="layout_parallaxFactor"/></declare-styleable>
+    <dimen name="y_offset">72dp</dimen>
+    <item name="swipeable_view_pager" type="id"/>
+    <string name="app_name">material-intro-screen</string>
+    <string name="grant_permissions">Grant permissions</string>
+    <string name="impassable_slide">Can\'t pass this slide.</string>
+    <string name="please_grant_permissions">Please grant needed permissions</string>
+    <style name="ColoredButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="Theme.Intro" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

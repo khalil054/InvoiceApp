@@ -12,9 +12,7 @@ public class SharedPref
 {
     private static SharedPreferences mSharedPref;
     public static final String LoginID = "loginId";
-    public static final String AGE = "AGE";
-    public static final String PROFILE_COMPLETED = "No";
-    public static final String IS_SERVICEPROVIDER = "IS_SERVICEPROVIDER";
+    public static final String CompanyID = "companyId";
 
     private SharedPref()
     {

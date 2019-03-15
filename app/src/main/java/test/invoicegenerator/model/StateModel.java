@@ -6,11 +6,13 @@ package test.invoicegenerator.model;
 
 public class StateModel {
     private String id,name,country_id;
+
     public StateModel(String N, String con,String Id) {
         this.name = N;
         this.country_id = con;
         this.id = Id;
     }
+
     public StateModel()
     {
 
@@ -39,9 +41,11 @@ public class StateModel {
     public void setCountry_id(String country_id) {
         this.country_id = country_id;
     }
+
     @Override
     public String toString() {
         return "State [name=" + name + ", id=" + id
                 + ", country_id=" +country_id+"]";
     }
+
 }

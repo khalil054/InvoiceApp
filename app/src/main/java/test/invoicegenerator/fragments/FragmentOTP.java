@@ -7,6 +7,8 @@ package test.invoicegenerator.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +39,8 @@ import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.view.activities.MainActivity;
 
 public class FragmentOTP extends BaseFragment{
-    //Snackbar snackbar;
-    //ConstraintLayout main_layout;
+    Snackbar snackbar;
+    ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
 

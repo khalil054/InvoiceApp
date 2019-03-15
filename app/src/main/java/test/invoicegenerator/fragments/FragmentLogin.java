@@ -100,10 +100,9 @@ public class FragmentLogin extends BaseFragment{
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(),MainActivity.class);
-                startActivity(intent);
 
-                //loadFragment(new FragmentOTP());
+                attemptLogin();
+
             }
         });
 
@@ -197,10 +196,12 @@ public class FragmentLogin extends BaseFragment{
                     {
                         JSONObject data = jsonObject.getJSONObject("data");
 
-                        String login_id = data.getString("id");
+                        String login_id = data.getString("user_id");
+                        String company_id = data.getString("company_id");
 
                             SharedPref.init(getActivity());
                             SharedPref.write(SharedPref.LoginID, login_id);
+                            SharedPref.write(SharedPref.CompanyID, company_id);
 
 
 
@@ -223,7 +224,6 @@ public class FragmentLogin extends BaseFragment{
 
 
                         String error = jsonObject.getString("Error");
-
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
 

@@ -59,7 +59,6 @@ public class MainActivity extends BaseActivity  implements
         FragmentAddClient.OnItemSelectedListener,FragmentUpdateClient.OnItemSelectedListener
         {
 
-    private CircleImageView edit_photo_btn;
     Progressbar cdd;
     Snackbar snackbar;
     ConstraintLayout main_layout;
@@ -76,6 +75,8 @@ public class MainActivity extends BaseActivity  implements
     ArrayList<Integer> Pic = new ArrayList<>();
     DBHelper sqliteHelper;
     private DBHelper db;
+
+    Button back_btn;
 
 
     @Override
@@ -119,6 +120,7 @@ public class MainActivity extends BaseActivity  implements
         leftMenuView = findViewById(R.id.leftDrawerLayout);
         mDrawerLayout =  findViewById(R.id.drawer_layout);
         menulist = findViewById(R.id.menu_list);
+        back_btn = (Button) findViewById(R.id.back_btn);
 
 
 
@@ -422,7 +424,7 @@ public class MainActivity extends BaseActivity  implements
         headers.put("access-token", access_token);
         headers.put("client",client );
         headers.put("uid",uid);
-        mVolleyService.DeleteDataVolley("DELETECALL", NetworkURLs.BaseURL + NetworkURLs.SignOut,data,headers );
+      //  mVolleyService.DeleteDataVolley("DELETECALL", NetworkURLs.BaseURL + NetworkURLs.SignOut,data,headers );
 
 
     }

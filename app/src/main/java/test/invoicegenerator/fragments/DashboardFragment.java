@@ -139,15 +139,7 @@ public class DashboardFragment extends BaseFragment  {
         }
     }
 
-    private void loadFragment(Fragment dashboardFragment,Bundle bundle) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        dashboardFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(/*dashboardFragment.toString()*/null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
+
 
 
 

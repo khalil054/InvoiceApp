@@ -1,0 +1,35 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+	package
+		ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:11-53
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml:1:1-56
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+uses-sdk
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		ADDED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml
+		INJECTED from /Users/user/Desktop/invoice-generator-android-master/material-intro-screen/src/main/AndroidManifest.xml

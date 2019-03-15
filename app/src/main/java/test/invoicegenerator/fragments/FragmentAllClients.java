@@ -1,178 +1,149 @@
 package test.invoicegenerator.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import test.invoicegenerator.NetworksCall.IResult;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
+import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.AllClientsAdapter;
+import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.databaseutilities.Client;
 import test.invoicegenerator.databaseutilities.DBHelper;
-import test.invoicegenerator.recyclerhelper.RecyclerItemClickListener;
+import test.invoicegenerator.general.GlobalData;
+import test.invoicegenerator.model.ClientModel;
 
 
-public class FragmentAllClients extends BaseFragment implements View.OnClickListener{
+public class FragmentAllClients extends BaseFragment{
 
-    private static final int REQUEST_READ_CONTACTS = 0;
-    DBHelper sqliteHelper;
-    @BindView(R.id.recycler_view_all_clients)
-    RecyclerView recyclerView;
-    @BindView(R.id.floating_add_new_client)
+
+
+    SwipeMenuListView listView;
     FloatingActionButton floating_AddClient;
-    @BindView(R.id.floating_add_new_client_empty)
-    FloatingActionButton floating_AddClient_Empty;
-    private AllClientsAdapter mAdapter;
-    private List<Client>ClientList;
-    private OnItemSelectedListener listener;
-    boolean isrecordfound=false;
-    @BindView(R.id.layout_empty)
-    RelativeLayout layoutempty;
+
+    @BindView(R.id.main_layout)
+    RelativeLayout main_layout;
+
+    Snackbar snackbar;
+    IResult mResultCallback = null;
+    VolleyService mVolleyService;
+
+    int DeletePosition = 0;
+    int OpenPosition = 0;
+
+    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        sqliteHelper=new DBHelper(getActivity());
-        View view;
+
+        View view = inflater.inflate(R.layout.fragment_all_clients,container,false);
+        listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
+        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
 
         init();
-        view = inflater.inflate(R.layout.fragment_all_clients,container,false);
         unbinder= ButterKnife.bind(this,view);
+
+        GetClientList();
 
         return view;
     }
 
     private void init() {
-        if(sqliteHelper.getClientTableSize()>0){
-            isrecordfound=true;
-        }else {
-            isrecordfound=false;
-        }
 
         BottomNavigationView navigation =  getActivity().findViewById(R.id.navigation);
         navigation.setVisibility(View.GONE);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if(!isrecordfound){
-
-            layoutempty.setVisibility(View.VISIBLE);
-           floating_AddClient_Empty.setOnClickListener(this);
-            floating_AddClient.setClickable(false);
-        }else {
-            layoutempty.setVisibility(View.GONE);
-        ClientList=new ArrayList<>();
-       recyclerView = view.findViewById(R.id.recycler_view_all_clients);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        prepareLocationData();
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), recyclerView,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Client client=ClientList.get(position);
-                        Bundle bundle=new Bundle();
-                        bundle.putSerializable("client",client);
-                        loadFragment(new FragmentUpdateClient(),bundle);
-                        //listener.onAllClientFragCallBack(1);
-
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // do whatever
-                    }
-                })
-        );
-
-        floating_AddClient.setOnClickListener(this);
+        floating_AddClient.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFragment(new FragmentAddClient(),null);
+            }
+        });
 
 
-        }
-    }
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
 
-    @Override
-    public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
-            case R.id.floating_add_new_client:
-                listener.onAllClientFragCallBack(2);
-                break;
-            case R.id.floating_add_new_client_empty:
-                listener.onAllClientFragCallBack(2);
-                break;
-        }
-    }
+            @Override
+            public void create(SwipeMenu menu) {
 
-    private void loadFragment(Fragment dashboardFragment,Bundle bundle) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        dashboardFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(dashboardFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity().getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(255, 0,
+                        0)));
+                // set item width
+                deleteItem.setWidth(90);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        listView.setMenuCreator(creator);
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        DeletePosition = position;
+                        DeleteClient(clientModels.get(position).getId());
+                        break;
+                    case 1:
+                        OpenPosition = position;
+                        GlobalData.clientModel =  clientModels.get(position);
+                        loadFragment(new FragmentUpdateClient(),null);
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
+        // Right
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
 
 
-    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
-
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            Toast.makeText(getActivity(), "on Move", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-            Toast.makeText(getActivity(), "on Swiped ", Toast.LENGTH_SHORT).show();
-            //Remove swiped item from list and notify the RecyclerView
-            int position = viewHolder.getAdapterPosition();
-            String str=String.valueOf(ClientList.get(position).getClientID());
-            sqliteHelper.DeleteSingleClient(str);
-            //Toast.makeText(getActivity(), String.valueOf(str), Toast.LENGTH_SHORT).show();
-           listener.onAllClientFragCallBack(1);
-
-        }
-    };
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
-            this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
-        }
-    }
 
     // Define the events that the fragment will use to communicate
     public interface OnItemSelectedListener {
@@ -181,12 +152,99 @@ public class FragmentAllClients extends BaseFragment implements View.OnClickList
     }
 
 
-    private void prepareLocationData() {
-        ClientList=sqliteHelper.AllClientDataList();
-        mAdapter = new AllClientsAdapter(ClientList,getActivity());
-        recyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+    public void GetClientList()
+    {
+
+        showProgressBar();
+        initVolleyCallbackForClientList();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
+
     }
+
+    void initVolleyCallbackForClientList() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equalsIgnoreCase("true")) {
+
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        JSONArray clients = data.getJSONArray("clients");
+
+                        for (int i = 0; i < clients.length(); i++) {
+                            ClientModel clientModel = new ClientModel(clients.getJSONObject(i));
+                            clientModels.add(clientModel);
+                        }
+
+                        ClientAdapter cartAdapter = new ClientAdapter(getActivity(),clientModels);
+                        listView.setAdapter(cartAdapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+        };
+    }
+
+
+    public void DeleteClient(String id)
+    {
+
+        showProgressBar();
+        initVolleyCallbackForDeleteClient();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteClient + id + ".json" );
+
+    }
+
+    void initVolleyCallbackForDeleteClient() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equalsIgnoreCase("true")) {
+
+                        clientModels.remove(DeletePosition);
+                        ClientAdapter cartAdapter = new ClientAdapter(getActivity(),clientModels);
+                        listView.setAdapter(cartAdapter);
+
+                        snackbar = Snackbar.make(main_layout,"Client Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+        };
+    }
+
 
 
 

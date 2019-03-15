@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +70,17 @@ public class BaseFragment extends Fragment {
 
 
     }
+
+    public void loadFragment(Fragment dashboardFragment,Bundle bundle) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        dashboardFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
+        fragmentTransaction.addToBackStack(/*dashboardFragment.toString()*/null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+    }
+
 
 
 

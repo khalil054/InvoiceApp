@@ -176,7 +176,7 @@ public class CompanyDetails extends Fragment {
             e.printStackTrace();
         }
 
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
+        //mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
 
 
     }

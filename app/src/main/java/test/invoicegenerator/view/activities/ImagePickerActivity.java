@@ -83,16 +83,16 @@ public class ImagePickerActivity extends AppCompatActivity {
 
         // add a list
         String[] animals = {context.getString(R.string.lbl_take_camera_picture), context.getString(R.string.lbl_choose_from_gallery)};
-        builder.setItems(animals, (dialog, which) -> {
-            switch (which) {
-                case 0:
-                    listener.onTakeCameraSelected();
-                    break;
-                case 1:
-                    listener.onChooseGallerySelected();
-                    break;
-            }
-        });
+//        builder.setItems(animals, (dialog, which) -> {
+//            switch (which) {
+//                case 0:
+//                    listener.onTakeCameraSelected();
+//                    break;
+//                case 1:
+//                    listener.onChooseGallerySelected();
+//                    break;
+//            }
+//        });
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();

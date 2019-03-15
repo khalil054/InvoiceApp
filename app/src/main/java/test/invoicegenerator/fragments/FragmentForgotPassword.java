@@ -101,7 +101,7 @@ public class FragmentForgotPassword extends BaseFragment{
             e.printStackTrace();
         }
 
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword,data );
+        //mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword,data );
 
 
     }
@@ -190,12 +190,5 @@ public class FragmentForgotPassword extends BaseFragment{
 
     }
 
-    private void loadFragment(Fragment dashboardFragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(dashboardFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
+
 }
