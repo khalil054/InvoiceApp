@@ -35,14 +35,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.SharedPreferenceHelper;
-import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.view.activities.MainActivity;
 
@@ -52,7 +49,7 @@ import test.invoicegenerator.view.activities.MainActivity;
 
 public class FragmentLogin extends BaseFragment{
 
-    Snackbar snackbar;
+    /*Snackbar snackbar;*/
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
