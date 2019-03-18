@@ -68,7 +68,7 @@ public class ClientActivity extends AppCompatActivity {
         is_new=getIntent().getStringExtra("is_new");
         //initializing components
         name=(EditText)findViewById(R.id.client_name);
-        contact_text=(EditText)findViewById(R.id.client_address);
+        //contact_text=(EditText)findViewById(R.id.client_address);
 
 
         /*setSupportActionBar(toolbar);

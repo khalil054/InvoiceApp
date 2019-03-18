@@ -1,34 +1,54 @@
 package test.invoicegenerator.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
+import test.invoicegenerator.adapters.AllClientsAdapter;
 import test.invoicegenerator.adapters.ClientAdapter;
+import test.invoicegenerator.databaseutilities.Client;
+import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.ClientModel;
+import test.invoicegenerator.view.activities.MainActivity;
 
 
 public class FragmentAllClients extends BaseFragment{
@@ -48,7 +68,7 @@ public class FragmentAllClients extends BaseFragment{
     int DeletePosition = 0;
     int OpenPosition = 0;
 
-    ArrayList<ClientModel> clientModels=new ArrayList<>();
+    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
 
 
     @Override
@@ -56,8 +76,8 @@ public class FragmentAllClients extends BaseFragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_all_clients,container,false);
-        listView =  view.findViewById(R.id.clientList);
-        floating_AddClient =  view.findViewById(R.id.floating_add_new_client);
+        listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
+        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
 
         init();
         unbinder= ButterKnife.bind(this,view);
@@ -100,6 +120,14 @@ public class FragmentAllClients extends BaseFragment{
         };
 
         listView.setMenuCreator(creator);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OpenPosition = position;
+                GlobalData.clientModel =  clientModels.get(position);
+                loadFragment(new FragmentUpdateClient(),null);
+            }
+        });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
