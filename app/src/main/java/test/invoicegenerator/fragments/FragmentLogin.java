@@ -1,10 +1,7 @@
 package test.invoicegenerator.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,17 +16,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,11 +34,6 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.model.SharedPref;
-import test.invoicegenerator.view.activities.MainActivity;
-
-/**
- * Created by User on 1/4/2019.
- */
 
 public class FragmentLogin extends BaseFragment{
 
@@ -53,23 +41,18 @@ public class FragmentLogin extends BaseFragment{
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
-
     @BindView(R.id.confirmationView)
     LottieAnimationView confirmationView;
-
     @BindView(R.id.rememberme_chkbox)
     CheckBox rememberCheckBox;
-
     @BindView(R.id.email)
     EditText email_txt;
-
     @BindView(R.id.password)
     EditText password_txt;
-
     @BindView(R.id.forgot_password_btn)
     Button forgot_password_text;
     public Unbinder unbinder;
-
+    String email,password;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,6 +83,9 @@ public class FragmentLogin extends BaseFragment{
 
                 attemptLogin();
 
+             /*   Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();*/
             }
         });
 
@@ -115,8 +101,8 @@ public class FragmentLogin extends BaseFragment{
         password_txt.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = email_txt.getText().toString();
-        String password = password_txt.getText().toString();
+         email = email_txt.getText().toString();
+        password = password_txt.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -148,6 +134,7 @@ public class FragmentLogin extends BaseFragment{
         if (cancel) {
             focusView.requestFocus();
         } else {
+         //   Toast.makeText(getActivity(), String.valueOf(email+','+password), Toast.LENGTH_SHORT).show();
 
             DataSendToServerForSignIn();
         }
@@ -169,11 +156,9 @@ public class FragmentLogin extends BaseFragment{
         mVolleyService = new VolleyService(mResultCallback,getActivity());
         Map<String, String> data = new HashMap<String, String>();
 
-        data.put("email",email_txt.getText().toString());
-        data.put("password",password_txt.getText().toString());
-
-
-        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
+        data.put("email",email);
+        data.put("password",password);
+      mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
 
 
     }
@@ -187,6 +172,7 @@ public class FragmentLogin extends BaseFragment{
 
                     JSONObject jsonObject = new JSONObject(response);
                     Boolean status = jsonObject.getBoolean("status");
+                    Toast.makeText(getActivity(), String.valueOf(jsonObject), Toast.LENGTH_SHORT).show();
 
 
                     if(status)
@@ -199,23 +185,23 @@ public class FragmentLogin extends BaseFragment{
                             SharedPref.init(getActivity());
                             SharedPref.write(SharedPref.LoginID, login_id);
                             SharedPref.write(SharedPref.CompanyID, company_id);
-
-
-
-                            confirmationView.setVisibility(View.VISIBLE);
+                        Toast.makeText(getActivity(), "Here", Toast.LENGTH_SHORT).show();
+                            /*confirmationView.setVisibility(View.VISIBLE);
                             confirmationView.playAnimation();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
 
 
-
+                                    hideProgressBar();
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
 
                                 }
-                            }, 1000);
+                            }, 1000);*/
+
+
 
                     } else {
 
@@ -224,15 +210,9 @@ public class FragmentLogin extends BaseFragment{
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
 
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-                hideProgressBar();
-
 
 
 
@@ -311,5 +291,4 @@ public class FragmentLogin extends BaseFragment{
             rememberCheckBox.setChecked(false);
         }
     }
-
 }

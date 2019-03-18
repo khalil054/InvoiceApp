@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "test.invoicegenerator"
         minSdkVersion 19
@@ -25,6 +26,9 @@ android {
 //        sourceCompatibility 'JavaVersion.VERSION_1_8'
 //        targetCompatibility 'JavaVersion.VERSION_1_8'
 //    }
+}
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
@@ -94,6 +98,16 @@ dependencies {
         exclude group: 'glide-parent'
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
+
+    //dexter permissions
+    implementation "com.karumi:dexter:5.0.0"
+
+    // circular imageview
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
+
+
+    implementation 'com.seatgeek:placesautocomplete:0.3-SNAPSHOT'
 }
 apply plugin: 'com.google.gms.google-services'
 

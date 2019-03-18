@@ -180,5 +180,5 @@
     <include
         android:id="@+id/snackbar"
         android:visibility="gone"
-        layout="@layout/snakbar"></include>
+        layout="@layout/snakbar"/>
 </RelativeLayout>

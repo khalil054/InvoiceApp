@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -48,6 +47,7 @@ import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.RealPathUtil;
 import test.invoicegenerator.general.Util;
+/*import test.invoicegenerator.helper.GlideApp;*/
 import test.invoicegenerator.helper.GlideApp;
 import test.invoicegenerator.model.InvoiceModel;
 import test.invoicegenerator.view.activities.ActivityAddItem;
@@ -65,9 +65,6 @@ import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_REA
 import static test.invoicegenerator.general.Constants.SIGN_CODE;
 import static test.invoicegenerator.general.Constants.TAX_CODE;
 
-/**
- * Created by User on 1/14/2019.
- */
 
 public class FragmentEditReport extends BaseFragment implements View.OnClickListener{
 
