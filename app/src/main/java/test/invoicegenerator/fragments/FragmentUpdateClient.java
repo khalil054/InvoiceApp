@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,15 +54,22 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     EditText Et_Client_Email;
     @BindView(R.id.client_phone)
     EditText Et_Client_Phone;
-    @BindView(R.id.client_address)
-    EditText Et_Client_Address;
+    @BindView(R.id.client_city)
+    EditText Et_Client_City;
+    @BindView(R.id.client_state)
+    EditText Et_Client_State;
+    @BindView(R.id.client_country)
+    EditText Et_Client_Country;
+    @BindView(R.id.client_zip)
+    EditText Et_Client_ZipCode;
     @BindView(R.id.confirmationView)
     LottieAnimationView confirmationView;
     @BindView(R.id.main_layout)
     ConstraintLayout main_layout;
 
+    PlacesAutocompleteTextView Et_Client_Address;
     private OnItemSelectedListener listener;
-    private Client client;
+    ClientModel client;
 
     Snackbar snackbar;
     IResult mResultCallback = null;
@@ -74,17 +82,17 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         unbinder= ButterKnife.bind(this,view);
         init();
 
-        DataSendToServerForUpdate();
 
         return view;
     }
 
     private void init() {
-        ClientModel client = GlobalData.clientModel;
+        client = GlobalData.clientModel;
         Et_Client_Name.setText(client.getName());
         Et_Client_Email.setText(client.getEmail());
         Et_Client_Phone.setText(client.getPhone());
         Et_Client_Address.setText(client.getAddress());
+
 
 
         Btn_AddClient.setText("Update");
@@ -114,15 +122,18 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 String StrPhone=Et_Client_Phone.getText().toString();
                 String StrAddress=Et_Client_Address.getText().toString();
 
-                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress);
-                //  loadFragment(new FragmentLogin());
-
+                String StrCity=Et_Client_City.getText().toString();
+                String StrState=Et_Client_State.getText().toString();
+                String StrCountry=Et_Client_Country.getText().toString();
+                String StrPostalCode=Et_Client_ZipCode.getText().toString();
+                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
 
                 break;
         }
     }
 
-    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress) {
+    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
+                                     String StrState,String StrCountry,String StrPostalCode) {
         if(StrEmail.equals(""))
         {
             Et_Client_Email.setError(getString(R.string.error_field_required));
@@ -149,9 +160,28 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
             Et_Client_Address.setError(getString(R.string.error_field_required));
             Et_Client_Address.requestFocus();
         }
+        else if(StrCity.equals(""))
+        {
+            Et_Client_City.setError(getString(R.string.error_field_required));
+            Et_Client_City.requestFocus();
+        }
+        else if(StrState.equals(""))
+        {
+            Et_Client_State.setError(getString(R.string.error_field_required));
+            Et_Client_State.requestFocus();
+        }
+        else if(StrCountry.equals("")) {
+            Et_Client_Country.setError(getString(R.string.error_field_required));
+            Et_Client_Country.requestFocus();
+        }
+        else if(!Util.isZipCodeValid(StrPostalCode))
+        {
+            Et_Client_ZipCode.setError(getString(R.string.error_invalid_zip_code));
+            Et_Client_ZipCode.requestFocus();
+        }
         else
         {
-
+            DataSendToServerForUpdate();
         }
 
 
@@ -170,7 +200,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         data.put("client[phone]",Et_Client_Phone.getText().toString());
         data.put("client[address]",Et_Client_Address.getText().toString());
 
-        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient);
+        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + client.getId() + ".json",data );
     }
 
     void initVolleyCallbackForUpdate(){

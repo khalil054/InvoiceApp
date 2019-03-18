@@ -17,6 +17,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import test.invoicegenerator.databaseutilities.Client;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.ClientModel;
+import test.invoicegenerator.view.activities.MainActivity;
 
 
 public class FragmentAllClients extends BaseFragment{
@@ -118,6 +120,14 @@ public class FragmentAllClients extends BaseFragment{
         };
 
         listView.setMenuCreator(creator);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OpenPosition = position;
+                GlobalData.clientModel =  clientModels.get(position);
+                loadFragment(new FragmentUpdateClient(),null);
+            }
+        });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {

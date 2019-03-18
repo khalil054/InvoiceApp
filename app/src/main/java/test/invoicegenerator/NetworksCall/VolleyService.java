@@ -377,7 +377,7 @@ public class VolleyService {
         //first one
 
     }
-    public void putDataVolleyForHeaders(final String requestType, String url){
+    public void putDataVolleyForHeaders(final String requestType, String url, final Map<String, String> params){
 
         RequestQueue queue = Volley.newRequestQueue(mContext);
         StringRequest strRequest = new StringRequest(Request.Method.PUT, url,
@@ -425,6 +425,13 @@ public class VolleyService {
                 }
         )
         {
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                return params;
+            }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
 

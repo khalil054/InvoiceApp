@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -24,6 +25,13 @@ import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.pepperonas.materialdialog.MaterialDialog;
+import com.seatgeek.placesautocomplete.DetailsCallback;
+import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
+import com.seatgeek.placesautocomplete.model.AddressComponent;
+import com.seatgeek.placesautocomplete.model.AddressComponentType;
+import com.seatgeek.placesautocomplete.model.Place;
+import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -596,4 +604,70 @@ public class MainActivity extends BaseActivity  implements
         }
     }
 
+    public void LoadAddressFields(View view)
+    {
+        final PlacesAutocompleteTextView Et_Client_Address = (view.findViewById(R.id.places_autocomplete));
+        final EditText Et_Client_City = ( view.findViewById(R.id.client_city));
+        final EditText Et_Client_State = (view.findViewById(R.id.client_state));
+        final EditText Et_Client_Country = ( view.findViewById(R.id.client_country));
+        final EditText Et_Client_ZipCode = ( view.findViewById(R.id.client_zip));
+
+        Et_Client_Address.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+            @Override
+            public void onPlaceSelected(final Place place) {
+                Et_Client_Address.getDetailsFor(place, new DetailsCallback() {
+                    @Override
+                    public void onSuccess(final PlaceDetails details) {
+
+                        Et_Client_City.setText("");
+                        Et_Client_State.setText("");
+                        Et_Client_Country.setText("");
+                        Et_Client_ZipCode.setText("");
+
+                        for (AddressComponent component : details.address_components) {
+                            for (AddressComponentType type : component.types) {
+
+
+                                switch (type) {
+                                    case STREET_NUMBER:
+                                        break;
+                                    case ROUTE:
+                                        break;
+                                    case NEIGHBORHOOD:
+                                        break;
+                                    case SUBLOCALITY_LEVEL_1:
+                                        break;
+                                    case SUBLOCALITY:
+                                        break;
+                                    case LOCALITY:
+                                        Et_Client_City.setText(component.long_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_1:
+                                        Et_Client_State.setText(component.short_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_2:
+                                        break;
+                                    case COUNTRY:
+                                        Et_Client_Country.setText(component.short_name);
+                                        break;
+                                    case POSTAL_CODE:
+                                        Et_Client_ZipCode.setText(component.long_name);
+                                        break;
+                                    case POLITICAL:
+                                        break;
+                                }
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(final Throwable failure) {
+
+                    }
+                });
+            }
+        });
+
+    }
         }
