@@ -5,34 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/blur_bg">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/progressView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="preloader.json"
-        app:lottie_loop="true" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/confirmationView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        app:lottie_autoPlay="false"
-        app:lottie_colorFilter="@color/white"
-        app:lottie_fileName="check_animation.json"
-        app:lottie_loop="true" />
 
 
     <ImageView

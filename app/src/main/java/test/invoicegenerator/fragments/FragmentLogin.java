@@ -54,8 +54,6 @@ public class FragmentLogin extends BaseFragment{
     IResult mResultCallback = null;
     VolleyService mVolleyService;
 
-    @BindView(R.id.confirmationView)
-    LottieAnimationView confirmationView;
 
     @BindView(R.id.rememberme_chkbox)
     CheckBox rememberCheckBox;
@@ -202,8 +200,7 @@ public class FragmentLogin extends BaseFragment{
 
 
 
-                            confirmationView.setVisibility(View.VISIBLE);
-                            confirmationView.playAnimation();
+                            showConfirmation();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
@@ -240,6 +237,7 @@ public class FragmentLogin extends BaseFragment{
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
+
                 hideProgressBar();
             }
 
