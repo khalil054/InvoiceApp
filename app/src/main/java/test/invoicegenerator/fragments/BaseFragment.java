@@ -59,6 +59,17 @@ public class BaseFragment extends Fragment {
         progressbar.HideProgress();
     }
 
+    public void showConfirmation() {
+        progressbar = new Progressbar(getActivity());
+        progressbar.ShowConfirmation();
+    }
+
+    public void hideConfirmation() {
+        progressbar = new Progressbar(getActivity());
+        progressbar.HideConfirmation();
+    }
+
+
 
     /**
      * Uses snackbar to show error message.

@@ -81,7 +81,7 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_client,container,false);
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
-        SharedPref.init(getActivity());
+
         unbinder= ButterKnife.bind(this,view);
 
 
@@ -106,54 +106,6 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
                 String StrState=Et_Client_State.getText().toString();
                 String StrCountry=Et_Client_Country.getText().toString();
                 String StrPostalCode=Et_Client_ZipCode.getText().toString();
-
-//                Et_Client_Address.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
-//                    @Override
-//                    public void onPlaceSelected(final Place place) {
-//                        Et_Client_Address.getDetailsFor(place, new DetailsCallback() {
-//                            @Override
-//                            public void onSuccess(final PlaceDetails details) {
-//                                for (AddressComponent component : details.address_components) {
-//                                    for (AddressComponentType type : component.types) {
-//                                        switch (type) {
-//                                            case STREET_NUMBER:
-//                                                break;
-//                                            case ROUTE:
-//                                                break;
-//                                            case NEIGHBORHOOD:
-//                                                break;
-//                                            case SUBLOCALITY_LEVEL_1:
-//                                                break;
-//                                            case SUBLOCALITY:
-//                                                break;
-//                                            case LOCALITY:
-//                                                Et_Client_City.setText(component.long_name);
-//                                                break;
-//                                            case ADMINISTRATIVE_AREA_LEVEL_1:
-//                                                Et_Client_State.setText(component.short_name);
-//                                                break;
-//                                            case ADMINISTRATIVE_AREA_LEVEL_2:
-//                                                break;
-//                                            case COUNTRY:
-//                                                Et_Client_Country.setText(component.short_name);
-//                                                break;
-//                                            case POSTAL_CODE:
-//                                                Et_Client_ZipCode.setText(component.long_name);
-//                                                break;
-//                                            case POLITICAL:
-//                                                break;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(final Throwable failure) {
-//
-//                            }
-//                        });
-//                    }
-//                });
 
                 validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
 
@@ -225,17 +177,19 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
 
         initVolleyCallbackForSignIn();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<String, String>();
 
         data.put("client[name]",Et_Client_Name.getText().toString());
         data.put("client[email]",Et_Client_Email.getText().toString());
         data.put("client[phone]",Et_Client_Phone.getText().toString());
         data.put("client[address]",Et_Client_Address.getText().toString());
         data.put("client[city]",Et_Client_City.getText().toString());
+        data.put("client[state]",Et_Client_State.getText().toString());
+        data.put("client[zip_code]",Et_Client_ZipCode.getText().toString());
 
-
-
-
+        data.put("client[phone]",Et_Client_Phone.getText().toString());
+        data.put("client[address]",Et_Client_Address.getText().toString());
+        data.put("client[city]",Et_Client_City.getText().toString());
 
         mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,data );
     }
@@ -281,7 +235,7 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
                 }
 
 
-                //hideProgressBar();
+                hideProgressBar();
 
 
 
@@ -308,16 +262,16 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
     }
 
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
-//            this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
-//        } else {
-//            throw new ClassCastException(context.toString()
-//                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
-//        }
-//    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
+            this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
+        }
+    }
 
     // Define the events that the fragment will use to communicate
     public interface OnItemSelectedListener {

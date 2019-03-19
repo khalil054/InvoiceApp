@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 /*apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'*/
-
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -30,7 +29,6 @@ android {
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
@@ -81,12 +79,12 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.vikktorn.picker:picker:1.0.0'
     implementation 'com.github.pepperonas:materialdialog:0.3.4'
-    implementation 'com.airbnb.android:lottie:2.0.0'
+    implementation 'com.airbnb.android:lottie:2.7.0'
     implementation 'com.koushikdutta.ion:ion:2.+'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
-            //khalil changes//////
+    //khalil changes//////
     implementation 'com.github.yalantis:ucrop:2.2.2'
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
     //Glide
@@ -96,13 +94,8 @@ dependencies {
         exclude group: 'glide-parent'
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-
-
     //dexter permissions
     implementation "com.karumi:dexter:5.0.0"
-
-
     implementation 'com.seatgeek:placesautocomplete:0.3-SNAPSHOT'
 }
 apply plugin: 'com.google.gms.google-services'
-
