@@ -170,7 +170,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     void DataSendToServerForSignUp()
     {
 
-        showProgressBar();
+        //showProgressBar();
 
 
         initVolleyCallbackForSignUp();
@@ -205,7 +205,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                         SharedPref.write(SharedPref.LoginID, login_id);
 
 
-                        hideProgressBar();
+                        //hideProgressBar();
                         confirmationView.setVisibility(View.VISIBLE);
                         confirmationView.playAnimation();
 
@@ -230,7 +230,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                     e.printStackTrace();
                 }
 
-                hideProgressBar();
+                //hideProgressBar();
 
 
 
@@ -239,7 +239,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             @Override
             public void notifyError(String requestType,VolleyError error) {
                 {
-                    hideProgressBar();
+                    //hideProgressBar();
 
                 }
             }

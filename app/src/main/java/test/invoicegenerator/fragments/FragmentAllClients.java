@@ -165,7 +165,7 @@ public class FragmentAllClients extends BaseFragment{
     public void GetClientList()
     {
 
-        showProgressBar();
+        //showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
         mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
@@ -195,12 +195,12 @@ public class FragmentAllClients extends BaseFragment{
                     e.printStackTrace();
                 }
 
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override
@@ -214,7 +214,7 @@ public class FragmentAllClients extends BaseFragment{
     public void DeleteClient(String id)
     {
 
-        showProgressBar();
+        //showProgressBar();
         initVolleyCallbackForDeleteClient();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
         mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteClient + id + ".json" );
@@ -240,12 +240,12 @@ public class FragmentAllClients extends BaseFragment{
                     e.printStackTrace();
                 }
 
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override

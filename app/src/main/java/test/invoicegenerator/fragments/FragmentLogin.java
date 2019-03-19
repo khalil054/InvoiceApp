@@ -1,6 +1,8 @@
 package test.invoicegenerator.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +36,7 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.model.SharedPref;
+import test.invoicegenerator.view.activities.MainActivity;
 
 public class FragmentLogin extends BaseFragment{
 
@@ -52,7 +55,7 @@ public class FragmentLogin extends BaseFragment{
     @BindView(R.id.forgot_password_btn)
     Button forgot_password_text;
     public Unbinder unbinder;
-    String email,password;
+    String Stremail,Strpassword;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class FragmentLogin extends BaseFragment{
 
     private void init(View view) {
 
-        password_txt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+       /* password_txt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -74,16 +77,16 @@ public class FragmentLogin extends BaseFragment{
                 }
                 return false;
             }
-        });
+        });*/
         setRememberedCredential();
         Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                attemptLogin();
+              attemptLogin();
 
-             /*   Intent intent = new Intent(getActivity(), MainActivity.class);
+               /* Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();*/
             }
@@ -97,35 +100,34 @@ public class FragmentLogin extends BaseFragment{
 
 
         // Reset errors.
-        email_txt.setError(null);
-        password_txt.setError(null);
+       /* email_txt.setError(null);
+        password_txt.setError(null);*/
 
         // Store values at the time of the login attempt.
-         email = email_txt.getText().toString();
-        password = password_txt.getText().toString();
+        Stremail = email_txt.getText().toString();
+        Strpassword = password_txt.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-
-        if (!isPasswordValid(password)) {
+        if (!isPasswordValid(Strpassword)) {
             password_txt.setError(getString(R.string.error_invalid_password));
             focusView = password_txt;
             cancel = true;
         }
-        if(TextUtils.isEmpty(password))
+        if(TextUtils.isEmpty(Strpassword))
         {
             password_txt.setError(getString(R.string.error_field_required));
             focusView = password_txt;
             cancel = true;
         }
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(Stremail)) {
             email_txt.setError(getString(R.string.error_field_required));
             focusView = email_txt;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(Stremail)) {
             email_txt.setError(getString(R.string.error_invalid_email));
             focusView = email_txt;
             cancel = true;
@@ -150,15 +152,17 @@ public class FragmentLogin extends BaseFragment{
     }
     void DataSendToServerForSignIn()
     {
-        showProgressBar();
+     //   showProgressBar();
 
-        initVolleyCallbackForSignIn();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+
         Map<String, String> data = new HashMap<String, String>();
 
-        data.put("email",email);
-        data.put("password",password);
-      mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
+        data.put("email",Stremail);
+        data.put("password",Strpassword);
+        String RequestUrl=NetworkURLs.BaseURL + NetworkURLs.SignIn;
+        initVolleyCallbackForSignIn();
+        mVolleyService = new VolleyService(mResultCallback,getActivity());
+      mVolleyService.postDataVolley("POSTCALL", RequestUrl,data);
 
 
     }
@@ -185,21 +189,18 @@ public class FragmentLogin extends BaseFragment{
                             SharedPref.init(getActivity());
                             SharedPref.write(SharedPref.LoginID, login_id);
                             SharedPref.write(SharedPref.CompanyID, company_id);
-                        Toast.makeText(getActivity(), "Here", Toast.LENGTH_SHORT).show();
-                            /*confirmationView.setVisibility(View.VISIBLE);
-                            confirmationView.playAnimation();
+                          // confirmationView.setVisibility(View.VISIBLE);
+                          //  confirmationView.playAnimation();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
 
-
-                                    hideProgressBar();
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
 
                                 }
-                            }, 1000);*/
+                            }, 1000);
 
 
 
@@ -209,7 +210,7 @@ public class FragmentLogin extends BaseFragment{
                         String error = jsonObject.getString("Error");
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
-
+                 //   hideProgressBar();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -220,7 +221,7 @@ public class FragmentLogin extends BaseFragment{
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                hideProgressBar();
+             //   hideProgressBar();
             }
 
             @Override

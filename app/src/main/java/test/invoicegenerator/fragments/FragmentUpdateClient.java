@@ -189,7 +189,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
     void DataSendToServerForUpdate()
     {
-        showProgressBar();
+        //showProgressBar();
 
         initVolleyCallbackForUpdate();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
@@ -244,7 +244,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 }
 
 
-                hideProgressBar();
+                //hideProgressBar();
 
 
 
@@ -253,7 +253,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override

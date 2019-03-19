@@ -82,7 +82,7 @@ public class FragmentOTP extends BaseFragment{
 
 
 
-        showProgressBar();
+        //showProgressBar();
         initVolleyCallbackForVerification();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
 
@@ -150,7 +150,7 @@ public class FragmentOTP extends BaseFragment{
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                hideProgressBar();
+                //hideProgressBar();
             }
 
             @Override

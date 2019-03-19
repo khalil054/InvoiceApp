@@ -81,16 +81,16 @@ public class VolleyService {
                                     {
                                         JSONObject error_obj=response_obj.getJSONObject("error");
                                         String message=error_obj.getString("message");
-                                        Toasty.error(mContext,message, Toast.LENGTH_SHORT).show();
+                                     //   Toasty.error(mContext,message, Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                                 //   Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
                                 }
 
                             }
-                            else
-                                Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                            else{}
+                               // Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -114,7 +114,6 @@ public class VolleyService {
 
                     return super.parseNetworkResponse(response);
                 }
-
 
             };
             strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

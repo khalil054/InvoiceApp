@@ -81,7 +81,7 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_client,container,false);
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
-
+        SharedPref.init(getActivity());
         unbinder= ButterKnife.bind(this,view);
 
 
@@ -225,12 +225,17 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
 
         initVolleyCallbackForSignIn();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
 
         data.put("client[name]",Et_Client_Name.getText().toString());
         data.put("client[email]",Et_Client_Email.getText().toString());
         data.put("client[phone]",Et_Client_Phone.getText().toString());
         data.put("client[address]",Et_Client_Address.getText().toString());
+        data.put("client[city]",Et_Client_City.getText().toString());
+
+
+
+
 
         mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,data );
     }
@@ -276,7 +281,7 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
                 }
 
 
-                hideProgressBar();
+                //hideProgressBar();
 
 
 

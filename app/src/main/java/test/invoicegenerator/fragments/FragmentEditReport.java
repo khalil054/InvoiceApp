@@ -770,6 +770,28 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         intent.putExtra(ImagePickerActivity.INTENT_ASPECT_RATIO_Y, 1);
         startActivityForResult(intent, REQUEST_IMAGE);
     }
+
+
+
+
+/*
+    JSONObject student2 = new JSONObject();
+try {
+        student2.put("id", "2");
+        student2.put("name", "NAME OF STUDENT2");
+        student2.put("year", "4rd");
+        student2.put("curriculum", "scicence");
+        student2.put("birthday", "5/5/1993");
+
+    } catch (JSONException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+
+
+    JSONArray jsonArray = new JSONArray();
+
+jsonArray.put(student1);*/
 }
 
 /*
