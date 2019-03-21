@@ -56,7 +56,7 @@ public class AllClientsAdapter extends RecyclerView.Adapter<AllClientsAdapter.My
 
         holder.tvName.setText(clientModel.getName());
         holder.tvPhone.setText(clientModel.getEmail());
-        holder.tvAddress.setText(clientModel.getAddress());
+        holder.tvAddress.setText(clientModel.getPhone());
 
 
 

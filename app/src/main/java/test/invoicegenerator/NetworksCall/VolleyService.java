@@ -176,7 +176,49 @@ public class VolleyService {
 
 
     }
+    public void postDataVolleyForHeadersWithJson(final String requestType, String url, JSONObject params){
 
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        JsonRequest request = new JsonRequest
+                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if(mResultCallback != null)
+                            mResultCallback.notifySuccess(requestType,response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if(mResultCallback != null)
+                            mResultCallback.notifyError(requestType,error);
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                SharedPref.init(mContext);
+                String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
+                String client=SharedPref.read(Constants.CLIENT,"");
+                String uid=SharedPref.read(Constants.UID,"");
+                HashMap<String, String>  headers = new HashMap<String, String>();
+                headers.put("access-token", access_token);
+                headers.put("client",client );
+                headers.put("uid",uid);
+
+
+                return headers;
+            }
+
+
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+        //first one
+
+    }
     public void getDataVolley(final String requestType, String url){
         try {
             RequestQueue queue = Volley.newRequestQueue(mContext);
@@ -296,6 +338,7 @@ public class VolleyService {
             }
         }
     }
+
 
     public void postDataVolleyForHeaders(final String requestType, String url, final Map<String, String> params){
 

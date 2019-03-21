@@ -61,6 +61,8 @@ public class DashboardFragment extends BaseFragment  {
             public void onClick(View view) {
                 loadFragment(new FragmentAllClients(),null);
 
+                //loadFragment(new ClientSelection(),null);
+
 
             }
         });

@@ -206,6 +206,7 @@ public class FragmentLogin extends BaseFragment{
                                 public void run() {
 
 
+                                    hideProgressBar();
 
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);

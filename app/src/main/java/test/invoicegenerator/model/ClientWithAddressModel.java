@@ -6,15 +6,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ClientModel {
+public class ClientWithAddressModel {
 
     String id;
     String name;
     String email;
     String phone;
 
+    ArrayList<AddressModel> addressModels=new ArrayList<AddressModel>();
+    JSONArray addresses;
 
-    public ClientModel(JSONObject jsonObject) {
+
+    public ClientWithAddressModel(JSONObject jsonObject) {
 
         try {
 
@@ -22,13 +25,19 @@ public class ClientModel {
             name = jsonObject.getString("name");
             email = jsonObject.getString("email");
             phone = jsonObject.getString("phone");
+            addresses = jsonObject.getJSONArray("addresses");
 
+            for (int i = 0; i < addresses.length(); i++) {
+                AddressModel addressModel = new AddressModel(addresses.getJSONObject(i));
+                addressModels.add(addressModel);
+            }
 
 
             setId(id);
             setName(name);
             setEmail(email);
             setPhone(phone);
+            setAddressModels(addressModels);
 
 
         } catch (JSONException e) {
@@ -37,7 +46,13 @@ public class ClientModel {
 
     }
 
+    public ArrayList<AddressModel> getAddressModels() {
+        return addressModels;
+    }
 
+    public void setAddressModels(ArrayList<AddressModel> addressModels) {
+        this.addressModels = addressModels;
+    }
 
     public String getId() {
         return id;

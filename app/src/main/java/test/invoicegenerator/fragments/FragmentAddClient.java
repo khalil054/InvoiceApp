@@ -28,6 +28,7 @@ import com.seatgeek.placesautocomplete.model.AddressComponentType;
 import com.seatgeek.placesautocomplete.model.Place;
 import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,7 +48,7 @@ import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.view.activities.MainActivity;
 
 
-public class FragmentAddClient extends BaseFragment implements View.OnClickListener{
+public class FragmentAddClient extends BaseFragment{
 
     @BindView(R.id.add_client_button)
     Button Btn_AddClient;
@@ -87,17 +88,10 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
 
         ((MainActivity)getActivity()).LoadAddressFields(view);
 
-        return view;
-    }
+        Btn_AddClient.setOnClickListener( new View.OnClickListener() {
 
-
-    @Override
-    public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
-            case R.id.add_client_button:
-
+            @Override
+            public void onClick(View v) {
                 String StrName=Et_Client_Name.getText().toString();
                 String StrEmail=Et_Client_Email.getText().toString();
                 String StrPhone=Et_Client_Phone.getText().toString();
@@ -109,10 +103,14 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
 
                 validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
 
+            }
+        });
 
-                break;
-        }
+        return view;
     }
+
+
+
 
     private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
                                      String StrState,String StrCountry,String StrPostalCode) {
@@ -164,44 +162,63 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
         else
         {
 
-            DataSendToServerForSignIn();
+            DataSendToServerForAddClient();
 
         }
 
 
     }
 
-    void DataSendToServerForSignIn()
+    void DataSendToServerForAddClient()
     {
         showProgressBar();
 
-        initVolleyCallbackForSignIn();
+        initVolleyCallbackForAddClient();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        Map<String, String> data = new HashMap<String, String>();
 
-        data.put("client[name]",Et_Client_Name.getText().toString());
-        data.put("client[email]",Et_Client_Email.getText().toString());
-        data.put("client[phone]",Et_Client_Phone.getText().toString());
-        data.put("client[address]",Et_Client_Address.getText().toString());
-        data.put("client[city]",Et_Client_City.getText().toString());
-        data.put("client[state]",Et_Client_State.getText().toString());
-        data.put("client[zip_code]",Et_Client_ZipCode.getText().toString());
+        JSONObject Data=new JSONObject();
+        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject1=new JSONObject();
+        JSONArray jsonArray=new JSONArray();
 
-        data.put("client[phone]",Et_Client_Phone.getText().toString());
-        data.put("client[address]",Et_Client_Address.getText().toString());
-        data.put("client[city]",Et_Client_City.getText().toString());
+        try {
+            jsonObject.put("name",Et_Client_Name.getText().toString());
+            jsonObject.put("email",Et_Client_Email.getText().toString());
+            jsonObject.put("phone",Et_Client_Phone.getText().toString());
 
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,data );
+            jsonObject1.put("name",Et_Client_Address.getText().toString());
+            jsonObject1.put("line_1",Et_Client_Address.getText().toString());
+            jsonObject1.put("line_2","");
+            jsonObject1.put("city",Et_Client_City.getText().toString());
+            jsonObject1.put("state",Et_Client_State.getText().toString());
+            jsonObject1.put("zip_code",Et_Client_ZipCode.getText().toString());
+            jsonObject1.put("default",true);
+            jsonObject1.put("country_name",Et_Client_Country.getText().toString());
+
+
+            jsonArray.put(jsonObject1);
+
+            jsonObject.put("addresses_attributes",jsonArray);
+
+
+            Data.put("client",jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,Data );
     }
 
-    void initVolleyCallbackForSignIn(){
+    void initVolleyCallbackForAddClient(){
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Boolean status = jsonObject.getBoolean("status");
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                    Boolean status = jsonObject1.getBoolean("status");
 
 
                     if(status)

@@ -643,12 +643,12 @@ public class MainActivity extends BaseActivity  implements
                                         Et_Client_City.setText(component.long_name);
                                         break;
                                     case ADMINISTRATIVE_AREA_LEVEL_1:
-                                        Et_Client_State.setText(component.short_name);
+                                        Et_Client_State.setText(component.long_name);
                                         break;
                                     case ADMINISTRATIVE_AREA_LEVEL_2:
                                         break;
                                     case COUNTRY:
-                                        Et_Client_Country.setText(component.short_name);
+                                        Et_Client_Country.setText(component.long_name);
                                         break;
                                     case POSTAL_CODE:
                                         Et_Client_ZipCode.setText(component.long_name);

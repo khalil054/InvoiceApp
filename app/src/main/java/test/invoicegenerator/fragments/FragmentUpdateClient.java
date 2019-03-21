@@ -91,7 +91,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         Et_Client_Name.setText(client.getName());
         Et_Client_Email.setText(client.getEmail());
         Et_Client_Phone.setText(client.getPhone());
-        Et_Client_Address.setText(client.getAddress());
 
 
 

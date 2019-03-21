@@ -15,7 +15,8 @@
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/clientList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp" />
 
     </LinearLayout>
 
@@ -31,5 +32,16 @@
         android:focusable="true"
         app:backgroundTint="@color/bgBottomNavigation"
         app:srcCompat="@drawable/ic_new_user" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp" />
 
 </RelativeLayout>
