@@ -2,14 +2,17 @@ package test.invoicegenerator.fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,19 +29,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
+import test.invoicegenerator.NetworksCall.IResult;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
+import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.ItemAdapter;
 import test.invoicegenerator.databaseutilities.Client;
@@ -47,9 +60,9 @@ import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.RealPathUtil;
 import test.invoicegenerator.general.Util;
-/*import test.invoicegenerator.helper.GlideApp;*/
 import test.invoicegenerator.helper.GlideApp;
 import test.invoicegenerator.model.InvoiceModel;
+import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.view.activities.ActivityAddItem;
 import test.invoicegenerator.view.activities.ClientActivity;
 import test.invoicegenerator.view.activities.DigitalSignatureActivity;
@@ -68,72 +81,51 @@ import static test.invoicegenerator.general.Constants.TAX_CODE;
 
 public class FragmentEditReport extends BaseFragment implements View.OnClickListener{
 
-
+    @BindView(R.id.layout_edit)
+    RelativeLayout layout_edit;
     @BindView(R.id.card2)
     CardView client_card;
-
     @BindView(R.id.card_item)
     CardView add_item_card;
-
     @BindView(R.id.card5)
     CardView discount_card;
-
     @BindView(R.id.card6)
     CardView tax_card;
-
     @BindView(R.id.card9)
     CardView sign_card;
-
     @BindView(R.id.card11)
     CardView attachment_card;
-
     @BindView(R.id.items_list)
     ListView item_list;
-
     @BindView(R.id.subtotal)
     TextView subtotal_value_field;
-
     @BindView(R.id.discount_value)
     TextView discount_value;
-
     @BindView(R.id.total_value)
     TextView total_value;
-
     @BindView(R.id.attach_image_label)
     TextView attach_image_label;
-
     @BindView(R.id.add_client_text)
     TextView add_client_text;
-
     @BindView(R.id.tax_value)
     TextView tax_value;
-
     @BindView(R.id.image1)
     ImageView image1;
-
     @BindView(R.id.invoice_name)
     TextView invoice_name;
-
     @BindView(R.id.signature_value)
     TextView signature_value;
-
     @BindView(R.id.due_date)
     TextView due_date;
-
     @BindView(R.id.comment_field)
     EditText comment_field;
-
     @BindView(R.id.save_invoice)
     Button save_invoice;
-
     @BindView(R.id.invoice_info_layout)
     LinearLayout invoice_info_layout;
-
     private int subtotal_value=0;
-
     private int tax,discount=0;
     private String tax_type,discount_type="";
-
     DBHelper db;
     private ArrayList<Item> item_values;
     private Uri FilePathUri;
@@ -145,8 +137,13 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     String realPath;
     public static final int REQUEST_IMAGE = 100;
     public static boolean isfromEditReport=false;
-
+    public static String InvoiceDueDate,InvoiceCreateDate,InvoiceName;
     Bitmap bitmap;
+
+    VolleyService mVolleyService;
+    IResult mResultCallback = null;
+    Snackbar snackbar;
+    public static JSONArray InvoicesArray=new JSONArray();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -241,7 +238,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
         comment_field.setText(invoice.getComment());
         if(!invoice.getSignture_date().equals(""))
-            signature_value.setText("Signed On: "+invoice.getSignture_date());
+            signature_value.setText(String.valueOf("Signed On: "+invoice.getSignture_date()));
         if(!TextUtils.isEmpty(invoice.getPhoto())){
             loadProfile(invoice.getPhoto());
         }
@@ -379,19 +376,19 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 break;
             case R.id.save_invoice:
             {
-                String sign_date="";
+               /* String sign_date="";
                 if(signature_value.getText().toString().contains(":"))
                 {
                     String[] sign=signature_value.getText().toString().split(":");
                     sign_date=sign[1];
                 }
-                  /*  db.updateinvoiceCalculation(subtotal_value_field.getText().toString(),total_value.getText().toString(),
+                  *//*  db.updateinvoiceCalculation(subtotal_value_field.getText().toString(),total_value.getText().toString(),
                             comment_field.getText().toString(),realPath,sign_path,sign_date,
-                            invoice_id);*/
+                            invoice_id);*//*
                 total_value.setText(subtotal_value_field.getText().toString());
 
-                  /*  Toast.makeText(getActivity(), subtotal_value_field.getText().toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), realPath, Toast.LENGTH_SHORT).show();*/
+                  *//*  Toast.makeText(getActivity(), subtotal_value_field.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), realPath, Toast.LENGTH_SHORT).show();*//*
 
                 if(db.updateinvoiceCalculation(subtotal_value_field.getText().toString(),total_value.getText().toString(),
                         comment_field.getText().toString(),realPath,sign_path,sign_date,
@@ -400,6 +397,51 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     //  Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
                 }else {
                     // Toast.makeText(getActivity(), "not updated", Toast.LENGTH_SHORT).show();
+                }*/
+
+                if(InvoicesArray.length()>0){
+                    Toast.makeText(getActivity(), String.valueOf(InvoicesArray), Toast.LENGTH_SHORT).show();
+                    if(isEmptyString(InvoiceDueDate)){
+                        showMessage("Invoice Date is Missing");
+                    }else if(isEmptyString( comment_field.getText().toString())){
+                        showMessage("Add Some Notes");
+                    }else if(isEmptyString(InvoiceCreateDate)){
+                        showMessage("Invoice Create is Missing");
+                    }else if(InvoicesArray.length()<0){
+                        showMessage("Invoice Items are empty");
+                    }else {
+                        final JSONObject InvoiceToBeSend = new JSONObject();
+                        final JSONObject js = new JSONObject();
+                        try {
+
+
+                            InvoiceToBeSend.put("signed_by", "Khalil");
+                            InvoiceToBeSend.put("invoice_number", "1234");
+                            InvoiceToBeSend.put("due_at", "2019-03-15");
+                            InvoiceToBeSend.put("invoiced_on", "2019-03-10");
+                            InvoiceToBeSend.put("signed_at", "2019-03-10");
+                            InvoiceToBeSend.put("signature", "signature image file");
+                            InvoiceToBeSend.put("notes","invoce notes");
+                            InvoiceToBeSend.put("payment_status", 0);
+                            InvoiceToBeSend.put("delivery_status", 0);
+                            InvoiceToBeSend.put("user_id", "60");
+                            InvoiceToBeSend.put("company_id","39");
+                            InvoiceToBeSend.put("client_id", "2");
+                            InvoiceToBeSend.put("invoice_items_attributes", InvoicesArray);
+
+
+                            js.put("invoice", InvoiceToBeSend);
+                            DataSendToServerForAddInvoice(js);
+                           // SendJsonObject(js);
+
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+
+                }else {
+                    Toast.makeText(getActivity(), "Please Add Some Invoice", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -771,7 +813,152 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         startActivityForResult(intent, REQUEST_IMAGE);
     }
 
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
+    }
 
+        public void showMessage(String Str){
+            snackbar = Snackbar.make(layout_edit,Str, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
+    void DataSendToServerForAddInvoice(JSONObject Da)
+    {
+        showProgressBar();
+
+        initVolleyCallbackForAddClient();
+        mVolleyService = new VolleyService(mResultCallback,getActivity());
+     /*   AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        builder.setMessage(String.valueOf(Da));
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.create().show();*/
+       /* JSONObject Data=new JSONObject();
+
+
+        try {
+
+            Data.put("invoice",D);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddInvoices,Da );
+    }
+
+    void initVolleyCallbackForAddClient(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType,String response) {
+                try {
+                 //   Toast.makeText(getActivity(), "here", Toast.LENGTH_SHORT).show();
+
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject jsonObjectNew =jsonObject.getJSONObject("data");
+                    Boolean status = jsonObjectNew.getBoolean("status");
+
+
+                    if(status)
+                    {
+
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+
+                                loadFragment(new FragmentReport(),null);
+
+                            }
+                        }, 1000);
+
+                        snackbar = Snackbar.make(layout_edit,"invoice Added Successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+
+                    } else {
+
+
+                        String error = jsonObject.getString("Error");
+                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                hideProgressBar();
+
+
+
+
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+
+                if(error.networkResponse != null && error.networkResponse.data != null) {
+
+                    String error_response = new String(error.networkResponse.data);
+                    // dialogHelper.showErroDialog(error_response);
+                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
+
+                    SharedPref.init(getActivity());
+                    String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
+                    String client = SharedPref.read(Constants.CLIENT, "");
+                    String uid = SharedPref.read(Constants.UID, "");
+
+                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid), Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(false);
+                    builder.setMessage(String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid));
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    builder.create().show();
+
+
+                    try {
+                        JSONObject response_obj = new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+
+                            Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+
+
+
+        };
+    }
 
 
 /*

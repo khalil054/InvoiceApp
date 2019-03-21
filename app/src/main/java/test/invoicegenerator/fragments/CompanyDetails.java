@@ -278,6 +278,7 @@ public class CompanyDetails extends Fragment {
             public void notifySuccessResponseHeader(NetworkResponse response) {
 
             }
+
         };
     }
 

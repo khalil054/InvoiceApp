@@ -1,45 +1,72 @@
 package test.invoicegenerator.fragments;
 
-import android.database.Cursor;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.VolleyError;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import test.invoicegenerator.NetworksCall.IResult;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
+import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
+import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.adapters.ReportAdapter;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.general.Constants;
+import test.invoicegenerator.general.GlobalData;
+import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.InvoiceModel;
+import test.invoicegenerator.model.JsonInvoiceModel;
+import test.invoicegenerator.model.SharedPref;
 
 public class FragmentReport extends BaseFragment{
-
-    ListView report_list;
-
-
+   /* @BindView(R.id.invoiceList)
+    ListView report_list;*/
+    @BindView(R.id.main_layout)
+    RelativeLayout main_layout;
+    Snackbar snackbar;
+    IResult mResultCallback = null;
+    VolleyService mVolleyService;
     @BindView(R.id.add_invoice)
     FloatingActionButton add_invoice;
-
     DBHelper db;
-
-    private ArrayList<InvoiceModel> list=new ArrayList<>();
+    @BindView(R.id.invoiceList)
+    SwipeMenuListView listView;
+    private ArrayList<JsonInvoiceModel> list=new ArrayList<>();
     private ArrayList<String> items;
+    int DeletePosition = 0;
+    int OpenPosition = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
 
-        report_list = (ListView) view.findViewById(R.id.invoice_list);
-
+     //   report_list = view.findViewById(R.id.invoiceList);
         ButterKnife.bind(this,view);
         init();
         return view;
@@ -48,19 +75,17 @@ public class FragmentReport extends BaseFragment{
     private void init() {
         db=new DBHelper(getActivity());
         items=new ArrayList<>();
-        getInvoiceList();
-        ReportAdapter adapter = new ReportAdapter(getActivity(), list);
-        report_list.setAdapter(adapter);
+        GetInvoiceList();
 
-        add_invoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                args.putString("new", "true");
-                args.putString("clicked", "false");
-                loadFragment(new FragmentEditReport(),args);
-            }
-        });
+      /*  ReportAdapter adapter = new ReportAdapter(getActivity(), list);
+        listView.setAdapter(adapter);
+*/
+
+
+
+
+        /*getInvoiceList();
+
         report_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,10 +95,10 @@ public class FragmentReport extends BaseFragment{
                 args.putSerializable("invoice",list.get(position));
                 loadFragment(new FragmentReportDetail(),args);
             }
-        });
+        });*/
     }
 
-    private void getInvoiceList() {
+   /* private void getInvoiceList() {
         {
             Cursor rs = db.getInvoiceData();
             rs.moveToFirst();
@@ -124,6 +149,101 @@ public class FragmentReport extends BaseFragment{
         {
             items.add(list.get(i).getInvoice_name()+"");
         }
+    }*/
+
+    public void GetInvoiceList()
+    {
+
+        showProgressBar();
+        initVolleyCallbackForInvoiceList();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        String Str=NetworkURLs.BaseURL+ NetworkURLs.GetInvoiceList;
+        mVolleyService.getDataVolley("GETCALL", Str);
+
+    }
+
+    void initVolleyCallbackForInvoiceList() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+                    boolean status = jsonObject.getBoolean("status");
+                    if (status) {
+
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        JSONArray InvoiceArray = data.getJSONArray("invoices");
+
+                        for (int i = 0; i < InvoiceArray.length(); i++) {
+                            JsonInvoiceModel invoiceModel = new JsonInvoiceModel(InvoiceArray.getJSONObject(i));
+                            list.add(invoiceModel);
+                        }
+                        ReportAdapter adapter = new ReportAdapter(getActivity(), list);
+                        listView.setAdapter(adapter);
+
+                    }else {
+                        Toast.makeText(getActivity(), "Status found false", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+               hideProgressBar();
+                if(error.networkResponse != null && error.networkResponse.data != null) {
+
+                    String error_response = new String(error.networkResponse.data);
+                    // dialogHelper.showErroDialog(error_response);
+                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
+
+                    SharedPref.init(getActivity());
+                    String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
+                    String client = SharedPref.read(Constants.CLIENT, "");
+                    String uid = SharedPref.read(Constants.UID, "");
+
+                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid), Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(false);
+                    builder.setMessage(String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid));
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+
+                    builder.create().show();
+
+
+                    try {
+                        JSONObject response_obj = new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+
+                            Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+
+        };
     }
 
 }

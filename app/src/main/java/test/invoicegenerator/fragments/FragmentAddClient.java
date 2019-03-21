@@ -28,6 +28,7 @@ import com.seatgeek.placesautocomplete.model.AddressComponentType;
 import com.seatgeek.placesautocomplete.model.Place;
 import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,37 +165,15 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
         else
         {
 
-            DataSendToServerForSignIn();
+            DataSendToServerForAddClient();
 
         }
 
 
     }
 
-    void DataSendToServerForSignIn()
-    {
-        showProgressBar();
 
-        initVolleyCallbackForSignIn();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-        Map<String, String> data = new HashMap<String, String>();
-
-        data.put("client[name]",Et_Client_Name.getText().toString());
-        data.put("client[email]",Et_Client_Email.getText().toString());
-        data.put("client[phone]",Et_Client_Phone.getText().toString());
-        data.put("client[address]",Et_Client_Address.getText().toString());
-        data.put("client[city]",Et_Client_City.getText().toString());
-        data.put("client[state]",Et_Client_State.getText().toString());
-        data.put("client[zip_code]",Et_Client_ZipCode.getText().toString());
-
-        data.put("client[phone]",Et_Client_Phone.getText().toString());
-        data.put("client[address]",Et_Client_Address.getText().toString());
-        data.put("client[city]",Et_Client_City.getText().toString());
-
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,data );
-    }
-
-    void initVolleyCallbackForSignIn(){
+    void initVolleyCallbackForAddClient(){
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
@@ -253,6 +232,7 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
             }
 
 
+
         };
     }
 
@@ -277,6 +257,50 @@ public class FragmentAddClient extends BaseFragment implements View.OnClickListe
     public interface OnItemSelectedListener {
 
         void onAddClientFragCallBack(int position);
+    }
+
+    ////////////////////////////////////
+
+
+    void DataSendToServerForAddClient()
+    {
+        showProgressBar();
+
+        initVolleyCallbackForAddClient();
+        mVolleyService = new VolleyService(mResultCallback,getActivity());
+
+        JSONObject Data=new JSONObject();
+        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject1=new JSONObject();
+        JSONArray jsonArray=new JSONArray();
+
+        try {
+            jsonObject.put("name",Et_Client_Name.getText().toString());
+            jsonObject.put("email",Et_Client_Email.getText().toString());
+            jsonObject.put("phone",Et_Client_Phone.getText().toString());
+
+            jsonObject1.put("name",Et_Client_Address.getText().toString());
+            jsonObject1.put("line_1",Et_Client_Address.getText().toString());
+            jsonObject1.put("line_2","");
+            jsonObject1.put("city",Et_Client_City.getText().toString());
+            jsonObject1.put("state",Et_Client_State.getText().toString());
+            jsonObject1.put("zip_code",Et_Client_ZipCode.getText().toString());
+            jsonObject1.put("default",true);
+            jsonObject1.put("country_name",Et_Client_Country.getText().toString());
+
+
+            jsonArray.put(jsonObject1);
+
+            jsonObject.put("addresses_attributes",jsonArray);
+
+
+            Data.put("client",jsonObject);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,Data );
     }
 
 }

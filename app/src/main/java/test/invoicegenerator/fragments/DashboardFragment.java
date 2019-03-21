@@ -68,6 +68,8 @@ public class DashboardFragment extends BaseFragment  {
         layoutReports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+               // loadFragment(new FragmentAllClients(),null);
                 ((MainActivity)getActivity()).ChangeMenuOption(2);
                 Cursor rs=db.getInvoiceData();
                 if(rs.isAfterLast() == false)
