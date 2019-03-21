@@ -13,14 +13,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import org.json.JSONException;
+import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.Util;
+import test.invoicegenerator.model.SharedPref;
 
 /**
  * Created by User on 1/14/2019.
@@ -68,7 +69,7 @@ public class ActivityAddItem extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Toolbar tb = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar tb =  findViewById(R.id.toolbar);
         tb.inflateMenu(R.menu.client_menu);
         tb.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -94,6 +95,8 @@ public class ActivityAddItem extends AppCompatActivity {
         return true;
     }
     private void init() {
+        SharedPref.init(ActivityAddItem.this);
+
         FragmentEditReport.is_new="false";
         setValuesOfFields();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
@@ -206,7 +209,7 @@ public class ActivityAddItem extends AppCompatActivity {
             user.setLine2(line2.getText().toString());
             user.setLine3(line3.getText().toString());
             RealmManager.createUserDao().save(user);*/
-          long item_key=db.insertItemData(description.getText().toString(),unit_cost_field.getText().toString(),quantity_field.getText().toString(),
+          /*long item_key=db.insertItemData(description.getText().toString(),unit_cost_field.getText().toString(),quantity_field.getText().toString(),
                   amount_field.getText().toString(),String.valueOf(taxable_field.isChecked()),tax_rate_field.getText().toString(),additional_field.getText().toString()
                   , FragmentEditReport.invoice_id);
             if(item_key!=-1){
@@ -217,7 +220,40 @@ public class ActivityAddItem extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "not done",
                         Toast.LENGTH_SHORT).show();
             }
-            db.updateInvoiceData("item_key",String.valueOf(item_key), FragmentEditReport.invoice_id);
+            db.updateInvoiceData("item_key",String.valueOf(item_key), FragmentEditReport.invoice_id);*/
+
+            JSONObject InvoiceItem = new JSONObject();
+
+            try {
+                InvoiceItem.put("name", description.getText().toString());
+                InvoiceItem.put("description", description.getText().toString());
+                InvoiceItem.put("qty", quantity_field.getText().toString());
+                InvoiceItem.put("price", unit_cost_field.getText().toString());
+                InvoiceItem.put("subtotal", unit_cost_field.getText().toString());
+                InvoiceItem.put("subtotal_with_tax_applied", "0.0");
+                InvoiceItem.put("tax_code_id","1");
+                InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID,"")));
+
+                FragmentEditReport.InvoicesArray.put(InvoiceItem);
+
+                finish();
+
+              /*  InvoiceItem.put("name", "First item");
+                InvoiceItem.put("description","item des");
+                InvoiceItem.put("qty", "10");
+                InvoiceItem.put("price","45");
+                InvoiceItem.put("subtotal", "450");
+                InvoiceItem.put("subtotal_with_tax_applied", "0.0");
+                InvoiceItem.put("tax_code_id","1");
+                InvoiceItem.put("company_id", "39");
+
+                FragmentEditReport.InvoicesArray.put(InvoiceItem);
+
+                finish();*/
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             ;
         }
 

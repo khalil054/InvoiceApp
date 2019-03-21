@@ -58,6 +58,10 @@ public class InvoiceInfoActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                FragmentEditReport.InvoiceDueDate=due_date.getText().toString();
+                FragmentEditReport.InvoiceCreateDate=invoice_date.getText().toString();
+                FragmentEditReport.InvoiceName=invoice_name.getText().toString();
                 // perform whatever you want on back arrow click
                 db.updateInvoiceInfo(invoice_name.getText().toString(),invoice_date.getText().toString(),due_date.getText().toString(), FragmentEditReport.invoice_id);
                 finish();
@@ -83,9 +87,11 @@ public class InvoiceInfoActivity extends AppCompatActivity {
             {
                 monthOfYear=monthOfYear+1;
                 if(identifier.equals("invoice"))
-                invoice_date.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+              /*  invoice_date.setText(dayOfMonth + "/" + monthOfYear + "/" + year);*/
+                    invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
                 else
-                    due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);
+                   /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
+                    due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
             }};
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);

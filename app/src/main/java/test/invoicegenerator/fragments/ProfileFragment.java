@@ -170,12 +170,12 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         fragmentTransaction.commit();
     }
 
-    @Override
+   /* @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
         //SharedPreferenceHelper.newUserPrefHelper(getActivity()).clearValueForKey(Constants.PREF_KEY_BASIC_AUTH_HEADER_VALUE);
-    }
+    }*/
     private void showProfilePic()
     {
         final Dialog settingsDialog = new Dialog(getActivity());
@@ -191,7 +191,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         update_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UploadImageFileToFirebaseStorage(settingsDialog);
+               // UploadImageFileToFirebaseStorage(settingsDialog);
             }
         });
         profile_picture.setOnClickListener(new View.OnClickListener() {
@@ -291,7 +291,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             }
         }
     }
-    public void UploadImageFileToFirebaseStorage(final Dialog dialog) {
+ /*   public void UploadImageFileToFirebaseStorage(final Dialog dialog) {
 
         // Checking whether FilePathUri Is empty or not.
         if (FilePathUri != null) {
@@ -359,7 +359,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
             Toast.makeText(getActivity(), "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
 
         }
-    }
+    }*/
     public String GetFileExtension(Uri uri) {
 
         ContentResolver contentResolver = getActivity().getContentResolver();

@@ -186,6 +186,7 @@ public class FragmentForgotPassword extends BaseFragment{
                 public void notifySuccessResponseHeader(NetworkResponse response) {
 
                 }
+
             };
 
     }

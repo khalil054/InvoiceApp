@@ -1,6 +1,8 @@
 package test.invoicegenerator.NetworksCall;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -81,16 +83,18 @@ public class VolleyService {
                                     {
                                         JSONObject error_obj=response_obj.getJSONObject("error");
                                         String message=error_obj.getString("message");
-                                        Toasty.error(mContext,message, Toast.LENGTH_SHORT).show();
+                                     //   Toasty.error(mContext,message, Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                                 //   Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
                                 }
 
                             }
-                            else
-                                Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
+                            else{
+
+                            }
+                               // Toasty.error(mContext, Util.getMessage(error), Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -112,9 +116,9 @@ public class VolleyService {
                     SharedPref.write(Constants.CLIENT, response.headers.get("client"));
                     SharedPref.write(Constants.UID, response.headers.get("uid"));
 
+
                     return super.parseNetworkResponse(response);
                 }
-
 
             };
             strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -165,8 +169,9 @@ public class VolleyService {
                     headers.put("access-token", access_token);
                     headers.put("client",client );
                     headers.put("uid",uid);
-
                     return headers;
+
+
                 }
                 //close sending headers
 
@@ -279,6 +284,182 @@ public class VolleyService {
 
         }
     }
+    public void postDataVolleyForHeadersWithJson(final String requestType, String url, JSONObject params){
+
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        JsonRequest request = new JsonRequest
+                (Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        if(mResultCallback != null)
+                            mResultCallback.notifySuccess(requestType,response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if(mResultCallback != null)
+                            mResultCallback.notifyError(requestType,error);
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                SharedPref.init(mContext);
+                String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
+                String client=SharedPref.read(Constants.CLIENT,"");
+                String uid=SharedPref.read(Constants.UID,"");
+                HashMap<String, String>  headers = new HashMap<String, String>();
+                headers.put("access-token", access_token);
+                headers.put("client",client );
+                headers.put("uid",uid);
+                headers.put("Content-Type","application/json");
+
+                return headers;
+            }
+
+
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+        //first one
+
+    }
+
+
+                    /*get Request*/
+
+
+    /*get Data using param*/
+    public void getDataVolley(final String requestType, String url, final Map<String, String> params){
+        try {
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+
+            StringRequest strRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>()
+                    {
+                        @Override
+                        public void onResponse(String response)
+                        {
+
+                            if(mResultCallback != null)
+                                mResultCallback.notifySuccess(requestType,response);
+                        }
+                    },
+                    new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error)
+                        {
+                            if(mResultCallback != null)
+                                mResultCallback.notifyError(requestType,error);
+                        }
+                    })
+            {
+                @Override
+                protected Map<String, String> getParams()
+                {
+
+                   /* Map<String, String> data = new HashMap<>();
+
+                    return data;*/
+                    return params;
+                }
+                @Override
+                public Map<String, String> getHeaders() {
+                    SharedPref.init(mContext);
+                    String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
+                    String client=SharedPref.read(Constants.CLIENT,"");
+                    String uid=SharedPref.read(Constants.UID,"");
+                    HashMap<String, String>  headers = new HashMap<String, String>();
+                    headers.put("access-token", access_token);
+                    headers.put("client",client );
+                    headers.put("uid",uid);
+                    return headers;
+                }
+
+               /* @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+
+                  *//*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*//*
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                    *//*}*//*
+
+                    return super.parseNetworkResponse(response);
+
+                }*/
+            };
+
+            queue.add(strRequest);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    /*get Request without params*/
+   /* public void getDataVolleyWithoutparam(final String requestType, String url){
+        try {
+            RequestQueue queue = Volley.newRequestQueue(mContext);
+
+            StringRequest strRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>()
+                    {
+                        @Override
+                        public void onResponse(String response)
+                        {
+
+                            if(mResultCallback != null)
+                                mResultCallback.notifySuccess(requestType,response);
+                        }
+                    },
+                    new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error)
+                        {
+                            if(mResultCallback != null)
+                                mResultCallback.notifyError(requestType,error);
+                        }
+                    })
+            {
+                @Override
+                protected Map<String, String> getParams()
+                {
+
+                    Map<String, String> data = new HashMap<>();
+
+                    return data;
+                }
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String>  params = new HashMap<>();
+                    // boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    // if(strStatus) {
+                    params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                    //}
+
+                    return params;
+                }
+
+
+            };
+
+            queue.add(strRequest);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }*/
+
 
 //    public void MulltiPart(ArrayList<Part> filesParts, ProfileUpdateModel profile, String url) {
 //
@@ -482,7 +663,7 @@ public class VolleyService {
                 String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
                 String client=SharedPref.read(Constants.CLIENT,"");
                 String uid=SharedPref.read(Constants.UID,"");
-                HashMap<String, String>  headers = new HashMap<String, String>();
+                HashMap<String, String>  headers = new HashMap<>();
                 headers.put("access-token", access_token);
                 headers.put("client",client );
                 headers.put("uid",uid);
@@ -584,12 +765,18 @@ public class VolleyService {
 
             {
 
-                @Override
+                /*@Override
                 protected Map<String, String> getParams()
                 {
 
                     return params;
+                }*/
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return super.getBody();
                 }
+
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
 
@@ -611,8 +798,9 @@ public class VolleyService {
             queue.add(strRequest);
 
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
+
 
 }

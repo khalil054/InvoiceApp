@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +18,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
@@ -166,14 +163,9 @@ public class FragmentLogin extends BaseFragment{
         initVolleyCallbackForSignIn();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
         Map<String, String> data = new HashMap<String, String>();
-
         data.put("email",email_txt.getText().toString());
         data.put("password",password_txt.getText().toString());
-
-
         mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
-
-
     }
 
     void initVolleyCallbackForSignIn(){
@@ -185,11 +177,11 @@ public class FragmentLogin extends BaseFragment{
 
                     JSONObject jsonObject = new JSONObject(response);
                     Boolean status = jsonObject.getBoolean("status");
-
+                   // JSONObject jsonObjecst = jsonObject.getJSONObject("data");
 
                     if(status)
                     {
-                        JSONObject data = jsonObject.getJSONObject("data");
+                       JSONObject data = jsonObject.getJSONObject("data");
 
                         String login_id = data.getString("user_id");
                         String company_id = data.getString("company_id");
@@ -225,14 +217,11 @@ public class FragmentLogin extends BaseFragment{
 
 
                 } catch (JSONException e) {
+                    Toasty.error(getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
-
                 hideProgressBar();
-
-
-
 
             }
 
@@ -246,6 +235,7 @@ public class FragmentLogin extends BaseFragment{
             public void notifySuccessResponseHeader(NetworkResponse response) {
 
             }
+
 
 
         };

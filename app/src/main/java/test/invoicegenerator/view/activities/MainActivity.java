@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity  implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainframe);
-        ButterKnife.bind(this);//
+        ButterKnife.bind(this);
         sqliteHelper=new DBHelper(MainActivity.this);
 
         loadFragment(new DashboardFragment(),null);
@@ -102,21 +102,7 @@ public class MainActivity extends BaseActivity  implements
 
 
     }
-/*
-    public void replaceMenuButton(){
 
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            android.support.v4.app.Fragment f =
-                    getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
-            if (f instanceof FragmentAllClients) {
-                Toast.makeText(this, "FragmentAllClients", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-
-
-    }*/
 
     private void init() {
 
@@ -128,7 +114,7 @@ public class MainActivity extends BaseActivity  implements
         leftMenuView = findViewById(R.id.leftDrawerLayout);
         mDrawerLayout =  findViewById(R.id.drawer_layout);
         menulist = findViewById(R.id.menu_list);
-        back_btn = (Button) findViewById(R.id.back_btn);
+        back_btn =findViewById(R.id.back_btn);
 
 
 

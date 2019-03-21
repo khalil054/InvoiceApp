@@ -109,7 +109,7 @@ public class UploadImage extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Calling method to upload selected image on Firebase storage.
-                UploadImageFileToFirebaseStorage();
+                //UploadImageFileToFirebaseStorage();
 
             }
         });
@@ -167,7 +167,7 @@ public class UploadImage extends AppCompatActivity {
     }
 
     // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
-    public void UploadImageFileToFirebaseStorage() {
+ /*   public void UploadImageFileToFirebaseStorage() {
 
         // Checking whether FilePathUri Is empty or not.
         if (FilePathUri != null) {
@@ -238,7 +238,7 @@ public class UploadImage extends AppCompatActivity {
             Toast.makeText(UploadImage.this, "Please Select Image or Add Image Name", Toast.LENGTH_LONG).show();
 
         }
-    }
+    }*/
 
 
 }

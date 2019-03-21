@@ -70,6 +70,8 @@ public class DashboardFragment extends BaseFragment  {
         layoutReports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+               // loadFragment(new FragmentAllClients(),null);
                 ((MainActivity)getActivity()).ChangeMenuOption(2);
                 Cursor rs=db.getInvoiceData();
                 if(rs.isAfterLast() == false)
@@ -87,7 +89,10 @@ public class DashboardFragment extends BaseFragment  {
         layoutAddInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Bundle args = new Bundle();
+                args.putString("new", "true");
+                args.putString("clicked", "false");
+                loadFragment(new FragmentEditReport(),args);
             }
         });
         layoutInvoiceReport.setOnClickListener(new View.OnClickListener() {
@@ -140,10 +145,6 @@ public class DashboardFragment extends BaseFragment  {
             }
         }
     }
-
-
-
-
 
 
 }
