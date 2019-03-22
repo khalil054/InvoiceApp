@@ -284,7 +284,7 @@ public class VolleyService {
 
         }
     }
-    public void postDataVolleyForHeadersWithJson(final String requestType, String url, JSONObject params){
+    public void postDataVolleyForAddInvoice(final String requestType, String url, JSONObject params){
 
         RequestQueue queue = Volley.newRequestQueue(mContext);
         JsonRequest request = new JsonRequest

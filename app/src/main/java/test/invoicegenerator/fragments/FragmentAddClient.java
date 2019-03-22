@@ -286,7 +286,7 @@ public class FragmentAddClient extends BaseFragment{
             this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
+                    + " must implement FragmentAddClient.OnItemSelectedListener");
         }
     }
 

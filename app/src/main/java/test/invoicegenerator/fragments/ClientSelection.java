@@ -42,7 +42,6 @@ import test.invoicegenerator.model.ClientModel;
 public class ClientSelection extends BaseFragment{
 
 
-
     ListView listView;
     FloatingActionButton floating_AddClient;
     ClientAdapter clientAdapter;

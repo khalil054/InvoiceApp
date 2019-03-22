@@ -75,7 +75,7 @@ public class FragmentAllClients extends BaseFragment{
     int DeletePosition = 0;
     int OpenPosition = 0;
 
-    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
+    ArrayList<ClientModel> clientModels=new ArrayList<>();
 
 
     @Override

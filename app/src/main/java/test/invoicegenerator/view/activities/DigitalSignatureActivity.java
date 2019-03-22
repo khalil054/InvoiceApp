@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.fragments.DigitalSignature;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.DrawingView;
 import test.invoicegenerator.general.Util;
@@ -89,14 +90,24 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                 String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
                 String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
                 String StoredPath = DIRECTORY + pic_name + ".png";
-                if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this))
-                imagePath = store_image(drawingView.getDrawingCache(), DIRECTORY, pic_name+".png");
-                db.updateInvoice("signature",imagePath,"signature_date",Util.getTodayDate(), FragmentEditReport.invoice_id);
-                Intent intent = new Intent();
-                intent.putExtra("drawPath", imagePath);
-                setResult(13, intent);
-                is_signed=true;
+                if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this)){
+                    Bitmap b = drawingView.getDrawingCache();
+                    FragmentEditReport.bitmapSignature=b;
+                   /* imagePath = store_image(drawingView.getDrawingCache(), DIRECTORY, pic_name+".png");*/
+                    imagePath = store_image(b, DIRECTORY, pic_name+".png");
+                    db.updateInvoice("signature",imagePath,"signature_date",Util.getTodayDate(), FragmentEditReport.invoice_id);
+                    Intent intent = new Intent();
+                    intent.putExtra("drawPath", imagePath);
+                    setResult(13, intent);
+                    is_signed=true;
+                    //imageSignature.setImageBitmap(b);
+
+                }else {
+                    Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+
+                }
                 finish();
+
             }
         });
 
@@ -167,8 +178,9 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         try {
             FileOutputStream out = new FileOutputStream(f);
             _bitmapScaled.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
+             out.flush();
             out.close();
+           // Toast.makeText(this, String.valueOf(dirPath + File.separator + fileName), Toast.LENGTH_SHORT).show();
             Log.d("mypath****************", dirPath + File.separator + fileName);
             return dirPath + fileName;
         } catch (Exception e) {
