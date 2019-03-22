@@ -32,19 +32,19 @@ public class Progressbar extends Dialog  {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.progressbar);
 
-        progressView = (LottieAnimationView) findViewById(R.id.progressView);
-        confirmationView = (LottieAnimationView) findViewById(R.id.confirmationView);
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
     public void ShowProgress()
     {
         show();
+        progressView = (LottieAnimationView) findViewById(R.id.progressView);
         progressView.setVisibility(View.VISIBLE);
     }
 
     public void HideProgress()
     {
+        progressView = (LottieAnimationView) findViewById(R.id.progressView);
         progressView.setVisibility(View.GONE);
         dismiss();
     }
@@ -52,13 +52,14 @@ public class Progressbar extends Dialog  {
     public void ShowConfirmation()
     {
         show();
+        confirmationView = (LottieAnimationView) findViewById(R.id.confirmationView);
         confirmationView.setVisibility(View.VISIBLE);
-        confirmationView.playAnimation();
+
     }
 
     public void HideConfirmation()
     {
-        confirmationView.cancelAnimation();
+        confirmationView = (LottieAnimationView) findViewById(R.id.confirmationView);
         confirmationView.setVisibility(View.GONE);
         dismiss();
     }

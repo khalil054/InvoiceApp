@@ -73,7 +73,6 @@ public class FragmentAllClients extends BaseFragment{
 
 
     int DeletePosition = 0;
-    int OpenPosition = 0;
 
     ArrayList<ClientModel> clientModels=new ArrayList<>();
 
@@ -159,8 +158,7 @@ public class FragmentAllClients extends BaseFragment{
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                OpenPosition = position;
-                GlobalData.clientModel =  clientModels.get(position);
+                GlobalData.clientId =  clientModels.get(position).getId();
                 loadFragment(new FragmentUpdateClient(),null);
             }
         });
@@ -173,9 +171,8 @@ public class FragmentAllClients extends BaseFragment{
                         DeleteClient(clientModels.get(position).getId());
                         break;
                     case 1:
-                        OpenPosition = position;
-                        GlobalData.clientModel =  clientModels.get(position);
-                        loadFragment(new FragmentUpdateClient(),null);
+//                        GlobalData.clientModel =  clientModels.get(position);
+//                        loadFragment(new FragmentUpdateClient(),null);
                         break;
                 }
                 // false : close the menu; true : not close the menu

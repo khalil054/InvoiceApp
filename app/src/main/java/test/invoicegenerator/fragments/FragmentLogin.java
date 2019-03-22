@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
+import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
@@ -77,6 +78,7 @@ public class FragmentLogin extends BaseFragment{
 
     private void init(View view) {
 
+        progressbar = new Progressbar(getActivity());
         password_txt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -158,7 +160,7 @@ public class FragmentLogin extends BaseFragment{
     }
     void DataSendToServerForSignIn()
     {
-        showProgressBar();
+        progressbar.ShowProgress();
 
         initVolleyCallbackForSignIn();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
@@ -179,6 +181,9 @@ public class FragmentLogin extends BaseFragment{
                     Boolean status = jsonObject.getBoolean("status");
                    // JSONObject jsonObjecst = jsonObject.getJSONObject("data");
 
+                    progressbar.HideProgress();
+                    progressbar.ShowConfirmation();
+
                     if(status)
                     {
                        JSONObject data = jsonObject.getJSONObject("data");
@@ -192,14 +197,13 @@ public class FragmentLogin extends BaseFragment{
 
 
 
-                            showConfirmation();
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
 
 
-                                    hideProgressBar();
 
+                                    progressbar.HideConfirmation();
                                     Intent intent = new Intent(getActivity(), MainActivity.class);
                                     startActivity(intent);
                                     getActivity().finish();
@@ -219,16 +223,17 @@ public class FragmentLogin extends BaseFragment{
                 } catch (JSONException e) {
                     Toasty.error(getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
+                    progressbar.HideProgress();
                 }
 
-                hideProgressBar();
+
 
             }
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
 
-                hideProgressBar();
+                progressbar.HideProgress();
             }
 
             @Override

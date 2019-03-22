@@ -38,6 +38,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
+import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
@@ -82,7 +83,7 @@ public class FragmentAddClient extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_client,container,false);
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
-
+        progressbar = new Progressbar(getActivity());
         unbinder= ButterKnife.bind(this,view);
 
 
@@ -171,7 +172,7 @@ public class FragmentAddClient extends BaseFragment{
 
     void DataSendToServerForAddClient()
     {
-        showProgressBar();
+        progressbar.ShowProgress();
 
         initVolleyCallbackForAddClient();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
@@ -224,12 +225,13 @@ public class FragmentAddClient extends BaseFragment{
                     if(status)
                     {
 
-                        confirmationView.setVisibility(View.VISIBLE);
-                        confirmationView.playAnimation();
+                        progressbar.HideProgress();
+                        progressbar.ShowConfirmation();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
 
+                                progressbar.HideConfirmation();
                                 loadFragment(new FragmentAllClients(),null);
 
                             }
@@ -249,10 +251,10 @@ public class FragmentAddClient extends BaseFragment{
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    progressbar.HideProgress();
                 }
 
 
-                hideProgressBar();
 
 
 

@@ -186,7 +186,8 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <ListView
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/addressList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -195,6 +196,16 @@
             android:layout_marginBottom="8dp" />
     </LinearLayout>
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_add_new_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/bgBottomNavigation"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_address" />
 
 </android.support.constraint.ConstraintLayout>

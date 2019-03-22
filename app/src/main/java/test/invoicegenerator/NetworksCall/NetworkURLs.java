@@ -21,6 +21,10 @@ public class NetworkURLs {
     public static String AddClient = "clients.json";
     public static String DeleteClient = "clients/";
     public static String UpdateClient = "clients/";
+    public static String UpdateAddress = "/addresses/";
+    public static String DeleteAddress = "/addresses/";
+    public static String AddeAddress = "/addresses";
+    public static String GetClientDetails = "clients/";
 
     public static String GetInvoiceList="invoices.json";
     public static String DeleteInvoice = "invoices/";
