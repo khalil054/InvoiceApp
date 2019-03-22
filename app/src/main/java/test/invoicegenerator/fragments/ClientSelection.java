@@ -56,8 +56,7 @@ public class ClientSelection extends BaseFragment{
     IResult mResultCallback = null;
     VolleyService mVolleyService;
 
-    int AddPosition = 0;
-    int OpenPosition = 0;
+
 
     ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
 
@@ -125,9 +124,7 @@ public class ClientSelection extends BaseFragment{
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                OpenPosition = position;
-                GlobalData.clientModel =  clientModels.get(position);
-                loadFragment(new FragmentUpdateClient(),null);
+
             }
         });
     }

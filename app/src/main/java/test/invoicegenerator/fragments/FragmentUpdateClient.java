@@ -6,15 +6,19 @@ package test.invoicegenerator.fragments;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,8 +26,13 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,14 +46,17 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
+import test.invoicegenerator.adapters.ClientAdapter;
+import test.invoicegenerator.adapters.addressAdapter;
 import test.invoicegenerator.databaseutilities.Client;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.ClientModel;
+import test.invoicegenerator.model.ClientWithAddressModel;
 
 
-public class FragmentUpdateClient extends BaseFragment implements View.OnClickListener{
+public class FragmentUpdateClient extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.add_client_button)
     Button Btn_AddClient;
@@ -54,32 +66,29 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     EditText Et_Client_Email;
     @BindView(R.id.client_phone)
     EditText Et_Client_Phone;
-    @BindView(R.id.client_city)
-    EditText Et_Client_City;
-    @BindView(R.id.client_state)
-    EditText Et_Client_State;
-    @BindView(R.id.client_country)
-    EditText Et_Client_Country;
-    @BindView(R.id.client_zip)
-    EditText Et_Client_ZipCode;
     @BindView(R.id.confirmationView)
     LottieAnimationView confirmationView;
     @BindView(R.id.main_layout)
     ConstraintLayout main_layout;
 
-    PlacesAutocompleteTextView Et_Client_Address;
-    private OnItemSelectedListener listener;
-    ClientModel client;
+    SwipeMenuListView listView;
 
+    ClientWithAddressModel clientWithAddressModel;
     Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
+    int DeletePosition = 0;
+    addressAdapter addressAdapter;
+
+    FloatingActionButton floating_AddClient;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_client,container,false);
-        unbinder= ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_update_client, container, false);
+        listView = (SwipeMenuListView) view.findViewById(R.id.addressList);
+        unbinder = ButterKnife.bind(this, view);
+        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
         init();
 
 
@@ -87,15 +96,72 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     }
 
     private void init() {
-        client = GlobalData.clientModel;
-        Et_Client_Name.setText(client.getName());
-        Et_Client_Email.setText(client.getEmail());
-        Et_Client_Phone.setText(client.getPhone());
-
-
-
+        GetClientDetail(GlobalData.clientId);
         Btn_AddClient.setText("Update");
+
+        floating_AddClient.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                loadFragment(new AddAddress(),null);
+            }
+        });
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity().getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(255, 0,
+                        0)));
+                // set item width
+                deleteItem.setWidth(90);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        listView.setMenuCreator(creator);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GlobalData.addressModel =  clientWithAddressModel.getAddressModels().get(position);
+                loadFragment(new UpdateAddress(),null);
+            }
+        });
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        DeletePosition = position;
+                        DeleteAddress(clientWithAddressModel.getAddressModels().get(position).getId());
+                        break;
+                    case 1:
+//                        GlobalData.clientModel =  clientModels.get(position);
+//                        loadFragment(new FragmentUpdateClient(),null);
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
+        // Right
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
+
+    public void loadData()
+    {
+        Et_Client_Name.setText(clientWithAddressModel.getName());
+        Et_Client_Email.setText(clientWithAddressModel.getEmail());
+        Et_Client_Phone.setText(clientWithAddressModel.getPhone());
+    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -105,7 +171,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         Et_Client_Name.setOnClickListener(this);
         Et_Client_Email.setOnClickListener(this);
         Et_Client_Phone.setOnClickListener(this);
-        Et_Client_Address.setOnClickListener(this);
 
     }
 
@@ -119,20 +184,14 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 String StrName=Et_Client_Name.getText().toString();
                 String StrEmail=Et_Client_Email.getText().toString();
                 String StrPhone=Et_Client_Phone.getText().toString();
-                String StrAddress=Et_Client_Address.getText().toString();
 
-                String StrCity=Et_Client_City.getText().toString();
-                String StrState=Et_Client_State.getText().toString();
-                String StrCountry=Et_Client_Country.getText().toString();
-                String StrPostalCode=Et_Client_ZipCode.getText().toString();
-                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
+                validateAndSaveData(StrName,StrEmail,StrPhone);
 
                 break;
         }
     }
 
-    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
-                                     String StrState,String StrCountry,String StrPostalCode) {
+    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone) {
         if(StrEmail.equals(""))
         {
             Et_Client_Email.setError(getString(R.string.error_field_required));
@@ -154,30 +213,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
             Et_Client_Email.setError(getString(R.string.error_invalid_email));
             Et_Client_Email.requestFocus();
         }
-        else if(StrAddress.equals(""))
-        {
-            Et_Client_Address.setError(getString(R.string.error_field_required));
-            Et_Client_Address.requestFocus();
-        }
-        else if(StrCity.equals(""))
-        {
-            Et_Client_City.setError(getString(R.string.error_field_required));
-            Et_Client_City.requestFocus();
-        }
-        else if(StrState.equals(""))
-        {
-            Et_Client_State.setError(getString(R.string.error_field_required));
-            Et_Client_State.requestFocus();
-        }
-        else if(StrCountry.equals("")) {
-            Et_Client_Country.setError(getString(R.string.error_field_required));
-            Et_Client_Country.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(StrPostalCode))
-        {
-            Et_Client_ZipCode.setError(getString(R.string.error_invalid_zip_code));
-            Et_Client_ZipCode.requestFocus();
-        }
         else
         {
             DataSendToServerForUpdate();
@@ -188,7 +223,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
     void DataSendToServerForUpdate()
     {
-        //showProgressBar();
+        showProgressBar();
 
         initVolleyCallbackForUpdate();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
@@ -197,9 +232,8 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         data.put("client[name]",Et_Client_Name.getText().toString());
         data.put("client[email]",Et_Client_Email.getText().toString());
         data.put("client[phone]",Et_Client_Phone.getText().toString());
-        data.put("client[address]",Et_Client_Address.getText().toString());
 
-        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + client.getId() + ".json",data );
+        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + clientWithAddressModel.getId() + ".json",data );
     }
 
     void initVolleyCallbackForUpdate(){
@@ -221,7 +255,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                         handler.postDelayed(new Runnable() {
                             public void run() {
 
-                                loadFragment(new FragmentAllClients(),null);
+                                confirmationView.setVisibility(View.GONE);
 
                             }
                         }, 1000);
@@ -243,7 +277,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 }
 
 
-                //hideProgressBar();
+                hideProgressBar();
 
 
 
@@ -252,7 +286,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-                //hideProgressBar();
+                hideProgressBar();
             }
 
             @Override
@@ -265,22 +299,104 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
-            this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
-        }
+    public void GetClientDetail(String id)
+    {
+
+        showProgressBar();
+        initVolleyCallbackForClientList();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+ NetworkURLs.GetClientDetails +id+ ".json");
+
     }
 
-    // Define the events that the fragment will use to communicate
+    void initVolleyCallbackForClientList() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("status")) {
+
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        JSONObject clients = data.getJSONObject("client");
+                        clientWithAddressModel = new ClientWithAddressModel(clients);
+
+                        loadData();
+
+                        addressAdapter = new addressAdapter(getActivity(),clientWithAddressModel.getAddressModels());
+                        listView.setAdapter(addressAdapter);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+        };
+    }
+
+
+
+
+    public void DeleteAddress(String id)
+    {
+
+        showProgressBar();
+        initVolleyCallbackForDeleteAddress();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteClient + GlobalData.clientId +  NetworkURLs.DeleteAddress + id +".json" );
+
+    }
+
+    void initVolleyCallbackForDeleteAddress() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("status").equalsIgnoreCase("true")) {
+
+                        clientWithAddressModel.getAddressModels().remove(DeletePosition);
+                        addressAdapter = new addressAdapter(getActivity(),clientWithAddressModel.getAddressModels());
+                        listView.setAdapter(addressAdapter);
+
+                        snackbar = Snackbar.make(main_layout,"Address Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+        };
+    }
+
     public interface OnItemSelectedListener {
 
         void onAddClientFragCallBack(int position);
     }
+
 
 }
 

@@ -26,7 +26,7 @@ public class AddressModel {
             city = jsonObject.getString("city");
             state = jsonObject.getString("state");
             zip_code = jsonObject.getString("zip_code");
-            Defult = jsonObject.getBoolean("defult");
+           // Defult = jsonObject.getBoolean("defult");
             country_name = jsonObject.getString("country_name");
 
 
