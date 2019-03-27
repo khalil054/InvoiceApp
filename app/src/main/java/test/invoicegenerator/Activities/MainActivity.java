@@ -1,4 +1,4 @@
-package test.invoicegenerator.view.activities;
+package test.invoicegenerator.Activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -224,7 +224,6 @@ public class MainActivity extends BaseActivity  implements
 
     public void ChangeMenuOption(int position)
     {
-        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
         switch (position) {
             case 0:
                 Pic.set(position, R.drawable.ic_menu_clients);

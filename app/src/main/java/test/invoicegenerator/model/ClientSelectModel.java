@@ -1,18 +1,18 @@
 package test.invoicegenerator.model;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ClientModel {
+public class ClientSelectModel {
 
     String id;
     String name;
     String email;
     String phone;
+    Boolean Select;
 
 
-    public ClientModel(JSONObject jsonObject) {
+    public ClientSelectModel(JSONObject jsonObject) {
 
         try {
 
@@ -35,7 +35,13 @@ public class ClientModel {
 
     }
 
+    public Boolean getSelect() {
+        return Select;
+    }
 
+    public void setSelect(Boolean select) {
+        Select = select;
+    }
 
     public String getId() {
         return id;

@@ -28,7 +28,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
-import test.invoicegenerator.view.activities.MainActivity;
+import test.invoicegenerator.Activities.MainActivity;
 
 public class CompanyDetails extends Fragment {
     @BindView(R.id.company_name)

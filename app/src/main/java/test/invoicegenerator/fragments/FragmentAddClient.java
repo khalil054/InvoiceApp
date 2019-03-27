@@ -46,7 +46,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
-import test.invoicegenerator.view.activities.MainActivity;
+import test.invoicegenerator.Activities.MainActivity;
 
 
 public class FragmentAddClient extends BaseFragment{

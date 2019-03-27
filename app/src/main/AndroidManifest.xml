@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -25,10 +25,10 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name=".Activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.AuthenticationActivity"
+            android:name=".Activities.AuthenticationActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,13 +37,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.BaseActivity"
+            android:name=".Activities.BaseActivity"
             android:label="@string/title_activity_base" />
-        <activity android:name=".view.activities.UsersActivity" />
-        <activity android:name=".view.activities.EraserActivity" />
-        <activity android:name=".view.activities.CompanyDetailActivity" />
+        <activity android:name=".Activities.UsersActivity" />
+        <activity android:name=".Activities.EraserActivity" />
+        <activity android:name=".Activities.CompanyDetailActivity" />
         <activity android:name=".general.UploadImage" />
-        <activity android:name=".view.activities.DisplayImage" />
+        <activity android:name=".Activities.DisplayImage" />
 
        <!-- <provider
             android:name="android.support.v4.content.FileProvider"
@@ -60,29 +60,29 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name=".view.activities.AppPrivacyPolicy"
+            android:name=".Activities.AppPrivacyPolicy"
             android:label="Privacy Policy"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activities.ClientActivity"
+            android:name=".Activities.ClientActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activities.ActivityAddItem"
+            android:name=".Activities.ActivityAddItem"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activities.InvoiceInfoActivity"
+            android:name=".Activities.InvoiceInfoActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activities.DiscountActivity"
+            android:name=".Activities.DiscountActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activities.TaxActivity"
+            android:name=".Activities.TaxActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activities.DigitalSignatureActivity"
+            android:name=".Activities.DigitalSignatureActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".view.activities.ImagePickerActivity" />
+        <activity android:name=".Activities.ImagePickerActivity" />
 
         <!-- cache directory file provider paths -->
         <provider

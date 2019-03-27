@@ -1,4 +1,4 @@
-package test.invoicegenerator.view.activities;
+package test.invoicegenerator.Activities;
 
 import android.os.Bundle;
 import android.os.StrictMode;

@@ -1,4 +1,4 @@
-package test.invoicegenerator.view.activities;
+package test.invoicegenerator.Activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;

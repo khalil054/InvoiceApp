@@ -32,6 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
+import test.invoicegenerator.Activities.MainActivity;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
@@ -39,7 +40,7 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.model.SharedPref;
-import test.invoicegenerator.view.activities.MainActivity;
+
 
 /**
  * Created by User on 1/4/2019.
@@ -94,6 +95,7 @@ public class FragmentLogin extends BaseFragment{
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 attemptLogin();
 

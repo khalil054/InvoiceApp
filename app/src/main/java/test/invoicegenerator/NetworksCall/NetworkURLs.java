@@ -7,7 +7,7 @@ package test.invoicegenerator.NetworksCall;
 public class NetworkURLs {
 
 
-    public static String BaseURL = "http://4f70ca53.ngrok.io/api/v1/";
+    public static String BaseURL = "http://et-invoice.herokuapp.com/api/v1/";
     public static String SignUp = "auth.json";
     public static String SignIn = "auth/sign_in.json";
     public static String SignOut="auth/sign_out.json";
