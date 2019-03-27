@@ -297,7 +297,7 @@ public class ActivityAddItem extends AppCompatActivity {
 
             if(!amount.equals(""))
                 FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
-            FragmentEditReport.items.add(nam);
+          //  FragmentEditReport.items.add(nam);
             value_item.setDescription(description.getText().toString());
             value_item.setAmount(amount_field.getText().toString());
             value_item.setQuantity( quantity_field.getText().toString());

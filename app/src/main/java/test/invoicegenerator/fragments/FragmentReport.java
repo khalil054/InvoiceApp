@@ -135,7 +135,12 @@ public class FragmentReport extends BaseFragment{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OpenPosition = position;
                 GlobalData.invoiceModel =  Invoicelist.get(position);
-                loadFragment(new FragmentUpdateClient(),null);
+                if(DashboardFragment.ShowInvoiceInfo){
+                    loadFragment(new FragmentUpdateClient(),null);
+                }else {
+                    Toast.makeText(getActivity(), "Show Invoice Detail", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {

@@ -86,12 +86,16 @@ public class InvoiceInfoActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
                 monthOfYear=monthOfYear+1;
-                if(identifier.equals("invoice"))
-              /*  invoice_date.setText(dayOfMonth + "/" + monthOfYear + "/" + year);*/
+                if(identifier.equals("invoice")){
                     invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                else
-                   /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
+                    FragmentEditReport.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                }
+                else{
+                    FragmentEditReport.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                    /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
                     due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                }
+
             }};
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH);

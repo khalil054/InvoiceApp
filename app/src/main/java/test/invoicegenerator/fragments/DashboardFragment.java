@@ -35,7 +35,7 @@ public class DashboardFragment extends BaseFragment  {
 
     StorageReference storageReference;
     LinearLayout layoutClient,layoutReports,layoutAddInvoice,layoutInvoiceReport,layoutConfiguration,layoutSettings;
-
+    public static boolean ShowInvoiceInfo=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,14 +69,14 @@ public class DashboardFragment extends BaseFragment  {
         layoutReports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-               // loadFragment(new FragmentAllClients(),null);
-                ((MainActivity)getActivity()).ChangeMenuOption(2);
+                ShowInvoiceInfo=true;
+              loadFragment(new FragmentReport(),null);
+              /*  ((MainActivity)getActivity()).ChangeMenuOption(2);
 
                     Bundle args = new Bundle();
                     args.putString("new", "true");
                     args.putString("clicked", "false");
-                    loadFragment(new FragmentEditReport(),args);
+                    loadFragment(new FragmentEditReport(),args);*/
 
             }
         });
