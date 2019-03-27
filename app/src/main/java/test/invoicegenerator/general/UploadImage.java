@@ -29,7 +29,7 @@ import java.io.IOException;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.ImageUploadInfo;
-import test.invoicegenerator.view.activities.DisplayImage;
+import test.invoicegenerator.Activities.DisplayImage;
 
 public class UploadImage extends AppCompatActivity {
 

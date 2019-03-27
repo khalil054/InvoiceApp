@@ -51,7 +51,7 @@ import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.general.UploadImage;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.ImageUploadInfo;
-import test.invoicegenerator.view.activities.CompanyDetailActivity;
+import test.invoicegenerator.Activities.CompanyDetailActivity;
 
 import static android.app.Activity.RESULT_OK;
 import static test.invoicegenerator.general.Constants.EMAIL_KEY;

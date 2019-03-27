@@ -32,7 +32,7 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.GlobalData;
-import test.invoicegenerator.view.activities.MainActivity;
+import test.invoicegenerator.Activities.MainActivity;
 
 public class AddAddress extends BaseFragment implements View.OnClickListener {
 

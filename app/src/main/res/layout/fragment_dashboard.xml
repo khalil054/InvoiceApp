@@ -132,7 +132,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:clickable="false"
-                    app:srcCompat="@drawable/ic_invoice_reports" />
+                    app:srcCompat="@drawable/ic_sms" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:clickable="false"
-                    android:text="Invoice Report"
+                    android:text="Send SMS"
                     android:textColor="#092950" />
 
             </LinearLayout>

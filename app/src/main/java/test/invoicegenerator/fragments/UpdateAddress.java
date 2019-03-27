@@ -44,7 +44,7 @@ import test.invoicegenerator.adapters.addressAdapter;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.ClientWithAddressModel;
-import test.invoicegenerator.view.activities.MainActivity;
+import test.invoicegenerator.Activities.MainActivity;
 
 public class UpdateAddress extends BaseFragment implements View.OnClickListener {
 

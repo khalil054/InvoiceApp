@@ -51,7 +51,7 @@ import test.invoicegenerator.databaseutilities.Client;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.ClientModel;
-import test.invoicegenerator.view.activities.MainActivity;
+import test.invoicegenerator.Activities.MainActivity;
 
 
 public class FragmentAllClients extends BaseFragment{
