@@ -71,12 +71,12 @@ public class ItemAdapter extends BaseAdapter {
 
             //  ReportModel reportModel2 = reportModelArrayList.get(position);
             rowView = inflater.inflate(R.layout.item_detail, parent, false);
-            TextView name_txt = (TextView) rowView.findViewById(R.id.description);
+            TextView desc_txt = (TextView) rowView.findViewById(R.id.description);
             TextView quantity = (TextView) rowView.findViewById(R.id.quantity);
             TextView unit_cost = (TextView) rowView.findViewById(R.id.unit_cost);
             TextView amount = (TextView) rowView.findViewById(R.id.amount);
 
-            name_txt.setText(reportModel1.getDescription());
+            desc_txt.setText(reportModel1.getDescription());
             // no_txt.setText(reportModel1.);
             quantity.setText(reportModel1.getQuantity()+"x");
             unit_cost.setText(reportModel1.getUnit_cost());

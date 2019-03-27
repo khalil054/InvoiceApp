@@ -50,7 +50,6 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
     ConstraintLayout main_layout;
 
     public PlacesAutocompleteTextView Et_Client_Address;
-
     Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
@@ -63,8 +62,6 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
         ((MainActivity)getActivity()).LoadAddressFields(view);
         init();
-
-
         return view;
     }
 

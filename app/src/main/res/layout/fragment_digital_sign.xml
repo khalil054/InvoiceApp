@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/layout_sign"
     android:layout_height="match_parent"
     android:background="@drawable/blur_bg">
 
@@ -15,7 +16,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.19">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/titleTextColor"
+                android:text="@string/Invoice_name"/>
+            <EditText
+                android:textColorHint="@color/titleTextColor"
+                android:hint="Methow Brain"
+                android:textColor="@color/titleTextColor"
+                android:id="@+id/signature_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp">
@@ -86,5 +104,7 @@
             android:text="Save"
             android:textColor="@color/white"
             android:textStyle="bold" />
+
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

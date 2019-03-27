@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,12 +14,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
@@ -116,7 +120,9 @@ public class ActivityAddItem extends AppCompatActivity {
         save_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateAndSaveData();
+            //    FragmentEditReport.productList.add(new ProductModel("First item","item des","10","45","450","0.0","1","51"));
+
+               validateAndSaveData();
             }
         });
 
@@ -179,7 +185,25 @@ public class ActivityAddItem extends AppCompatActivity {
     }
 
     private void validateAndSaveData() {
-        if(unit_cost_field.getText().toString().equals(""))
+      /*  JSONObject InvoiceItem = new JSONObject();
+        try {
+            InvoiceItem.put("name", "First item");
+            InvoiceItem.put("description","item des");
+            InvoiceItem.put("qty", "10");
+            InvoiceItem.put("price","45");
+            InvoiceItem.put("subtotal", "450");
+            InvoiceItem.put("subtotal_with_tax_applied", "0.0");
+            *//*InvoiceItem.put("tax_code_id","1");*//*
+            InvoiceItem.put("company_id", "2");
+
+            FragmentEditReport.InvoicesArray.put(InvoiceItem);
+
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+*/
+       /* if(unit_cost_field.getText().toString().equals(""))
         {
             unit_cost_field.setError(getString(R.string.error_field_required));
             unit_cost_field.requestFocus();
@@ -197,7 +221,7 @@ public class ActivityAddItem extends AppCompatActivity {
 
         else
         {
-          /*  User user = new User();
+          *//*  User user = new User();
             //  user.setId();
             user.setName(name.getText().toString() + 10);
             user.setEmail(email.getText().toString());
@@ -208,8 +232,8 @@ public class ActivityAddItem extends AppCompatActivity {
             user.setLine1(line1.getText().toString());
             user.setLine2(line2.getText().toString());
             user.setLine3(line3.getText().toString());
-            RealmManager.createUserDao().save(user);*/
-          /*long item_key=db.insertItemData(description.getText().toString(),unit_cost_field.getText().toString(),quantity_field.getText().toString(),
+            RealmManager.createUserDao().save(user);*//*
+          *//*long item_key=db.insertItemData(description.getText().toString(),unit_cost_field.getText().toString(),quantity_field.getText().toString(),
                   amount_field.getText().toString(),String.valueOf(taxable_field.isChecked()),tax_rate_field.getText().toString(),additional_field.getText().toString()
                   , FragmentEditReport.invoice_id);
             if(item_key!=-1){
@@ -220,7 +244,74 @@ public class ActivityAddItem extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "not done",
                         Toast.LENGTH_SHORT).show();
             }
-            db.updateInvoiceData("item_key",String.valueOf(item_key), FragmentEditReport.invoice_id);*/
+            db.updateInvoiceData("item_key",String.valueOf(item_key), FragmentEditReport.invoice_id);*//*
+
+
+
+
+
+            ;
+        }*/
+        String CompanyID= String.valueOf(SharedPref.read(SharedPref.CompanyID,""));
+        if(TextUtils.isEmpty(description.getText().toString())){
+            description.setError(getString(R.string.invalid_quantity));
+            description.requestFocus();
+        }else if(TextUtils.isEmpty(quantity_field.getText().toString())){
+            quantity_field.setError(getString(R.string.invalid_quantity));
+            quantity_field.requestFocus();
+        }else if(TextUtils.isEmpty(unit_cost_field.getText().toString())){
+            unit_cost_field.setError(getString(R.string.invalid_cost));
+            unit_cost_field.requestFocus();
+        }else if(TextUtils.isEmpty(amount_field.getText().toString())){
+            amount_field.setError(getString(R.string.invalid_quantity));
+            amount_field.requestFocus();
+        }else if(TextUtils.isEmpty(CompanyID)){
+             /* amount_field.setError(getString(R.string.invalid_quantity));
+              amount_field.requestFocus();*/
+            Toast.makeText(this, "Invalid Company:"+CompanyID, Toast.LENGTH_SHORT).show();
+        }else {
+
+/*
+            JsonObject InvoiceItem = new JsonObject();
+
+            InvoiceItem.addProperty("name", "First item");
+            InvoiceItem.addProperty("description","item des");
+            InvoiceItem.addProperty("qty", "10");
+            InvoiceItem.addProperty("price","45");
+            InvoiceItem.addProperty("subtotal", "450");
+            InvoiceItem.addProperty("subtotal_with_tax_applied", "0.0");
+          *//*  InvoiceItem.addProperty("tax_code_id","1");*//*
+            InvoiceItem.addProperty("company_id", "2");
+
+            FragmentEditReport.InvoicesArray.add(InvoiceItem);
+
+            finish();*/
+
+
+
+
+
+            Item value_item = new Item();
+            String nam = description.getText().toString();
+            String amount = amount_field.getText().toString();
+
+            if(!amount.equals(""))
+                FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
+          //  FragmentEditReport.items.add(nam);
+            value_item.setDescription(description.getText().toString());
+            value_item.setAmount(amount_field.getText().toString());
+            value_item.setQuantity( quantity_field.getText().toString());
+            value_item.setUnit_cost(unit_cost_field.getText().toString());
+            if(taxable_field.isChecked()){
+                value_item.setTaxable("true");
+            }else {
+                value_item.setTaxable("false");
+            }
+
+            value_item.setAdditional(additional_field.getText().toString());
+            FragmentEditReport.item_values.add(value_item);
+
+
 
             JSONObject InvoiceItem = new JSONObject();
 
@@ -229,34 +320,53 @@ public class ActivityAddItem extends AppCompatActivity {
                 InvoiceItem.put("description", description.getText().toString());
                 InvoiceItem.put("qty", quantity_field.getText().toString());
                 InvoiceItem.put("price", unit_cost_field.getText().toString());
-                InvoiceItem.put("subtotal", unit_cost_field.getText().toString());
+                InvoiceItem.put("subtotal",amount_field.getText().toString());
                 InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-                InvoiceItem.put("tax_code_id","1");
+               // InvoiceItem.put("tax_code_id","1");
                 InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID,"")));
 
-                FragmentEditReport.InvoicesArray.put(InvoiceItem);
 
-                finish();
 
-              /*  InvoiceItem.put("name", "First item");
+              /*  Item value_item = new Item();
+               String nam = description.getText().toString();
+                String amount = amount_field.getText().toString();
+
+                if(!amount.equals(""))
+                    FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
+                FragmentEditReport.items.add(nam);
+                value_item.setDescription(description.getText().toString());
+                value_item.setAmount(amount_field.getText().toString());
+                value_item.setQuantity( quantity_field.getText().toString());
+                value_item.setUnit_cost(unit_cost_field.getText().toString());
+                if(taxable_field.isChecked()){
+                    value_item.setTaxable("true");
+                }else {
+                    value_item.setTaxable("false");
+                }
+
+                value_item.setAdditional(additional_field.getText().toString());
+                FragmentEditReport.item_values.add(value_item);
+*/
+
+
+     /*            InvoiceItem.put("name", "First item");
                 InvoiceItem.put("description","item des");
                 InvoiceItem.put("qty", "10");
                 InvoiceItem.put("price","45");
                 InvoiceItem.put("subtotal", "450");
                 InvoiceItem.put("subtotal_with_tax_applied", "0.0");
                 InvoiceItem.put("tax_code_id","1");
-                InvoiceItem.put("company_id", "39");
+                InvoiceItem.put("company_id", "2");*/
 
                 FragmentEditReport.InvoicesArray.put(InvoiceItem);
 
-                finish();*/
+                finish();
+
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            ;
         }
-
 
     }
 }

@@ -7,18 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import test.invoicegenerator.R;
+import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.InvoiceModel;
 import test.invoicegenerator.model.JsonInvoiceModel;
 
-public class ReportAdapter extends BaseAdapter {
+public class ReportAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     ArrayList<JsonInvoiceModel> reportModelArrayList = new ArrayList<JsonInvoiceModel>();
+    ArrayList<JsonInvoiceModel> list = new ArrayList<>();
+    private ItemFilter mFilter = new ItemFilter();
     int index = 0;
     String Day = "";
 
@@ -26,6 +31,7 @@ public class ReportAdapter extends BaseAdapter {
         // super(context, -1, values);
         this.context = context;
         this.reportModelArrayList = reportModelArrayList;
+        this.list = reportModelArrayList;
     }
 
     @Override
@@ -68,17 +74,55 @@ public class ReportAdapter extends BaseAdapter {
             time_txt.setText(reportModel1.getDelivery_status());
 
         }
-
-
-
-
-
-
         return rowView;
     }
 
     public static boolean isYesterday(Date d) {
         return DateUtils.isToday(d.getTime() + DateUtils.DAY_IN_MILLIS);
+    }
+
+
+    @Override
+    public Filter getFilter() {
+        return mFilter;
+    }
+
+
+    private class ItemFilter extends Filter {
+        @SuppressLint("DefaultLocale")
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            String filterString = constraint.toString().toLowerCase();
+
+            FilterResults results = new FilterResults();
+
+
+            int count = list.size();
+            final ArrayList<JsonInvoiceModel> nlist = new ArrayList<>(count);
+
+            String filterableString;
+
+            for (int i = 0; i < count; i++) {
+                filterableString = "" + list.get(i).getSigned_by();
+                if (filterableString.toLowerCase().contains(filterString)) {
+                    JsonInvoiceModel InvoiceModel = list.get(i);
+                    nlist.add(InvoiceModel);
+                }
+            }
+
+            results.values = nlist;
+            results.count = nlist.size();
+
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            reportModelArrayList = (ArrayList<JsonInvoiceModel>) results.values;
+            notifyDataSetChanged();
+        }
     }
 }
 

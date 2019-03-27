@@ -50,6 +50,7 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.menu_adapter;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.fragments.ClientSelection;
 import test.invoicegenerator.fragments.Configrations;
 import test.invoicegenerator.fragments.DashboardFragment;
 import test.invoicegenerator.fragments.FragmentAddClient;
@@ -64,7 +65,8 @@ import test.invoicegenerator.model.SharedPref;
 
 public class MainActivity extends BaseActivity  implements
         FragmentAllClients.OnItemSelectedListener,
-        FragmentAddClient.OnItemSelectedListener,FragmentUpdateClient.OnItemSelectedListener
+        FragmentAddClient.OnItemSelectedListener,
+        FragmentUpdateClient.OnItemSelectedListener
         {
 
     Progressbar cdd;
@@ -375,7 +377,19 @@ public class MainActivity extends BaseActivity  implements
 
     }
 
-  /*  @Override
+          /*  @Override
+            public void onBackPressed() {
+              //  super.onBackPressed();
+                Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
+                if(f instanceof ClientSelection){}
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("ClientSelection");
+                if(fragment != null){
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+            }*/
+
+    /*  @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -654,4 +668,6 @@ public class MainActivity extends BaseActivity  implements
         });
 
     }
+
+
         }

@@ -1,48 +1,39 @@
 package test.invoicegenerator.fragments;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.adapters.ReportAdapter;
 import test.invoicegenerator.databaseutilities.DBHelper;
-import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.GlobalData;
-import test.invoicegenerator.model.ClientModel;
-import test.invoicegenerator.model.InvoiceModel;
 import test.invoicegenerator.model.JsonInvoiceModel;
-import test.invoicegenerator.model.SharedPref;
 
 public class FragmentReport extends BaseFragment{
    /* @BindView(R.id.invoiceList)
@@ -57,15 +48,17 @@ public class FragmentReport extends BaseFragment{
     DBHelper db;
     @BindView(R.id.invoiceList)
     SwipeMenuListView listView;
-    private ArrayList<JsonInvoiceModel> list=new ArrayList<>();
+    private ArrayList<JsonInvoiceModel> Invoicelist=new ArrayList<>();
     private ArrayList<String> items;
     int DeletePosition = 0;
     int OpenPosition = 0;
+    SearchView searchView;
+    ReportAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
-
+        searchView = (SearchView) view.findViewById(R.id.searchView);
      //   report_list = view.findViewById(R.id.invoiceList);
         ButterKnife.bind(this,view);
         init();
@@ -73,9 +66,111 @@ public class FragmentReport extends BaseFragment{
     }
 
     private void init() {
+
         db=new DBHelper(getActivity());
         items=new ArrayList<>();
         GetInvoiceList();
+
+        searchView.setQueryHint("Search Invoice");
+        searchView.onActionViewExpanded();
+        searchView.setIconified(false);
+        searchView.clearFocus();
+
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
+                null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        EditText editText = (EditText) searchView.findViewById(id);
+        editText.setHintTextColor(Color.GRAY);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+        add_invoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle args = new Bundle();
+                args.putString("new", "true");
+                args.putString("clicked", "false");
+                loadFragment(new FragmentEditReport(),args);
+            }
+        });
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity().getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(255, 0,
+                        0)));
+                // set item width
+                deleteItem.setWidth(90);
+                // set a icon
+                deleteItem.setIcon(R.drawable.ic_delete);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        listView.setMenuCreator(creator);
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                OpenPosition = position;
+                GlobalData.invoiceModel =  Invoicelist.get(position);
+                if(DashboardFragment.ShowInvoiceInfo){
+                    loadFragment(new FragmentUpdateClient(),null);
+                }else {
+                    Toast.makeText(getActivity(), "Show Invoice Detail", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+        listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        DeletePosition = position;
+                      //  Toast.makeText(getActivity(), String.valueOf(DeletePosition), Toast.LENGTH_SHORT).show();
+                       DeleteInvoice(Invoicelist.get(position).getId());
+                        break;
+                    case 1:
+                        OpenPosition = position;
+                        GlobalData.invoiceModel =  Invoicelist.get(position);
+                        /*Bundle args = new Bundle();
+                        args.putString("new", "false");
+                        args.putString("clicked", "true");
+                        args.putSerializable("invoice",list.get(position));
+                        loadFragment(new FragmentReportDetail(),args);*/
+                       // loadFragment(new FragmentUpdateClient(),null);
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
+        // Right
+        listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+
 
       /*  ReportAdapter adapter = new ReportAdapter(getActivity(), list);
         listView.setAdapter(adapter);
@@ -177,9 +272,9 @@ public class FragmentReport extends BaseFragment{
 
                         for (int i = 0; i < InvoiceArray.length(); i++) {
                             JsonInvoiceModel invoiceModel = new JsonInvoiceModel(InvoiceArray.getJSONObject(i));
-                            list.add(invoiceModel);
+                            Invoicelist.add(invoiceModel);
                         }
-                        ReportAdapter adapter = new ReportAdapter(getActivity(), list);
+                        adapter= new ReportAdapter(getActivity(), Invoicelist);
                         listView.setAdapter(adapter);
 
                     }else {
@@ -201,23 +296,6 @@ public class FragmentReport extends BaseFragment{
                     // dialogHelper.showErroDialog(error_response);
                     Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
 
-                    SharedPref.init(getActivity());
-                    String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
-                    String client = SharedPref.read(Constants.CLIENT, "");
-                    String uid = SharedPref.read(Constants.UID, "");
-
-                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid), Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setCancelable(false);
-                    builder.setMessage(String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-
-                    builder.create().show();
 
 
                     try {
@@ -245,5 +323,63 @@ public class FragmentReport extends BaseFragment{
 
         };
     }
+
+    ///////////////////////////Delete Report/////////////////////
+
+
+    public void DeleteInvoice(String id)
+    {
+
+        showProgressBar();
+        initVolleyCallbackForDeleteClient();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteInvoice + id + ".json" );
+
+    }
+
+    void initVolleyCallbackForDeleteClient() {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean st=jsonObject.getBoolean("status");
+                    if (st) {
+
+                        Invoicelist.remove(DeletePosition);
+                        adapter= new ReportAdapter(getActivity(), Invoicelist);
+                        listView.setAdapter(adapter);
+
+                        snackbar = Snackbar.make(main_layout,"Invoice Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                   /* if (jsonObject.getString("status").equalsIgnoreCase("true")) {
+
+                        Invoicelist.remove(DeletePosition);
+                        adapter= new ReportAdapter(getActivity(), Invoicelist);
+                        listView.setAdapter(adapter);
+
+                        snackbar = Snackbar.make(main_layout,"Invoice Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }*/
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+            }
+
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+
+            }
+        };
+    }
+
 
 }

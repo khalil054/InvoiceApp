@@ -6,12 +6,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -24,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.fragments.DigitalSignature;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.DrawingView;
 import test.invoicegenerator.general.Util;
@@ -35,7 +41,9 @@ import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRI
  */
 
 public class DigitalSignatureActivity extends AppCompatActivity {
-
+    @BindView(R.id.layout_sign)
+    ConstraintLayout layout_edit;
+    Snackbar snackbar;
     @BindView(R.id.save_btn)
     Button save_btn;
 
@@ -52,7 +60,8 @@ public class DigitalSignatureActivity extends AppCompatActivity {
     @BindView(R.id.image)
     ImageView image;
     private String signature_path="";
-
+    @BindView(R.id.signature_by)
+    EditText Signed_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,19 +93,41 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // validateAndSaveData();
-                drawingView.setDrawingCacheEnabled(true);
-                String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
-                String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                String StoredPath = DIRECTORY + pic_name + ".png";
-                if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this))
-                imagePath = store_image(drawingView.getDrawingCache(), DIRECTORY, pic_name+".png");
-                db.updateInvoice("signature",imagePath,"signature_date",Util.getTodayDate(), FragmentEditReport.invoice_id);
-                Intent intent = new Intent();
-                intent.putExtra("drawPath", imagePath);
-                setResult(13, intent);
-                is_signed=true;
-                finish();
+               String Str=Signed_name.getText().toString();
+               if(TextUtils.isEmpty(Str)){
+                   showMessage("Enter Signed By Name First");
+               }else{
+                   FragmentEditReport.StrSignedBy=Str;
+                   drawingView.setDrawingCacheEnabled(true);
+                   String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
+                   String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                   String StoredPath = DIRECTORY + pic_name + ".png";
+                   if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this)){
+                       Bitmap b = drawingView.getDrawingCache();
+
+                       /* imagePath = store_image(drawingView.getDrawingCache(), DIRECTORY, pic_name+".png");*/
+
+                       //    imagePath = store_image(b, DIRECTORY, pic_name+".png");
+                       createDirectoryAndSaveFile(b,pic_name+".png");
+                       db.updateInvoice("signature",imagePath,"signature_date",Util.getTodayDate(), FragmentEditReport.invoice_id);
+                       Intent intent = new Intent();
+                       intent.putExtra("drawPath", imagePath);
+                       setResult(13, intent);
+                       is_signed=true;
+
+                       //  Toast.makeText(DigitalSignatureActivity.this, String.valueOf(FragmentEditReport.StrImagePath), Toast.LENGTH_SHORT).show();
+
+                       //imageSignature.setImageBitmap(b);
+
+                   }else {
+                       //    Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+
+                   }
+                   finish();
+               }
+
+
+
             }
         });
 
@@ -140,7 +171,7 @@ public class DigitalSignatureActivity extends AppCompatActivity {
             image.setVisibility(View.VISIBLE);
             drawingView.setVisibility(View.GONE);
 
-            File imgFile = new File(signature_path);
+            File imgFile = new File(FragmentEditReport.StrImagePath);
 
             if(imgFile.exists()){
 
@@ -158,6 +189,39 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         clear_btn = (ImageButton) findViewById(R.id.clear_btn);
         erase_all = (Button) findViewById(R.id.erase_all);
     }
+
+
+    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+        File fileToBeReturn = null;
+        File direct = new File(Environment.getExternalStorageDirectory() + "/UserSignatues");
+
+        if (!direct.exists()) {
+            File wallpaperDirectory = new File("/sdcard/UserSignatues/");
+            wallpaperDirectory.mkdirs();
+        }
+
+        FragmentEditReport.StrImagePath="/sdcard/UserSignatues/"+fileName;
+        File file = new File(new File("/sdcard/UserSignatues/"), fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            FragmentEditReport.Signaturefile=file;
+
+            Toast.makeText(this, "Signature Saved Successfully", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      //  finish();
+    }
+
     public String store_image(Bitmap _bitmapScaled, String dirPath, String fileName) {
         //you can create a new file name "test.jpg" in sdcard folder.
         File f = new File(dirPath, fileName);
@@ -167,12 +231,18 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         try {
             FileOutputStream out = new FileOutputStream(f);
             _bitmapScaled.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            out.flush();
+             out.flush();
             out.close();
+           // Toast.makeText(this, String.valueOf(dirPath + File.separator + fileName), Toast.LENGTH_SHORT).show();
             Log.d("mypath****************", dirPath + File.separator + fileName);
+            Toast.makeText(DigitalSignatureActivity.this, String.valueOf("after storing :"+String.valueOf(dirPath + fileName)), Toast.LENGTH_SHORT).show();
+
             return dirPath + fileName;
         } catch (Exception e) {
             e.printStackTrace();
+            e.getMessage();
+      //      Toast.makeText(DigitalSignatureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
         return "";
     }
@@ -202,5 +272,11 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions,
                         grantResults);
         }
+    }
+
+
+    public void showMessage(String Str){
+        snackbar = Snackbar.make(layout_edit,Str, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }
