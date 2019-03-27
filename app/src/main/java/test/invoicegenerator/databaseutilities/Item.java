@@ -18,20 +18,10 @@ public class Item {
 
 
     private String description;
-
-
     private String unit_cost;
-
-
     private String quantity;
-
-
     private String amount;
-
-
     private String tax_rate;
-
-
     private String additional;
     private String id;
     private String taxable;

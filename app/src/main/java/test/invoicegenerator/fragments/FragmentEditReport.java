@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +36,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.gson.JsonObject;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +89,7 @@ import static test.invoicegenerator.general.Constants.TAX_CODE;
 
 
 public class FragmentEditReport extends BaseFragment implements View.OnClickListener{
-
+    private DefaultHttpClient mHttpClient;
     @BindView(R.id.layout_edit)
     RelativeLayout layout_edit;
     @BindView(R.id.card2)
@@ -144,9 +152,15 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     VolleyService mVolleyService;
     IResult mResultCallback = null;
     Snackbar snackbar;
-    public static JSONArray InvoicesArray=new JSONArray();
+ /*   public static JsonArray InvoicesArray=new JsonArray();*/
+ public static JSONArray InvoicesArray=new JSONArray();
   //  public static String StrCreatedDate,StrDueDate;
     public static String SelectedClientId,SelectedUserID,SelectedCompanyId;
+    public static File Signaturefile=null;
+    public static String StrImagePath;
+    public String RealImageString;
+   // public static List<ProductModel>productList=new ArrayList<>();
+   // ArrayList<Part> fileParts = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -159,8 +173,22 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         return view;
     }
 
-    private void init() {
 
+    public String ConvertFileToString(String imagepath){
+        String base64Image;
+        File imgFile = new File(imagepath);
+        if (imgFile.exists() && imgFile.length() > 0) {
+            Bitmap bm = BitmapFactory.decodeFile(imagepath);
+            ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, bOut);
+            base64Image = Base64.encodeToString(bOut.toByteArray(), Base64.DEFAULT);
+        }else {
+            base64Image="";
+        }
+        Toast.makeText(getActivity(), String.valueOf(base64Image), Toast.LENGTH_SHORT).show();
+            return base64Image;
+    }
+    private void init() {
         ImagePickerActivity.clearCache(getActivity());
         client_card.setOnClickListener(this);
         add_item_card.setOnClickListener(this);
@@ -387,28 +415,46 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 break;
             case R.id.save_invoice:
             {
-               /* String sign_date="";
-                if(signature_value.getText().toString().contains(":"))
-                {
-                    String[] sign=signature_value.getText().toString().split(":");
-                    sign_date=sign[1];
-                }
-                  *//*  db.updateinvoiceCalculation(subtotal_value_field.getText().toString(),total_value.getText().toString(),
-                            comment_field.getText().toString(),realPath,sign_path,sign_date,
-                            invoice_id);*//*
-                total_value.setText(subtotal_value_field.getText().toString());
 
-                  *//*  Toast.makeText(getActivity(), subtotal_value_field.getText().toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), realPath, Toast.LENGTH_SHORT).show();*//*
 
-                if(db.updateinvoiceCalculation(subtotal_value_field.getText().toString(),total_value.getText().toString(),
-                        comment_field.getText().toString(),realPath,sign_path,sign_date,
-                        invoice_id)){
-                    loadFragment(new FragmentReport());
-                    //  Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
-                }else {
-                    // Toast.makeText(getActivity(), "not updated", Toast.LENGTH_SHORT).show();
+
+
+
+                Toast.makeText(getActivity(), RealImageString, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+                /*final JSONObject InvoiceToBeSend = new JSONObject();
+                final JSONObject js = new JSONObject();
+                try {
+                    String SignatureValue=signature_value.getText().toString();
+                    String[]SignedDateDummy=SignatureValue.split(":");
+                    String SignedDate=SignedDateDummy[1];
+                    InvoiceToBeSend.put("signed_by", "Khalil");
+                    InvoiceToBeSend.put("invoice_number", "1234");
+                    InvoiceToBeSend.put("due_at", "2019-03-15");
+                    InvoiceToBeSend.put("invoiced_on", "2019-03-15");
+                    InvoiceToBeSend.put("signed_at", "2019-03-15");
+                    InvoiceToBeSend.put("signature", RealImageString);
+                    InvoiceToBeSend.put("notes","invoice Notes");
+                    InvoiceToBeSend.put("payment_status", "unpaid");
+                    InvoiceToBeSend.put("delivery_status", "draft");
+                    InvoiceToBeSend.put("user_id", "2");
+                    InvoiceToBeSend.put("company_id","2");
+                    InvoiceToBeSend.put("client_id", "1");
+                    InvoiceToBeSend.put("invoice_items_attributes", InvoicesArray);
+                    js.put("invoice", InvoiceToBeSend);
+                    DataSendToServerForAddInvoice(js);
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }*/
+
+
 
                 SelectedCompanyId=SharedPref.read(SharedPref.CompanyID,"");
                 SelectedUserID=SharedPref.read(SharedPref.CompanyID,"");
@@ -451,18 +497,16 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                             InvoiceToBeSend.put("due_at", InvoiceDueDate);
                             InvoiceToBeSend.put("invoiced_on", InvoiceCreateDate);
                             InvoiceToBeSend.put("signed_at", SignedDate);
-                            InvoiceToBeSend.put("signature", "signature image file");
+                            InvoiceToBeSend.put("signature", RealImageString);
                             InvoiceToBeSend.put("notes",comment_field.getText().toString());
-                            InvoiceToBeSend.put("payment_status", 0);
-                            InvoiceToBeSend.put("delivery_status", 0);
+                            InvoiceToBeSend.put("payment_status", "unpaid");
+                            InvoiceToBeSend.put("delivery_status", "draft");
                             InvoiceToBeSend.put("user_id", SelectedUserID);
                             InvoiceToBeSend.put("company_id",SelectedCompanyId);
                             InvoiceToBeSend.put("client_id", SelectedClientId);
                             InvoiceToBeSend.put("invoice_items_attributes", InvoicesArray);
-
-
                             js.put("invoice", InvoiceToBeSend);
-                           DataSendToServerForAddInvoice(js);
+                            DataSendToServerForAddInvoice(js);
 
 
                         } catch (JSONException e) {
@@ -475,14 +519,15 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     Toast.makeText(getActivity(), "Please Add Some Invoice", Toast.LENGTH_SHORT).show();
                 }
 
-
             }
             break;
             case R.id.invoice_info_layout:
-                openInvoiceInfoActivity();
+               openInvoiceInfoActivity();
                 break;
         }
     }
+
+
 
     private void loadFragment(Fragment reportFragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -719,7 +764,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
             if(DigitalSignatureActivity.is_signed){
                 signature_value.setText(String.valueOf("Signed on: "+ Util.getTodayDate()));
-
+                Uri uri = data.getParcelableExtra("drawPath");
+                realPath=String.valueOf(uri);
+                RealImageString=ConvertFileToString(StrImagePath);
                /* if (bitmapSignature!=null) {
 
                     image1.setImageBitmap(bitmapSignature);
@@ -802,7 +849,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
         GlideApp.with(this).load(url)
                 .into(image1);
-        image1.setColorFilter(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+       image1.setColorFilter(ContextCompat.getColor(getActivity(), android.R.color.transparent));
     }
 
     private void showImagePickerOptions() {
@@ -877,24 +924,15 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
             snackbar.show();
         }
 
+
+
+
     void DataSendToServerForAddInvoice(JSONObject Da)
     {
         showProgressBar();
 
         initVolleyCallbackForAddClient();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setCancelable(false);
-        builder.setMessage(String.valueOf(Da));
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        builder.create().show();
-
 
         mVolleyService.postDataVolleyForAddInvoice("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddInvoices,Da );
     }
@@ -1016,6 +1054,30 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         fragmentTransaction.commit();
     }
 
+
+////////////////////////////////////////////
+
+
+          /*    public void   sendatattoserver(String Url){
+
+                  MultipartRequest mr = new MultipartRequest(Url, new Response.Listener<String>(){
+
+                      @Override
+                      public void onResponse(String response) {
+                          Log.d("response", response);
+                      }
+
+                  }, new Response.ErrorListener(){
+
+                      @Override
+                      public void onErrorResponse(VolleyError error) {
+                          Log.e("Volley Request Error", error.getLocalizedMessage());
+                      }
+
+                  }, f, params);
+
+                  Volley.newRequestQueue(this).add(mr);
+                }*/
 
 /*
     JSONObject student2 = new JSONObject();

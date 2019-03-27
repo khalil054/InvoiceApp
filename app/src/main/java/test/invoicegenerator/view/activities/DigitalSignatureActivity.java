@@ -94,19 +94,24 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                     Bitmap b = drawingView.getDrawingCache();
                     FragmentEditReport.bitmapSignature=b;
                    /* imagePath = store_image(drawingView.getDrawingCache(), DIRECTORY, pic_name+".png");*/
-                    imagePath = store_image(b, DIRECTORY, pic_name+".png");
+
+               //    imagePath = store_image(b, DIRECTORY, pic_name+".png");
+                   createDirectoryAndSaveFile(b,pic_name+".png");
                     db.updateInvoice("signature",imagePath,"signature_date",Util.getTodayDate(), FragmentEditReport.invoice_id);
                     Intent intent = new Intent();
                     intent.putExtra("drawPath", imagePath);
                     setResult(13, intent);
                     is_signed=true;
+
+                  //  Toast.makeText(DigitalSignatureActivity.this, String.valueOf(FragmentEditReport.StrImagePath), Toast.LENGTH_SHORT).show();
+
                     //imageSignature.setImageBitmap(b);
 
                 }else {
-                    Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
 
                 }
-                finish();
+               finish();
 
             }
         });
@@ -169,6 +174,39 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         clear_btn = (ImageButton) findViewById(R.id.clear_btn);
         erase_all = (Button) findViewById(R.id.erase_all);
     }
+
+
+    private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+        File fileToBeReturn = null;
+        File direct = new File(Environment.getExternalStorageDirectory() + "/UserSignatues");
+
+        if (!direct.exists()) {
+            File wallpaperDirectory = new File("/sdcard/UserSignatues/");
+            wallpaperDirectory.mkdirs();
+        }
+
+        FragmentEditReport.StrImagePath="/sdcard/UserSignatues/"+fileName;
+        File file = new File(new File("/sdcard/UserSignatues/"), fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+            FragmentEditReport.Signaturefile=file;
+
+            Toast.makeText(this, "Signature Saved Successfully", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      //  finish();
+    }
+
     public String store_image(Bitmap _bitmapScaled, String dirPath, String fileName) {
         //you can create a new file name "test.jpg" in sdcard folder.
         File f = new File(dirPath, fileName);
@@ -182,9 +220,14 @@ public class DigitalSignatureActivity extends AppCompatActivity {
             out.close();
            // Toast.makeText(this, String.valueOf(dirPath + File.separator + fileName), Toast.LENGTH_SHORT).show();
             Log.d("mypath****************", dirPath + File.separator + fileName);
+            Toast.makeText(DigitalSignatureActivity.this, String.valueOf("after storing :"+String.valueOf(dirPath + fileName)), Toast.LENGTH_SHORT).show();
+
             return dirPath + fileName;
         } catch (Exception e) {
             e.printStackTrace();
+            e.getMessage();
+      //      Toast.makeText(DigitalSignatureActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
         }
         return "";
     }

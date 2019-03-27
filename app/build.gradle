@@ -5,6 +5,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
+    
     defaultConfig {
         applicationId "test.invoicegenerator"
         minSdkVersion 19

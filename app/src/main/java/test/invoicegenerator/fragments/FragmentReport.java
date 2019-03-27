@@ -144,7 +144,7 @@ public class FragmentReport extends BaseFragment{
                 switch (index) {
                     case 0:
                         DeletePosition = position;
-                        Toast.makeText(getActivity(), String.valueOf(DeletePosition), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getActivity(), String.valueOf(DeletePosition), Toast.LENGTH_SHORT).show();
                        DeleteInvoice(Invoicelist.get(position).getId());
                         break;
                     case 1:

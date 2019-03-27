@@ -1,29 +1,22 @@
 package test.invoicegenerator.fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.io.IOException;
-
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.view.activities.MainActivity;
-
 import static android.app.Activity.RESULT_OK;
 import static test.invoicegenerator.general.Constants.PICK_IMAGE_REQUEST;
 
@@ -36,6 +29,8 @@ public class DashboardFragment extends BaseFragment  {
     StorageReference storageReference;
     LinearLayout layoutClient,layoutReports,layoutAddInvoice,layoutInvoiceReport,layoutConfiguration,layoutSettings;
     DBHelper sqliteHelper;
+    LinearLayout parent_layout;
+    Snackbar snackbar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,6 +41,7 @@ public class DashboardFragment extends BaseFragment  {
 
     private void init(View v)
     {
+        parent_layout=v.findViewById(R.id.layout_dash);
         sqliteHelper=new DBHelper(getActivity());
         db=new DBHelper(getActivity());
         layoutClient=v.findViewById(R.id.layot_clients);
@@ -54,25 +50,20 @@ public class DashboardFragment extends BaseFragment  {
         layoutInvoiceReport=v.findViewById(R.id.layot_invoice_report);
         layoutConfiguration=v.findViewById(R.id.layot_config);
         layoutSettings=v.findViewById(R.id.layot_settings);
-
-
         layoutClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadFragment(new FragmentAllClients(),null);
-
                 //loadFragment(new ClientSelection(),null);
-
-
             }
         });
 
         layoutReports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                loadFragment(new FragmentReport(),null);
                // loadFragment(new FragmentAllClients(),null);
-                ((MainActivity)getActivity()).ChangeMenuOption(2);
+               /* ((MainActivity)getActivity()).ChangeMenuOption(2);
                 Cursor rs=db.getInvoiceData();
                 if(rs.isAfterLast() == false)
                     loadFragment(new FragmentReport(),null);
@@ -82,7 +73,7 @@ public class DashboardFragment extends BaseFragment  {
                     args.putString("new", "true");
                     args.putString("clicked", "false");
                     loadFragment(new FragmentEditReport(),args);
-                }
+                }*/
             }
         });
 
@@ -98,7 +89,10 @@ public class DashboardFragment extends BaseFragment  {
         layoutInvoiceReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseImage();
+           //     chooseImage();
+                snackbar = Snackbar.make(parent_layout,"Not Implemented Yet", Snackbar.LENGTH_LONG);
+                snackbar.show();
+
             }
         });
         layoutConfiguration.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +108,8 @@ public class DashboardFragment extends BaseFragment  {
         layoutSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                snackbar = Snackbar.make(parent_layout,"Not Implemented Yet", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         });
 
