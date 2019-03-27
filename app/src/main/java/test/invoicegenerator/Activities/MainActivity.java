@@ -77,7 +77,6 @@ public class MainActivity extends BaseActivity  implements
     ListView menulist;
     VolleyService mVolleyService;
     IResult mResultCallback = null;
-    boolean doubleBackToExitPressedOnce = false;
 
     ArrayList<String> Name = new ArrayList<>();
     ArrayList<Integer> Pic = new ArrayList<>();
