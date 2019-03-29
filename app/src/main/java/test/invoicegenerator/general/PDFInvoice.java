@@ -469,7 +469,7 @@ private void combineTwoTables(Document document) throws DocumentException {
                     File myFile=getExternalStorageFile();
                     preparePdfDocument(myFile);
                 }else {
-                    Toast.makeText(getActivity(), "GET_ACCOUNTS Denied",
+                    Toast.makeText(getActivity(), " GET_ACCOUNTS Denied",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
