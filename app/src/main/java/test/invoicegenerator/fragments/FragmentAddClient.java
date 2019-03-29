@@ -1,13 +1,8 @@
 package test.invoicegenerator.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
@@ -20,21 +15,11 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.seatgeek.placesautocomplete.DetailsCallback;
-import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
-import com.seatgeek.placesautocomplete.model.AddressComponent;
-import com.seatgeek.placesautocomplete.model.AddressComponentType;
-import com.seatgeek.placesautocomplete.model.Place;
-import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -43,9 +28,7 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.Util;
-import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.Activities.MainActivity;
 
 

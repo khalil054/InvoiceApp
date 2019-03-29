@@ -1,11 +1,5 @@
 package test.invoicegenerator.fragments;
 
-/**
- * Created by User on 1/24/2019.
- */
-
-import android.content.ContentValues;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -30,9 +24,6 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,13 +37,9 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.adapters.addressAdapter;
-import test.invoicegenerator.databaseutilities.Client;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
-import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.ClientWithAddressModel;
 
 
@@ -86,9 +73,9 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_update_client, container, false);
-        listView = (SwipeMenuListView) view.findViewById(R.id.addressList);
+        listView =  view.findViewById(R.id.addressList);
         unbinder = ButterKnife.bind(this, view);
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
 
 
@@ -97,7 +84,7 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
     private void init() {
         GetClientDetail(GlobalData.clientId);
-        Btn_AddClient.setText("Update");
+        Btn_AddClient.setText(String.valueOf("Update"));
 
         floating_AddClient.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

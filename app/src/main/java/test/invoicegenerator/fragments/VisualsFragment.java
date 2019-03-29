@@ -15,9 +15,6 @@ import butterknife.Unbinder;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Util;
 
-/**
- * Created by User on 10/9/2018.
- */
 
 public class VisualsFragment extends Fragment implements View.OnClickListener{
     private Unbinder unbinder;

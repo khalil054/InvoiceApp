@@ -2,27 +2,15 @@ package test.invoicegenerator.fragments;
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-
-import com.baoyz.swipemenulistview.SwipeMenuListView;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import test.invoicegenerator.NetworksCall.IResult;
-import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.ClientModel;
 
 public class WriteSMS extends BaseFragment {
 

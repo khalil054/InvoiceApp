@@ -58,16 +58,16 @@ public class TaxActivity extends AppCompatActivity {
     }
 
     private void setComponentsValues() throws NullPointerException {
-        String tax_type=getIntent().getStringExtra("tax_type");
-        int tax=getIntent().getIntExtra("tax",0);
-        if(!tax_type.equals("") && tax_type!=null)
+      //  String tax_type=getIntent().getStringExtra("tax_type");
+       // int tax=getIntent().getIntExtra("tax",0);
+        if(!type.equals("") && type!=null)
         {
-            if(tax_type.equals("On the total"))
+            if(type.equals("On the total"))
                 tax_spinner.setSelection(0);
-            else if(tax_type.equals("Deducted"))
+            else if(type.equals("Deducted"))
                 tax_spinner.setSelection(1);
         }
         // if (!discount.equals("") && discount != null)
-        tax_value.setText(tax+"");
+        tax_value.setText(0+"");
     }
 }

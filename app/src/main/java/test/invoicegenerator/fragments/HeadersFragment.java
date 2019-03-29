@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,8 +18,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,26 +29,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.HeaderAdapter;
-import test.invoicegenerator.general.Constants;
-import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.model.HeaderDetail;
 
 import static android.app.Activity.RESULT_OK;
-import static test.invoicegenerator.general.Constants.ADDRESS;
-import static test.invoicegenerator.general.Constants.CITY;
-import static test.invoicegenerator.general.Constants.COUNTRY;
-import static test.invoicegenerator.general.Constants.EMAIL_KEY;
 import static test.invoicegenerator.general.Constants.Image_Request_Code;
 import static test.invoicegenerator.general.Constants.LOGO;
 import static test.invoicegenerator.general.Constants.LOGO_COLLECTION;
-import static test.invoicegenerator.general.Constants.PHONE_KEY;
 import static test.invoicegenerator.general.Constants.PIC_CROP;
-import static test.invoicegenerator.general.Constants.STATE;
 import static test.invoicegenerator.general.Constants.Stamp_Image_Request_Code;
-
-/**
- * Created by User on 10/25/2018.
- */
 
 public class HeadersFragment extends Fragment {
     @BindView(R.id.save)

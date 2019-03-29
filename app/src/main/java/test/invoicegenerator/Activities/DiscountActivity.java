@@ -13,10 +13,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 
-/**
- * Created by User on 1/16/2019.
- */
-
 public class DiscountActivity extends AppCompatActivity {
 
     @BindView(R.id.discount_value)
@@ -33,8 +29,7 @@ public class DiscountActivity extends AppCompatActivity {
         setContentView(R.layout.discount_activity);
         ButterKnife.bind(this);//
         init();
-        //setActionBar();
-        // loadFragment(new FragmentLogin());
+
     }
 
     private void init() {
@@ -53,6 +48,7 @@ public class DiscountActivity extends AppCompatActivity {
                 if(!discount_value.getText().toString().equals(""))
                 discount_amount=Integer.parseInt(discount_value.getText().toString());
                 type=discount_spinner.getSelectedItem().toString();
+                TaxActivity.type=discount_spinner.getSelectedItem().toString();
                 finish();
             }
         });
@@ -76,7 +72,7 @@ public class DiscountActivity extends AppCompatActivity {
             }
         }
        // if (!discount.equals("") && discount != null)
-            discount_value.setText(discount+"");
+            discount_value.setText(String.valueOf(discount+""));
             discount_amount=discount;
     }
 

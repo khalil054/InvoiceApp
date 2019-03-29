@@ -32,6 +32,7 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.fragments.FragmentEditReport;
+import test.invoicegenerator.fragments.FragmentEditReportUpdate;
 import test.invoicegenerator.model.ClientModel;
 
 public class ClientSelectionActivity extends BaseActivity {
@@ -116,8 +117,18 @@ public class ClientSelectionActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OpenPosition = position;
-                FragmentEditReport.SelectedClientId=clientModels.get(OpenPosition).getId();
-                Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" +String.valueOf(FragmentEditReport.SelectedClientId), Toast.LENGTH_SHORT).show();
+
+                if(FragmentEditReport.IsNewInvoice){
+                    FragmentEditReport.SelectedClientId=clientModels.get(OpenPosition).getId();
+                    FragmentEditReport.SelectedClientName=clientModels.get(OpenPosition).getName();
+                    Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" +String.valueOf(FragmentEditReport.SelectedClientId), Toast.LENGTH_SHORT).show();
+
+                }else {
+                    FragmentEditReportUpdate.SelectedClientId=clientModels.get(OpenPosition).getId();
+                    FragmentEditReportUpdate.SelectedClientName=clientModels.get(OpenPosition).getName();
+                    Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" +String.valueOf(FragmentEditReportUpdate.SelectedClientId), Toast.LENGTH_SHORT).show();
+
+                }
                 finish();
             }
         });

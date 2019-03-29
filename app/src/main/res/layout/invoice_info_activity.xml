@@ -58,6 +58,7 @@
                     android:layout_weight="1"
                     android:text="@string/Invoice_name"/>
                 <EditText
+                    android:hint="Invoice Name"
                     android:id="@+id/invoice_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

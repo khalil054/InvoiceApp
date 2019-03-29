@@ -18,7 +18,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Client;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.Util;
 
@@ -44,7 +43,7 @@ public class ClientActivity extends AppCompatActivity {
 
     EditText contact_text;
 
-    DBHelper db;
+   // DBHelper db;
     private String is_new;
 
 
@@ -64,7 +63,7 @@ public class ClientActivity extends AppCompatActivity {
    // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("WrongViewCast")
     private void init() {
-        db=new DBHelper(this);
+       // db=new DBHelper(this);
         is_new=getIntent().getStringExtra("is_new");
         //initializing components
         name=(EditText)findViewById(R.id.client_name);
@@ -110,10 +109,10 @@ public class ClientActivity extends AppCompatActivity {
     }
 
 
-    private void getClientData() {
+  /*  private void getClientData() {
         client_info=db.getClientInformation(FragmentEditReport.invoice_id);
 
-    }
+    }*/
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -172,19 +171,8 @@ public class ClientActivity extends AppCompatActivity {
         }
         else
         {
-          /*  User user = new User();
-            //  user.setId();
-            user.setName(name.getText().toString() + 10);
-            user.setEmail(email.getText().toString());
-            user.setMobile(mobile.getText().toString());
-            user.setPhone(phone.getText().toString());
-            user.setFax(fax.getText().toString());
-            user.setContact(contact_text.getText().toString());
-            user.setLine1(line1.getText().toString());
-            user.setLine2(line2.getText().toString());
-            user.setLine3(line3.getText().toString());
-            RealmManager.createUserDao().save(user);*/
-            ContentValues contentValues=new ContentValues();
+
+            /*ContentValues contentValues=new ContentValues();
 
             contentValues.put(DBHelper.CLIENT_Name,name.getText().toString());
             contentValues.put(DBHelper.CLIENT_EMAIL,email.getText().toString());
@@ -202,7 +190,7 @@ public class ClientActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "not done",
                         Toast.LENGTH_SHORT).show();
             }
-            db.updateInvoiceData("client_key",String.valueOf(client_key), FragmentEditReport.invoice_id);
+            db.updateInvoiceData("client_key",String.valueOf(client_key), FragmentEditReport.invoice_id);*/
         }
 
 

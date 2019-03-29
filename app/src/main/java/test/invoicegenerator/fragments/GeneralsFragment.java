@@ -45,20 +45,13 @@ import static test.invoicegenerator.general.Constants.COMPANY_NAME;
 import static test.invoicegenerator.general.Constants.EMAIL_KEY;
 import static test.invoicegenerator.general.Constants.SIGN_UP_COLLECTION;
 
-/**
- * Created by User on 10/9/2018.
- */
 
-/*
-implements OnStatePickerListener, OnCountryPickerListener, OnCityPickerListener
-*/
 
 public class GeneralsFragment extends BaseFragment  {
     private Unbinder unbinder;
     public static int countryID, stateID;
     private String stateNameTextView, countryName,countryCode, countryPhoneCode, countryCurrency, cityName;
-   // @BindView(R.id.state_spinner)
-  //  Spinner state_spinner;
+
 
     @BindView(R.id.country_spinner)
     Spinner country_spinner;

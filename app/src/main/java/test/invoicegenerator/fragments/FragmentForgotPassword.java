@@ -156,8 +156,7 @@ public class FragmentForgotPassword extends BaseFragment{
 
                 @Override
                 public void notifyError(String requestType,VolleyError error) {
-//                Log.d(TAG, "Volley requester " + requestType);
-//                Log.d(TAG, "Volley JSON post" + "That didn't work!");
+
                     cdd.HideProgress();
                     error.printStackTrace();
 
@@ -166,8 +165,7 @@ public class FragmentForgotPassword extends BaseFragment{
                         String error_response=new String(error.networkResponse.data);
                         try {
                             JSONObject response_obj=new JSONObject(error_response);
-                         //   String status=response_obj.getString("status");
-                         //   if(status.equals("false"))
+
                             {
                                 JSONObject error_obj=response_obj.getJSONObject("error");
                                 String message=error_obj.getString("message");

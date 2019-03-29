@@ -8,7 +8,7 @@ public class NetworkURLs {
 
 
     public static String BaseURL = "http://et-invoice.herokuapp.com/api/v1/";
- //   public static String BaseURL = "http://2a46d215.ngrok.io/api/v1/";
+   // public static String BaseURL = "https://384e07f9.ngrok.io/api/v1/";
     public static String SignUp = "auth.json";
     public static String SignIn = "auth/sign_in.json";
     public static String SignOut="auth/sign_out.json";
@@ -28,6 +28,6 @@ public class NetworkURLs {
     public static String GetClientDetails = "clients/";
     public static String DeleteInvoice="invoices/";
     public static String GetInvoiceList="invoices.json";
-
+   public static String GetSingleInvoice="invoices/";
 
 }
