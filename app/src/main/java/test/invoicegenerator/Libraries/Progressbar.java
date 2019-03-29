@@ -38,6 +38,7 @@ public class Progressbar extends Dialog  {
     public void ShowProgress()
     {
         show();
+        setCancelable(false);
         progressView = (LottieAnimationView) findViewById(R.id.progressView);
         progressView.setVisibility(View.VISIBLE);
     }
@@ -52,6 +53,7 @@ public class Progressbar extends Dialog  {
     public void ShowConfirmation()
     {
         show();
+        setCancelable(false);
         confirmationView = (LottieAnimationView) findViewById(R.id.confirmationView);
         confirmationView.setVisibility(View.VISIBLE);
 

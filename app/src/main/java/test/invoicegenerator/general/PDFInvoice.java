@@ -5,6 +5,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,8 +31,11 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.WebColors;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -43,6 +50,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.model.InvoiceModel;
 
+import static com.itextpdf.text.BaseColor.RED;
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
 /**
@@ -53,9 +61,7 @@ public class PDFInvoice extends Fragment {
     private File pdfFolder;
     Font font;
     private PDFView pdfview;
-    private InvoiceModel invoice;
     private String invoice_name,invoice_date,due_date,client_name="";
-    private DBHelper  db;
     private FloatingActionButton share_pdf;
 
     @Override
@@ -74,8 +80,6 @@ public class PDFInvoice extends Fragment {
     private void init(View view) throws FileNotFoundException {
         font = new Font();
         font.setColor(BaseColor.WHITE);
-        db=new DBHelper(getActivity());
-        invoice=(InvoiceModel)getArguments().getSerializable("invoice");
         pdfview = (PDFView) view.findViewById(R.id.pdfView);
         share_pdf=(FloatingActionButton) view.findViewById(R.id.share_pdf);
         initializeInvoice();
@@ -90,10 +94,10 @@ public class PDFInvoice extends Fragment {
     }
 
     private void initializeInvoice() {
-        client_name=db.getClientNameOfInvoice(invoice.getId());
-        invoice_name=invoice.getInvoice_name();
-        invoice_date=invoice.getInvoice_date();
-        due_date=invoice.getDue_date();
+        client_name="Babar Client Name";
+        invoice_name="Babar Invoice_name Name";
+        invoice_date="2 Feb, 2019";
+        due_date= "2 Feb, 2020";
     }
 
     public void create_pdf_file() throws FileNotFoundException {
@@ -107,11 +111,9 @@ public class PDFInvoice extends Fragment {
         pdfFolder = new File(Environment.getExternalStorageDirectory(), "pdfdemo");
         if (!pdfFolder.exists()) {
             pdfFolder.mkdir();
-            Log.i("Test321", "PDF directory created");
         }
-        Date date = new Date();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
-        File myFile = new File(pdfFolder + "/" + "Invoice"+timeStamp + ".pdf");
+        String pathname = pdfFolder + "/" + "InvoiceGenerator" + ".pdf";
+        File myFile = new File(pathname);
         return myFile;
     }
     private PdfPTable addClientTable(Document document) throws DocumentException {
@@ -152,44 +154,45 @@ private PdfPTable addInvoiceDateDetail() throws DocumentException {
     PdfPCell row2cell2 = new PdfPCell(new Phrase(""+due_date));
     row2cell2.setBorder(Rectangle.NO_BORDER);
     table.addCell(row2cell2);
+
+
+
+
+
     return table;
 }
 private void itemDataTable(Document document) throws DocumentException {
-    PdfPTable table = new PdfPTable(new float[] { 3,1,1, 1});
-    Cursor rs = db.getItemsData(Long.parseLong(invoice.getId()));
-    rs.moveToFirst();
-    while (rs.isAfterLast() == false)
-    {
-        String description = rs.getString(rs.getColumnIndex(DBHelper.DESCRIPTION));
-        String amount = rs.getString(rs.getColumnIndex("amount"));
-        String quantity = rs.getString(rs.getColumnIndex("quantity"));
-        String unit_cost = rs.getString(rs.getColumnIndex("unit_cost"));
-        PdfPCell cell = new PdfPCell(new Phrase(description));
-        cell.setBorder(Rectangle.NO_BORDER);
-        table.addCell(cell);
+    PdfPTable table = new PdfPTable(new float[]{3, 1, 1, 1});
+    for (int i=0; i<= 10; i++){
+    String description = "Its testing 1";
+    String amount = "100";
+    String quantity = String.valueOf(i);
+    String unit_cost = "100";
+    PdfPCell cell = new PdfPCell(new Phrase(description));
+    cell.setBorder(Rectangle.NO_BORDER);
+    table.addCell(cell);
 
-        //Date label
-        PdfPCell cell2 = new PdfPCell(new Phrase(quantity));
-        cell2.setBorder(Rectangle.NO_BORDER);
-        table.addCell(cell2);
+    //Date label
+    PdfPCell cell2 = new PdfPCell(new Phrase(quantity));
+    cell2.setBorder(Rectangle.NO_BORDER);
+    table.addCell(cell2);
 
-        //first row  second column
-        PdfPCell row1cell2 = new PdfPCell(new Phrase(unit_cost));
-        row1cell2.setBorder(Rectangle.NO_BORDER);
-        table.addCell(row1cell2);
-        //Date label
-        PdfPCell row2cell1 = new PdfPCell(new Phrase(amount));
-        row2cell1.setBorder(Rectangle.NO_BORDER);
+    //first row  second column
+    PdfPCell row1cell2 = new PdfPCell(new Phrase(unit_cost));
+    row1cell2.setBorder(Rectangle.NO_BORDER);
+    table.addCell(row1cell2);
+    //Date label
+    PdfPCell row2cell1 = new PdfPCell(new Phrase(amount));
+    row2cell1.setBorder(Rectangle.NO_BORDER);
 
-        table.addCell(row2cell1);
-        rs.moveToNext();
-    }
+    table.addCell(row2cell1);
+}
     table.setSpacingBefore(30);
     document.add(table);
 }
 private void calculatingSubtotal(Document document) throws DocumentException {
     PdfPTable table = new PdfPTable(new float[] { 3,1,1, 1});
-        PdfPCell cell = new PdfPCell(new Phrase(""+invoice.getComment()));
+        PdfPCell cell = new PdfPCell(new Phrase("Its comments"));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
         //Date label
@@ -202,7 +205,7 @@ private void calculatingSubtotal(Document document) throws DocumentException {
         table.addCell(row1cell2);
 
         //Date label
-        PdfPCell row2cell1 = new PdfPCell(new Phrase(""+invoice.getSubtotal()));
+        PdfPCell row2cell1 = new PdfPCell(new Phrase("Its Subtotal"));
         row2cell1.setBorder(Rectangle.NO_BORDER);
         table.addCell(row2cell1);
 
@@ -217,7 +220,7 @@ private void calculatingSubtotal(Document document) throws DocumentException {
     dis_col.setBorder(Rectangle.NO_BORDER);
     table.addCell(dis_col);
     //discount value column
-    PdfPCell dis_value_col = new PdfPCell(new Phrase(""+invoice.getDiscount()));
+    PdfPCell dis_value_col = new PdfPCell(new Phrase("Its Discount"));
     dis_value_col.setBorder(Rectangle.NO_BORDER);
     table.addCell(dis_value_col);
     //empty column
@@ -231,7 +234,7 @@ private void calculatingSubtotal(Document document) throws DocumentException {
     tax_col.setBorder(Rectangle.BOTTOM);
     table.addCell(tax_col);
     //discount value column
-    PdfPCell tax_value_col = new PdfPCell(new Phrase(""+invoice.getTax_rate()));
+    PdfPCell tax_value_col = new PdfPCell(new Phrase("Its Tax"));
     tax_value_col.setBorder(Rectangle.NO_BORDER);
     tax_value_col.setBorder(Rectangle.BOTTOM);
     table.addCell(tax_value_col);
@@ -246,7 +249,7 @@ private void calculatingSubtotal(Document document) throws DocumentException {
     table.addCell(total_col);
 
     //discount value column
-    PdfPCell total_value_col = new PdfPCell(new Phrase(""+invoice.getTotal_value()));
+    PdfPCell total_value_col = new PdfPCell(new Phrase("Its Total"));
     total_value_col.setBorder(Rectangle.NO_BORDER);
     table.addCell(total_value_col);
 
@@ -338,9 +341,25 @@ private void combineTwoTables(Document document) throws DocumentException {
         icon.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
         Image myImg = Image.getInstance(stream.toByteArray());
         myImg.setAlignment(Image.MIDDLE);
-       // document.add(myImg);
         return myImg;
     }
+
+    private Image AddSignatureInReport() throws IOException, DocumentException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        Bitmap icon = BitmapFactory.decodeResource(getActivity().getResources(),
+                R.drawable.sign);
+        cropCenter(icon).compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+        Image myImg = Image.getInstance(stream.toByteArray());
+        myImg.setScaleToFitHeight(true);
+        myImg.setAlignment(Image.ALIGN_TOP);
+        return myImg;
+    }
+
+    public static Bitmap cropCenter(Bitmap bmp) {
+        int dimension = Math.min(bmp.getWidth(), bmp.getHeight());
+        return ThumbnailUtils.extractThumbnail(bmp, dimension, dimension-170);
+    }
+
     private void preparePdfDocument(File myFile)
     {
         Document document = new Document(PageSize.A4);
@@ -356,6 +375,8 @@ private void combineTwoTables(Document document) throws DocumentException {
         }
 
         try {
+
+
             // Location to save
             PdfWriter.getInstance(document, new FileOutputStream(myFile));
             document.open();
@@ -366,10 +387,14 @@ private void combineTwoTables(Document document) throws DocumentException {
             itemDataTable(document);
             addBorderTable(document,20,20);
             calculatingSubtotal(document);
+            addSignatureTable(document);
             document.setMargins(0, 0, 0, 0);
             document.close();
 
-            //Open PDF
+
+
+
+
             open_pdf_file(myFile);
         } catch (Exception ex) {
             Log.e("Test321", "Exception = " + ex.getMessage());
@@ -406,6 +431,29 @@ private void combineTwoTables(Document document) throws DocumentException {
         cell3.setPadding(10);
         cell3.setBorder(Rectangle.NO_BORDER);
         cell3.addElement(AddImageInReport());
+        table.addCell(cell3);
+        table.setWidths(new float[]{2,0,2});
+        document.add(table);
+    }
+
+
+    public void addSignatureTable(Document document) throws DocumentException, IOException {
+        PdfPTable table = new PdfPTable(3);
+
+        PdfPCell cell1 = new PdfPCell();
+        cell1.setPadding(10);
+        cell1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell1);
+
+        PdfPCell cell2 = new PdfPCell();
+        cell2.setPadding(10);
+        cell2.setBorder(Rectangle.NO_BORDER);
+        table.addCell(cell2);
+
+        PdfPCell cell3 = new PdfPCell();
+        cell3.setPadding(10);
+        cell3.setBorder(Rectangle.NO_BORDER);
+        cell3.addElement(AddSignatureInReport());
         table.addCell(cell3);
         table.setWidths(new float[]{2,0,2});
         document.add(table);

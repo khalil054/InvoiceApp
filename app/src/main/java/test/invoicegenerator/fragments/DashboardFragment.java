@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.DBHelper;
+import test.invoicegenerator.general.PDFInvoice;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.Activities.MainActivity;
 
@@ -84,10 +85,10 @@ public class DashboardFragment extends BaseFragment  {
         layoutAddInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putString("new", "true");
-                args.putString("clicked", "false");
-                loadFragment(new FragmentEditReport(),args);
+//                Bundle args = new Bundle();
+//                args.putString("new", "true");
+//                args.putString("clicked", "false");
+                loadFragment(new PDFInvoice(),null);
             }
         });
         layoutInvoiceReport.setOnClickListener(new View.OnClickListener() {
