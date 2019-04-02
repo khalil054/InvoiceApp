@@ -91,7 +91,12 @@ public class DashboardFragment extends BaseFragment  {
             public void onClick(View view) {
 
                 ((MainActivity)getActivity()).ChangeMenuOption(5);
-                loadFragment(new Configrations(),null);
+
+                FragmentReport.CanUpdateInvoice=false;
+                Bundle args = new Bundle();
+                args.putString("new", "true");
+                args.putString("clicked", "false");
+                loadFragment(new FragmentReportDetail(),args);
 
             }
         });

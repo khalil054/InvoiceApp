@@ -47,8 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import test.invoicegenerator.R;
-import test.invoicegenerator.databaseutilities.DBHelper;
-import test.invoicegenerator.model.InvoiceModel;
 
 import static com.itextpdf.text.BaseColor.RED;
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;

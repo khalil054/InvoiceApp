@@ -236,7 +236,7 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                 erase_all.setVisibility(View.GONE);
                 drawingView.setVisibility(View.GONE);
 
-                File imgFile = new File(FragmentEditReportUpdate.StrImagePath);
+                File imgFile = new File(FragmentEditReport.StrImagePath);
 
                 if(imgFile.exists()){
 
