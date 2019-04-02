@@ -1,8 +1,11 @@
+/*
 package test.invoicegenerator.general;
 
+*/
 /**
  * Created by User on 9/28/2018.
- */
+ *//*
+
 //
 
 import java.io.ByteArrayInputStream;
@@ -249,3 +252,4 @@ public class GMailSender extends javax.mail.Authenticator {
     }
 
 }
+*/

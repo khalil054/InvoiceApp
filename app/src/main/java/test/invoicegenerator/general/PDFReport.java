@@ -1,3 +1,4 @@
+/*
 package test.invoicegenerator.general;
 
 import android.Manifest;
@@ -44,9 +45,11 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+*/
 /**
  * Created by User on 9/17/2018.
- */
+ *//*
+
 
 public class PDFReport {
     private Context context;
@@ -140,10 +143,12 @@ public class PDFReport {
 
 
         try {
-            /*Intent intent = new Intent(Intent.ACTION_VIEW);
+            */
+/*Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(
                     Uri.fromFile(file),
-                    "application/pdf");*/
+                    "application/pdf");*//*
+
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(
                     Uri.fromFile( file),
@@ -214,11 +219,13 @@ public class PDFReport {
 
             document.add(p2);
 
-            /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            */
+/*ByteArrayOutputStream stream = new ByteArrayOutputStream();
             Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher_background);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
             Image myImg = Image.getInstance(stream.toByteArray());
-            myImg.setAlignment(Image.MIDDLE);*/
+            myImg.setAlignment(Image.MIDDLE);*//*
+
 
             //add image to document
             // document.add(myImg);
@@ -341,9 +348,11 @@ public class PDFReport {
         row2cell2.setPadding(10);
         row3cell2.setBorder(Rectangle.NO_BORDER);
         table.addCell(row3cell2);
-       /* for(int aw = 0; aw < 14; aw++){
+       */
+/* for(int aw = 0; aw < 14; aw++){
             table.addCell("hi");
-        }*/
+        }*//*
+
         document.add(table);
     }
     private void convertHtmlToPdf() throws IOException, DocumentException {
@@ -352,7 +361,8 @@ public class PDFReport {
         // itextpdf-5.4.1.jar  http://sourceforge.net/projects/itext/files/iText/
         // xmlworker-5.4.1.jar http://sourceforge.net/projects/xmlworker/files/
 
-             /*   try {
+             */
+/*   try {
                     Document document = new Document(PageSize.LETTER);
                     PdfWriter pdfWriter = PdfWriter.getInstance
                             (document, new FileOutputStream("c://temp//testpdf.pdf"));
@@ -384,7 +394,8 @@ public class PDFReport {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                }*/
+                }*//*
+
 // step 1
         // Document document = new Document();
         // step 2
@@ -402,7 +413,8 @@ public class PDFReport {
 
 
         File file = new File(dir, "htmlconversion.pdf");
-        /*FileOutputStream fOut = new FileOutputStream(file);
+        */
+/*FileOutputStream fOut = new FileOutputStream(file);
 
         PdfWriter writer =PdfWriter.getInstance(document, fOut);
         document.open();
@@ -411,7 +423,8 @@ public class PDFReport {
 
      //   document.add(new Paragraph(new Chunk("Nooooooor00000")));
         //step 5
-        document.close();*/
+        document.close();*//*
+
 
 //...
         try {
@@ -454,7 +467,8 @@ public class PDFReport {
                     "\t</body>\n" +
                     "</html>";
 
-           /* InputStream is1 = context.getAssets().open("index.html");
+           */
+/* InputStream is1 = context.getAssets().open("index.html");
             int size = is1.available();
 
             byte[] buffer = new byte[size];
@@ -462,7 +476,8 @@ public class PDFReport {
             is1.close();
 
             String str = new String(buffer);
-            k=str;*/
+            k=str;*//*
+
             int permsRequestCode = 200;
             if ( ContextCompat.checkSelfPermission( context, Manifest.permission.WRITE_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED ) {
 
@@ -482,4 +497,4 @@ public class PDFReport {
             e.printStackTrace();
         }
     }
-}
+}*/

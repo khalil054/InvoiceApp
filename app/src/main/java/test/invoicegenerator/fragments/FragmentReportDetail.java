@@ -1,6 +1,6 @@
 package test.invoicegenerator.fragments;
 
-/**
+/*
  * Created by User on 1/28/2019.
  */
 
@@ -38,7 +38,7 @@ public class FragmentReportDetail extends Fragment {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    ArrayList<String> tab_name = new ArrayList<String>();
+    ArrayList<String> tab_name = new ArrayList<>();
     private String is_new;
     private String is_clicked;
     private InvoiceModel invoice;
@@ -109,22 +109,16 @@ public class FragmentReportDetail extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab){
                 currentIndeX = tab.getPosition();
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
-
-
 
 
     }

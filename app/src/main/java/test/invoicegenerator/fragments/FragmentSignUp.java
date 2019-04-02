@@ -30,12 +30,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
@@ -193,7 +191,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Boolean status = jsonObject.getBoolean("status");
+                    boolean status = jsonObject.getBoolean("status");
 
                     if(status)
                     {

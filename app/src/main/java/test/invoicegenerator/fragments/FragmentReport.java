@@ -31,13 +31,11 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.ReportAdapter;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.JsonInvoiceModel;
 
 public class FragmentReport extends BaseFragment{
-   /* @BindView(R.id.invoiceList)
-    ListView report_list;*/
+
     @BindView(R.id.main_layout)
     RelativeLayout main_layout;
     Snackbar snackbar;
@@ -45,7 +43,7 @@ public class FragmentReport extends BaseFragment{
     VolleyService mVolleyService;
     @BindView(R.id.add_invoice)
     FloatingActionButton add_invoice;
-    DBHelper db;
+
     @BindView(R.id.invoiceList)
     SwipeMenuListView listView;
     private ArrayList<JsonInvoiceModel> Invoicelist=new ArrayList<>();
@@ -54,12 +52,13 @@ public class FragmentReport extends BaseFragment{
     int OpenPosition = 0;
     SearchView searchView;
     ReportAdapter adapter;
+    public static boolean CanUpdateInvoice=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
         searchView = (SearchView) view.findViewById(R.id.searchView);
-     //   report_list = view.findViewById(R.id.invoiceList);
+
         ButterKnife.bind(this,view);
         init();
         return view;
@@ -67,7 +66,7 @@ public class FragmentReport extends BaseFragment{
 
     private void init() {
 
-        db=new DBHelper(getActivity());
+
         items=new ArrayList<>();
         GetInvoiceList();
 
@@ -133,13 +132,12 @@ public class FragmentReport extends BaseFragment{
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CanUpdateInvoice=true;
                 OpenPosition = position;
                 GlobalData.invoiceModel =  Invoicelist.get(position);
-                if(DashboardFragment.ShowInvoiceInfo){
-                    loadFragment(new FragmentUpdateClient(),null);
-                }else {
-                    Toast.makeText(getActivity(), "Show Invoice Detail", Toast.LENGTH_SHORT).show();
-                }
+                FragmentEditReportUpdate.InvoiceId_ToBeFetch=GlobalData.invoiceModel.getId();
+              //  Toast.makeText(getActivity(), String.valueOf(GlobalData.invoiceModel.getId()), Toast.LENGTH_SHORT).show();
+                loadFragment(new FragmentEditReportUpdate(),null);
 
             }
         });
@@ -149,21 +147,16 @@ public class FragmentReport extends BaseFragment{
                 switch (index) {
                     case 0:
                         DeletePosition = position;
-                      //  Toast.makeText(getActivity(), String.valueOf(DeletePosition), Toast.LENGTH_SHORT).show();
+
                        DeleteInvoice(Invoicelist.get(position).getId());
                         break;
                     case 1:
                         OpenPosition = position;
                         GlobalData.invoiceModel =  Invoicelist.get(position);
-                        /*Bundle args = new Bundle();
-                        args.putString("new", "false");
-                        args.putString("clicked", "true");
-                        args.putSerializable("invoice",list.get(position));
-                        loadFragment(new FragmentReportDetail(),args);*/
-                       // loadFragment(new FragmentUpdateClient(),null);
+
                         break;
                 }
-                // false : close the menu; true : not close the menu
+
                 return false;
             }
         });
@@ -172,80 +165,7 @@ public class FragmentReport extends BaseFragment{
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
 
-      /*  ReportAdapter adapter = new ReportAdapter(getActivity(), list);
-        listView.setAdapter(adapter);
-*/
-
-
-
-
-        /*getInvoiceList();
-
-        report_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle args = new Bundle();
-                args.putString("new", "false");
-                args.putString("clicked", "true");
-                args.putSerializable("invoice",list.get(position));
-                loadFragment(new FragmentReportDetail(),args);
-            }
-        });*/
     }
-
-   /* private void getInvoiceList() {
-        {
-            Cursor rs = db.getInvoiceData();
-            rs.moveToFirst();
-
-            items.clear();
-            list.clear();
-            while (!rs.isAfterLast()) {
-                InvoiceModel value_item=new InvoiceModel();
-                String id = rs.getString(rs.getColumnIndex("id"));
-                String client_key=rs.getString(rs.getColumnIndex("client_key"));
-                String subtotal = rs.getString(rs.getColumnIndex("subtotal"));
-                String discount = rs.getString(rs.getColumnIndex("discount"));
-                String dis_type = rs.getString(rs.getColumnIndex("dis_type"));
-                String tax_rate = rs.getString(rs.getColumnIndex("tax_rate"));
-                String tax_type = rs.getString(rs.getColumnIndex("tax_type"));
-                String total_value = rs.getString(rs.getColumnIndex("total_value"));
-                String comment = rs.getString(rs.getColumnIndex("comment"));
-                String invoice_name = rs.getString(rs.getColumnIndex("invoice_name"));
-                String due_date = rs.getString(rs.getColumnIndex("due_date"));
-                String invoice_date = rs.getString(rs.getColumnIndex("invoice_date"));
-                String attachment = rs.getString(rs.getColumnIndex("photo"));
-                String signatue = rs.getString(rs.getColumnIndex("signature"));
-                String signature_date = rs.getString(rs.getColumnIndex("signature_date"));
-
-                value_item.setId(id);
-                value_item.setClient_key(client_key);
-                // value_item.setItem_key(item_key);
-                value_item.setSubtotal(subtotal);
-                value_item.setDiscount(discount);
-                value_item.setDis_type(dis_type);
-                value_item.setTax_rate(tax_rate);
-                value_item.setTax_type(tax_type);
-                value_item.setTotal_value(total_value);
-                value_item.setComment(comment);
-                value_item.setInvoice_name(invoice_name);
-                value_item.setDue_date(due_date);
-                value_item.setPhoto(attachment);
-                value_item.setSignture_date(signature_date);
-                value_item.setSignature(signatue);
-                value_item.setInvoice_date(invoice_date);
-                list.add(value_item);
-                rs.moveToNext();
-            }
-
-
-        }
-        for(int i=0;i<list.size();i++)
-        {
-            items.add(list.get(i).getInvoice_name()+"");
-        }
-    }*/
-
     public void GetInvoiceList()
     {
 
@@ -293,7 +213,6 @@ public class FragmentReport extends BaseFragment{
                 if(error.networkResponse != null && error.networkResponse.data != null) {
 
                     String error_response = new String(error.networkResponse.data);
-                    // dialogHelper.showErroDialog(error_response);
                     Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
 
 
@@ -312,7 +231,7 @@ public class FragmentReport extends BaseFragment{
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), String.valueOf("Error"+error.getMessage()), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -380,6 +299,5 @@ public class FragmentReport extends BaseFragment{
             }
         };
     }
-
 
 }

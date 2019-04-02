@@ -1,32 +1,17 @@
 package test.invoicegenerator.fragments;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
 
 import test.invoicegenerator.R;
-import test.invoicegenerator.databaseutilities.DBHelper;
-import test.invoicegenerator.general.PDFInvoice;
-import test.invoicegenerator.general.Util;
 import test.invoicegenerator.Activities.MainActivity;
-
-import static android.app.Activity.RESULT_OK;
-import static test.invoicegenerator.general.Constants.PICK_IMAGE_REQUEST;
 
 
 public class DashboardFragment extends BaseFragment  {
@@ -61,7 +46,7 @@ public class DashboardFragment extends BaseFragment  {
             public void onClick(View view) {
                 loadFragment(new FragmentAllClients(),null);
 
-                //loadFragment(new ClientSelection(),null);
+
 
 
             }
@@ -72,23 +57,26 @@ public class DashboardFragment extends BaseFragment  {
             public void onClick(View view) {
                 ShowInvoiceInfo=true;
               loadFragment(new FragmentReport(),null);
-              /*  ((MainActivity)getActivity()).ChangeMenuOption(2);
+
+               /* ((MainActivity)getActivity()).ChangeMenuOption(2);
 
                     Bundle args = new Bundle();
                     args.putString("new", "true");
                     args.putString("clicked", "false");
-                    loadFragment(new FragmentEditReport(),args);*/
-
+                    loadFragment(new FragmentEditReport(),args);
+*/
             }
         });
 
         layoutAddInvoice.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-//                Bundle args = new Bundle();
-//                args.putString("new", "true");
-//                args.putString("clicked", "false");
-                loadFragment(new PDFInvoice(),null);
+                FragmentReport.CanUpdateInvoice=false;
+                Bundle args = new Bundle();
+                args.putString("new", "true");
+                args.putString("clicked", "false");
+                loadFragment(new FragmentEditReport(),args);
             }
         });
         layoutInvoiceReport.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,5 @@
 package test.invoicegenerator.general;
 
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 

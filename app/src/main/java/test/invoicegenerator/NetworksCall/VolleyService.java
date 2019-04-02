@@ -243,10 +243,10 @@ public class VolleyService {
                 //close sending headers
             };
 
+            strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 
             queue.add(strRequest);
-
         }catch(Exception e){
 
         }

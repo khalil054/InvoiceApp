@@ -13,13 +13,8 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.fragments.FragmentEditReport;
-import test.invoicegenerator.model.InvoiceModel;
-
-/**
- * Created by User on 1/21/2019.
- */
+import test.invoicegenerator.fragments.FragmentEditReportUpdate;
 
 public class InvoiceInfoActivity extends AppCompatActivity {
     @BindView(R.id.invoice_date)
@@ -31,7 +26,7 @@ public class InvoiceInfoActivity extends AppCompatActivity {
     @BindView(R.id.invoice_name)
     EditText invoice_name;
 
-    private DBHelper db;
+ //   private DBHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +38,16 @@ public class InvoiceInfoActivity extends AppCompatActivity {
     }
 
     private void init() {
-        InvoiceModel invoice= (InvoiceModel) getIntent().getSerializableExtra("info");
 
+        if(!FragmentEditReport.IsNewInvoice){
+            setDateToFields();
+        }
+       /* InvoiceModel invoice= (InvoiceModel) getIntent().getSerializableExtra("info");
         invoice_name.setText(invoice.getInvoice_name());
         due_date.setText(invoice.getDue_date());
-        invoice_date.setText(invoice.getInvoice_date());
-        db=new DBHelper(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
+        invoice_date.setText(invoice.getInvoice_date());*/
+      //  db=new DBHelper(this);
+        Toolbar toolbar =  findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         // setActionBar(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,11 +57,18 @@ public class InvoiceInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                FragmentEditReport.InvoiceDueDate=due_date.getText().toString();
-                FragmentEditReport.InvoiceCreateDate=invoice_date.getText().toString();
-                FragmentEditReport.InvoiceName=invoice_name.getText().toString();
+                if(FragmentEditReport.IsNewInvoice){
+                    FragmentEditReport.InvoiceDueDate=due_date.getText().toString();
+                    FragmentEditReport.InvoiceCreateDate=invoice_date.getText().toString();
+                    FragmentEditReport.StrInvoiceName=invoice_name.getText().toString();
+                }else {
+                    FragmentEditReportUpdate.InvoiceDueDate=due_date.getText().toString();
+                    FragmentEditReportUpdate.InvoiceCreateDate=invoice_date.getText().toString();
+                    FragmentEditReportUpdate.StrInvoiceName=invoice_name.getText().toString();
+                }
+
                 // perform whatever you want on back arrow click
-                db.updateInvoiceInfo(invoice_name.getText().toString(),invoice_date.getText().toString(),due_date.getText().toString(), FragmentEditReport.invoice_id);
+               // db.updateInvoiceInfo(invoice_name.getText().toString(),invoice_date.getText().toString(),due_date.getText().toString(), FragmentEditReport.invoice_id);
                 finish();
             }
         });
@@ -80,20 +85,39 @@ public class InvoiceInfoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setDateToFields() {
+        invoice_date.setText(FragmentEditReportUpdate.InvoiceCreateDate);
+        due_date.setText(FragmentEditReportUpdate.InvoiceDueDate);
+    }
+
     public void DateDialog(final String identifier){
         DatePickerDialog.OnDateSetListener listener=new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
             {
                 monthOfYear=monthOfYear+1;
-                if(identifier.equals("invoice")){
-                    invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                    FragmentEditReport.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
-                }
-                else{
-                    FragmentEditReport.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
-                    /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
-                    due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                if(FragmentEditReport.IsNewInvoice){
+                    if(identifier.equals("invoice")){
+                        invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                        FragmentEditReport.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                    }
+                    else{
+                        FragmentEditReport.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                        /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
+                        due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                    }
+
+                }else {
+                    if(identifier.equals("invoice")){
+                        invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                        FragmentEditReportUpdate.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                    }
+                    else{
+                        FragmentEditReportUpdate.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                        /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
+                        due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                    }
                 }
 
             }};

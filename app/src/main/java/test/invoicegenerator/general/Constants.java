@@ -52,15 +52,10 @@ public class Constants {
     public static String STATE="state";
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 231;
-
-
     public static final int Image_Request_Code = 7;
     public static final int Stamp_Image_Request_Code = 6;
-
-
     public static final int PICK_IMAGE_REQUEST=0;
     public static final int PIC_CROP = 8;
-
     public static ArrayList<StateModel> STATE_LIST;
     public static ArrayList<Country> COUNTRY_LIST;
 }

@@ -2,7 +2,6 @@ package test.invoicegenerator.Activities;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -49,8 +48,6 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.menu_adapter;
-import test.invoicegenerator.databaseutilities.DBHelper;
-import test.invoicegenerator.fragments.ClientSelection;
 import test.invoicegenerator.fragments.Configrations;
 import test.invoicegenerator.fragments.DashboardFragment;
 import test.invoicegenerator.fragments.FragmentAddClient;
@@ -82,8 +79,8 @@ public class MainActivity extends BaseActivity  implements
 
     ArrayList<String> Name = new ArrayList<>();
     ArrayList<Integer> Pic = new ArrayList<>();
-    DBHelper sqliteHelper;
-    private DBHelper db;
+  /*  DBHelper sqliteHelper;
+    private DBHelper db;*/
 
     Button back_btn;
 
@@ -93,7 +90,7 @@ public class MainActivity extends BaseActivity  implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainframe);
         ButterKnife.bind(this);
-        sqliteHelper=new DBHelper(MainActivity.this);
+       // sqliteHelper=new DBHelper(MainActivity.this);
 
         loadFragment(new DashboardFragment(),null);
 
@@ -108,7 +105,7 @@ public class MainActivity extends BaseActivity  implements
     private void init() {
 
         cdd=new Progressbar(MainActivity.this);
-        db=new DBHelper(this);
+        //db=new DBHelper(this);
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         menu_icon =  findViewById(R.id.menu_icon);
@@ -177,7 +174,8 @@ public class MainActivity extends BaseActivity  implements
                         break;
                     case 2:
                         Pic.set( position, R.drawable.ic_menu_report );Pic.set(position, R.drawable.ic_menu_report);
-                        Cursor rs=db.getInvoiceData();
+                        loadFragment(new FragmentEditReport(),null);
+                        /*Cursor rs=db.getInvoiceData();
                         if(rs.isAfterLast() == false)
                             loadFragment(new FragmentReport(),null);
                         else
@@ -187,7 +185,7 @@ public class MainActivity extends BaseActivity  implements
                             args.putString("clicked", "false");
                             loadFragment(new FragmentEditReport(),args);
                         }
-
+*/
                         break;
                     case 3:
                         Pic.set( position, R.drawable.ic_menu_addinvoice );
@@ -238,7 +236,8 @@ public class MainActivity extends BaseActivity  implements
 
             case 2:
                 Pic.set(position, R.drawable.ic_menu_report);
-                Cursor rs=db.getInvoiceData();
+                loadFragment(new FragmentReport(),null);
+               /* Cursor rs=db.getInvoiceData();
                 if(rs.isAfterLast() == false)
                     loadFragment(new FragmentReport(),null);
                 else
@@ -247,7 +246,7 @@ public class MainActivity extends BaseActivity  implements
                     args.putString("new", "true");
                     args.putString("clicked", "false");
                     loadFragment(new FragmentEditReport(),args);
-                }
+                }*/
                 break;
 
             case 3:

@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
-import test.invoicegenerator.databaseutilities.DBHelper;
 import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.Util;
@@ -59,7 +58,7 @@ public class ActivityAddItem extends AppCompatActivity {
     @BindView(R.id.tax_rate_layout)
     LinearLayout tax_rate_layout;
 
-    DBHelper db;
+   // DBHelper db;
     String item_id;
 
     @Override
@@ -102,10 +101,15 @@ public class ActivityAddItem extends AppCompatActivity {
         SharedPref.init(ActivityAddItem.this);
 
         FragmentEditReport.is_new="false";
-        setValuesOfFields();
+        if(FragmentEditReport.IsNewInvoice){
+            setValuesOfFields();
+        }else {
+           // setValuesOfFieldsUpdate();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         // setActionBar(toolbar);
-        db=new DBHelper(this);
+       // db=new DBHelper(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -157,6 +161,16 @@ public class ActivityAddItem extends AppCompatActivity {
 
 
     }
+
+  /*  private void setValuesOfFieldsUpdate() {
+
+        item_id= FragmentEditReportUpdate.item_values.get(0).getId();
+        description.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
+        unit_cost_field.setText(bundle.getString("unit_cost"));
+        quantity_field.setText(bundle.getString("quntity"));
+        amount_field.setText(bundle.getString("amount"));
+        additional_field.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
+    }*/
 
     private void setValuesOfFields() {
         Bundle bundle=getIntent().getExtras();
@@ -291,7 +305,7 @@ public class ActivityAddItem extends AppCompatActivity {
 
 
 
-            Item value_item = new Item();
+          /*  Item value_item = new Item();
             String nam = description.getText().toString();
             String amount = amount_field.getText().toString();
 
@@ -309,7 +323,7 @@ public class ActivityAddItem extends AppCompatActivity {
             }
 
             value_item.setAdditional(additional_field.getText().toString());
-            FragmentEditReport.item_values.add(value_item);
+            FragmentEditReport.item_values.add(value_item);*/
 
 
 
@@ -327,13 +341,13 @@ public class ActivityAddItem extends AppCompatActivity {
 
 
 
-              /*  Item value_item = new Item();
+                Item value_item = new Item();
                String nam = description.getText().toString();
                 String amount = amount_field.getText().toString();
 
                 if(!amount.equals(""))
                     FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
-                FragmentEditReport.items.add(nam);
+              //  FragmentEditReport.items.add(nam);
                 value_item.setDescription(description.getText().toString());
                 value_item.setAmount(amount_field.getText().toString());
                 value_item.setQuantity( quantity_field.getText().toString());
@@ -346,7 +360,6 @@ public class ActivityAddItem extends AppCompatActivity {
 
                 value_item.setAdditional(additional_field.getText().toString());
                 FragmentEditReport.item_values.add(value_item);
-*/
 
 
      /*            InvoiceItem.put("name", "First item");

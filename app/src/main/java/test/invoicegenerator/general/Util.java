@@ -373,7 +373,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
     public static String getTodayDate()
     {
        /* SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");*/
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-yyyy",Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
         Date date = new Date();
         return formatter.format(date);
     }
