@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.pepperonas.materialdialog.MaterialDialog;
@@ -37,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -48,6 +48,7 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.menu_adapter;
+import test.invoicegenerator.fragment_handler.Fragment_Model;
 import test.invoicegenerator.fragments.Configrations;
 import test.invoicegenerator.fragments.DashboardFragment;
 import test.invoicegenerator.fragments.FragmentAddClient;
@@ -65,6 +66,11 @@ public class MainActivity extends BaseActivity  implements
         FragmentAddClient.OnItemSelectedListener,
         FragmentUpdateClient.OnItemSelectedListener
         {
+           /* public static Fragment_Model CurrentFragment;
+            public static FragmentTransaction fragmentTransaction;
+            public static FragmentManager fm;
+            public static List<Fragment_Model> FragmentsList;
+            public static int FragmentPosition = -1;*/
 
     Progressbar cdd;
     Snackbar snackbar;
@@ -103,6 +109,9 @@ public class MainActivity extends BaseActivity  implements
 
 
     private void init() {
+      /*  FragmentsList = new ArrayList<>();
+        fm = getSupportFragmentManager();
+*/
 
         cdd=new Progressbar(MainActivity.this);
         //db=new DBHelper(this);
@@ -114,9 +123,45 @@ public class MainActivity extends BaseActivity  implements
         menulist = findViewById(R.id.menu_list);
         back_btn =findViewById(R.id.back_btn);
 
-
+        //OpenFragment(new DashboardFragment(),getResources().getString(R.string.tag_dashboard),null,getResources().getString(R.string.tag_dashboard));
 
     }
+
+
+
+          /*  public static void OpenFragment(Fragment fragment, String tag, Bundle bundle, String Title)
+            {
+                try
+                {
+                    for (int count = 0; count < FragmentsList.size(); count++)
+                    {
+                        if (FragmentsList.get(count).getTagName().equals(tag))
+                        {
+                            fragment = FragmentsList.get(count).getFragment();
+                            FragmentsList.remove(count);
+                            FragmentPosition--;
+                            break;
+                        }
+                    }
+
+
+                    Fragment_Model fragment_model = new Fragment_Model(tag, fragment, bundle, Title);
+                    FragmentsList.add(fragment_model);
+
+                    fragmentTransaction = fm.beginTransaction();
+
+                    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                            R.anim.slide_left, R.anim.slide_right);
+                    fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
+                    fragmentTransaction.commit();
+                    FragmentPosition++;
+
+                }
+                catch (Exception e)
+                {
+                    Log.d("tag", "OpenFragment : \n" + e.getMessage());
+                }
+            }*/
 
     private void loadFragment(Fragment dashboardFragment,Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -169,23 +214,14 @@ public class MainActivity extends BaseActivity  implements
 
                     case 1:
                         Pic.set( position, R.drawable.ic_menu_clients );
+
                         loadFragment(new FragmentAllClients(),null);
 
                         break;
                     case 2:
                         Pic.set( position, R.drawable.ic_menu_report );Pic.set(position, R.drawable.ic_menu_report);
                         loadFragment(new FragmentEditReport(),null);
-                        /*Cursor rs=db.getInvoiceData();
-                        if(rs.isAfterLast() == false)
-                            loadFragment(new FragmentReport(),null);
-                        else
-                        {
-                            Bundle args = new Bundle();
-                            args.putString("new", "true");
-                            args.putString("clicked", "false");
-                            loadFragment(new FragmentEditReport(),args);
-                        }
-*/
+
                         break;
                     case 3:
                         Pic.set( position, R.drawable.ic_menu_addinvoice );
@@ -226,6 +262,7 @@ public class MainActivity extends BaseActivity  implements
         switch (position) {
             case 0:
                 Pic.set(position, R.drawable.ic_menu_clients);
+
                 loadFragment(new FragmentAllClients(),null);
                 break;
 
@@ -352,13 +389,7 @@ public class MainActivity extends BaseActivity  implements
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
-//                        SharedPref.init(MainFrame.this.getApplicationContext());
-//                        SharedPref.write(SharedPref.LoginID, "0");
-//                        SharedPref.write(SharedPref.PROFILE_COMPLETED,"No");
-//
-//                        Intent intent = new Intent(MainFrame.this,AuthenticationFrame.class);
-//                        startActivity(intent);
-//                        finish();
+
                         DataSendToServerForSignOut();
                         return;
 
@@ -372,52 +403,12 @@ public class MainActivity extends BaseActivity  implements
 
                 })
                 .show();
-
-
     }
-
-          /*  @Override
-            public void onBackPressed() {
-              //  super.onBackPressed();
-                Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
-                if(f instanceof ClientSelection){}
-
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag("ClientSelection");
-                if(fragment != null){
-                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                }
-            }*/
-
-    /*  @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }*/
-
 
     void DataSendToServerForSignOut()
     {
 
         cdd.ShowProgress();
-
-
         initVolleyCallbackForSignOut();
         mVolleyService = new VolleyService(mResultCallback,MainActivity.this);
         Map<String, String> data = new HashMap<String, String>();
@@ -668,5 +659,25 @@ public class MainActivity extends BaseActivity  implements
 
     }
 
+          /*  @Override
+            public void onBackPressed() {
+                if (FragmentsList.size() > 1) {
 
+
+                    fragmentTransaction = fm.beginTransaction();
+
+                    int PreviousFragmentPosition = FragmentPosition - 1;
+                    Fragment_Model fragment_model = FragmentsList.get(PreviousFragmentPosition);
+                    FragmentsList.remove(FragmentPosition);
+                    FragmentPosition--;
+                    CurrentFragment = fragment_model;
+                    fragmentTransaction.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left,
+                            R.anim.slide_right, R.anim.slide_left);
+                    fragmentTransaction.replace(R.id.fragment_frame, CurrentFragment.getFragment());
+
+                    fragmentTransaction.commit();
+                }else {
+                    Toast.makeText(this, "else", Toast.LENGTH_SHORT).show();
+                }
+            }*/
         }

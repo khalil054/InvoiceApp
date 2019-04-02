@@ -263,4 +263,10 @@
     <string name="lbl_take_camera_picture">Take a picture</string>
     <string name="lbl_choose_from_gallery">Choose from gallery</string>
     <string name="toast_image_intent_null">Image picker option is missing!</string>
+
+
+
+    <string name="tag_dashboard">Dashboard Frag</string>
+    <string name="tag_allclients">AllClients Frag</string>
+    <string name="tag_update_client">UpdateClients Frag</string>
 </resources>

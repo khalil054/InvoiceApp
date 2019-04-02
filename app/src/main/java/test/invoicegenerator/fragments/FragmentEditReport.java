@@ -78,7 +78,9 @@ import static test.invoicegenerator.general.Constants.TAX_CODE;
 
 
 public class FragmentEditReport extends BaseFragment implements View.OnClickListener{
-
+    int totalHeight = 0;
+    int adapterCount=0;
+    ItemAdapter itemsAdapter;
     public static boolean IsNewInvoice=true;
     @BindView(R.id.layout_edit)
     RelativeLayout layout_edit;
@@ -125,12 +127,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     public static int subtotal_value=0;
     private int tax,discount=0;
     private String tax_type,discount_type="";
-
     public static ArrayList<Item> item_values=new ArrayList<>();
-
     public static long invoice_id;
     public static String is_new;
-
     public static String sign_path="";
     String realPath;
     public static final int REQUEST_IMAGE = 100;
@@ -171,11 +170,6 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
         setInvoiceAndTaxValues();
     }
-
-
-
-
-
     private void setInvoiceAndTaxValues() {
 
         if(discount_type.equals("percentage"))
@@ -184,8 +178,6 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
             discount_value.setText(String.valueOf(discount+""));
         tax_value.setText(String.valueOf(tax+""));
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -407,15 +399,14 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
             if(!subtotal_value_field.getText().toString().equals(""))
                 total_value.setText(String.valueOf(Util.calculateTotalValue(Integer.parseInt(subtotal_value_field.getText().toString()),
                         discount, tax, discount_type,tax_type ) + ""));
-
-
         }
         else if(requestCode==ADD_ITEM_CODE)
         {
             Toast.makeText(getActivity(), String.valueOf(item_values.size()), Toast.LENGTH_SHORT).show();
             subtotal_value_field.setText(String.valueOf(subtotal_value+""));
-            ItemAdapter itemsAdapter=new ItemAdapter(getActivity(),item_values);
+            itemsAdapter=new ItemAdapter(getActivity(),item_values);
             item_list.setAdapter(itemsAdapter);
+            SetListViewHeight();
 
         }else  if (requestCode == REQUEST_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
@@ -425,7 +416,6 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 try {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-
                     // loading profile image from local cache
                     loadProfile(uri.toString());
                 } catch (IOException e) {
@@ -445,8 +435,6 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         {
             setUpdatedInvoiceInfo();
         }
-
-
     }
 
     private void setUpdatedInvoiceInfo() {
@@ -455,12 +443,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         due_date.setText(InvoiceDueDate);
     }
 
-
-
-
     private void loadProfile(String url) {
-
-
         GlideApp.with(this).load(url)
                 .into(image1);
         image1.setColorFilter(ContextCompat.getColor(getActivity(), android.R.color.transparent));
@@ -564,16 +547,11 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObjectNew =jsonObject.getJSONObject("data");
                     boolean status = jsonObjectNew.getBoolean("status");
-
-
                     if(status)
                     {
-
-
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
-
                                 loadFragment(new FragmentReport(),null);
 
                             }
@@ -583,24 +561,14 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                         snackbar.show();
 
                     } else {
-
-
                         String error = jsonObject.getString("Error");
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
                 hideProgressBar();
-
-
-
-
             }
 
             @Override
@@ -612,26 +580,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     String error_response = new String(error.networkResponse.data);
                     // dialogHelper.showErroDialog(error_response);
                     Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
-
-                    SharedPref.init(getActivity());
-                    String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
-                    String client = SharedPref.read(Constants.CLIENT, "");
-                    String uid = SharedPref.read(Constants.UID, "");
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setCancelable(false);
-                    builder.setMessage(String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-
-                    builder.create().show();
-
-
-                    try {
+                       try {
                         JSONObject response_obj = new JSONObject(error_response);
 
                         {
@@ -651,14 +600,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
             @Override
             public void notifySuccessResponseHeader(NetworkResponse response) {
-
             }
-
-
-
         };
     }
-
 
     public String ChangeFileToBase64(String filepath){
         String base64Image;
@@ -673,6 +617,18 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
         }
         return base64Image;
     }
-
+    private void SetListViewHeight() {
+        adapterCount=itemsAdapter.getCount();
+        totalHeight=0;
+        for (int size = 0; size < adapterCount; size++) {
+            View listItem = itemsAdapter.getView(size, null, item_list);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = item_list.getLayoutParams();
+        params.height = (totalHeight
+                + (item_list.getDividerHeight() * (adapterCount)));
+        item_list.setLayoutParams(params);
+    }
 }
 

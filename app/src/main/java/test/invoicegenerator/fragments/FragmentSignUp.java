@@ -15,17 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -179,8 +175,6 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         data.put("email",email.getText().toString());
         data.put("name",name.getText().toString());
         data.put("company_attributes[name]",company_name.getText().toString());
-
-
         mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignUp,data );
     }
 

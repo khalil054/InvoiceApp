@@ -2,12 +2,8 @@ package test.invoicegenerator.general;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.github.barteksc.pdfviewer.PDFView;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -31,11 +26,8 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.WebColors;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -43,12 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import test.invoicegenerator.R;
-
-import static com.itextpdf.text.BaseColor.RED;
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
 /**
@@ -467,7 +454,7 @@ private void combineTwoTables(Document document) throws DocumentException {
                     File myFile=getExternalStorageFile();
                     preparePdfDocument(myFile);
                 }else {
-                    Toast.makeText(getActivity(), " GET_ACCOUNTS Denied",
+                    Toast.makeText(getActivity(), "GET_ACCOUNTS Denied",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;

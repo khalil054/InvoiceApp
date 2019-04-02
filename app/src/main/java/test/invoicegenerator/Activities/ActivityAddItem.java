@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.fragments.FragmentEditReport;
+import test.invoicegenerator.fragments.FragmentEditReportUpdate;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
@@ -199,73 +200,7 @@ public class ActivityAddItem extends AppCompatActivity {
     }
 
     private void validateAndSaveData() {
-      /*  JSONObject InvoiceItem = new JSONObject();
-        try {
-            InvoiceItem.put("name", "First item");
-            InvoiceItem.put("description","item des");
-            InvoiceItem.put("qty", "10");
-            InvoiceItem.put("price","45");
-            InvoiceItem.put("subtotal", "450");
-            InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-            *//*InvoiceItem.put("tax_code_id","1");*//*
-            InvoiceItem.put("company_id", "2");
 
-            FragmentEditReport.InvoicesArray.put(InvoiceItem);
-
-            finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
-       /* if(unit_cost_field.getText().toString().equals(""))
-        {
-            unit_cost_field.setError(getString(R.string.error_field_required));
-            unit_cost_field.requestFocus();
-        }
-        if(!Util.isZipCodeValid(unit_cost_field.getText().toString()))
-        {
-            unit_cost_field.setError(getString(R.string.invalid_cost));
-            unit_cost_field.requestFocus();
-        }
-        if(!Util.isZipCodeValid(quantity_field.getText().toString()))
-        {
-            quantity_field.setError(getString(R.string.invalid_quantity));
-            quantity_field.requestFocus();
-        }
-
-        else
-        {
-          *//*  User user = new User();
-            //  user.setId();
-            user.setName(name.getText().toString() + 10);
-            user.setEmail(email.getText().toString());
-            user.setMobile(mobile.getText().toString());
-            user.setPhone(phone.getText().toString());
-            user.setFax(fax.getText().toString());
-            user.setContact(contact_text.getText().toString());
-            user.setLine1(line1.getText().toString());
-            user.setLine2(line2.getText().toString());
-            user.setLine3(line3.getText().toString());
-            RealmManager.createUserDao().save(user);*//*
-          *//*long item_key=db.insertItemData(description.getText().toString(),unit_cost_field.getText().toString(),quantity_field.getText().toString(),
-                  amount_field.getText().toString(),String.valueOf(taxable_field.isChecked()),tax_rate_field.getText().toString(),additional_field.getText().toString()
-                  , FragmentEditReport.invoice_id);
-            if(item_key!=-1){
-                Toast.makeText(getApplicationContext(), "done",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            } else{
-                Toast.makeText(getApplicationContext(), "not done",
-                        Toast.LENGTH_SHORT).show();
-            }
-            db.updateInvoiceData("item_key",String.valueOf(item_key), FragmentEditReport.invoice_id);*//*
-
-
-
-
-
-            ;
-        }*/
         String CompanyID= String.valueOf(SharedPref.read(SharedPref.CompanyID,""));
         if(TextUtils.isEmpty(description.getText().toString())){
             description.setError(getString(R.string.invalid_quantity));
@@ -284,48 +219,6 @@ public class ActivityAddItem extends AppCompatActivity {
               amount_field.requestFocus();*/
             Toast.makeText(this, "Invalid Company:"+CompanyID, Toast.LENGTH_SHORT).show();
         }else {
-
-/*
-            JsonObject InvoiceItem = new JsonObject();
-
-            InvoiceItem.addProperty("name", "First item");
-            InvoiceItem.addProperty("description","item des");
-            InvoiceItem.addProperty("qty", "10");
-            InvoiceItem.addProperty("price","45");
-            InvoiceItem.addProperty("subtotal", "450");
-            InvoiceItem.addProperty("subtotal_with_tax_applied", "0.0");
-          *//*  InvoiceItem.addProperty("tax_code_id","1");*//*
-            InvoiceItem.addProperty("company_id", "2");
-
-            FragmentEditReport.InvoicesArray.add(InvoiceItem);
-
-            finish();*/
-
-
-
-
-
-          /*  Item value_item = new Item();
-            String nam = description.getText().toString();
-            String amount = amount_field.getText().toString();
-
-            if(!amount.equals(""))
-                FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
-          //  FragmentEditReport.items.add(nam);
-            value_item.setDescription(description.getText().toString());
-            value_item.setAmount(amount_field.getText().toString());
-            value_item.setQuantity( quantity_field.getText().toString());
-            value_item.setUnit_cost(unit_cost_field.getText().toString());
-            if(taxable_field.isChecked()){
-                value_item.setTaxable("true");
-            }else {
-                value_item.setTaxable("false");
-            }
-
-            value_item.setAdditional(additional_field.getText().toString());
-            FragmentEditReport.item_values.add(value_item);*/
-
-
 
             JSONObject InvoiceItem = new JSONObject();
 
@@ -359,19 +252,17 @@ public class ActivityAddItem extends AppCompatActivity {
                 }
 
                 value_item.setAdditional(additional_field.getText().toString());
-                FragmentEditReport.item_values.add(value_item);
 
+                if(FragmentEditReport.IsNewInvoice){
+                    FragmentEditReport.item_values.add(value_item);
 
-     /*            InvoiceItem.put("name", "First item");
-                InvoiceItem.put("description","item des");
-                InvoiceItem.put("qty", "10");
-                InvoiceItem.put("price","45");
-                InvoiceItem.put("subtotal", "450");
-                InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-                InvoiceItem.put("tax_code_id","1");
-                InvoiceItem.put("company_id", "2");*/
+                    FragmentEditReport.InvoicesArray.put(InvoiceItem);
+                }else {
+                    FragmentEditReportUpdate.item_values.add(value_item);
 
-                FragmentEditReport.InvoicesArray.put(InvoiceItem);
+                    FragmentEditReportUpdate.InvoicesArray.put(InvoiceItem);
+                }
+
 
                 finish();
 

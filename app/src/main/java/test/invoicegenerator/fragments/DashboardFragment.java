@@ -1,15 +1,10 @@
 package test.invoicegenerator.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import com.google.firebase.storage.StorageReference;
-
-
 import test.invoicegenerator.R;
 import test.invoicegenerator.Activities.MainActivity;
 
@@ -17,9 +12,9 @@ import test.invoicegenerator.Activities.MainActivity;
 public class DashboardFragment extends BaseFragment  {
 
 
-    Uri filePath;
+   /* Uri filePath;
 
-    StorageReference storageReference;
+    StorageReference storageReference;*/
     LinearLayout layoutClient,layoutReports,layoutAddInvoice,layoutInvoiceReport,layoutConfiguration,layoutSettings;
     public static boolean ShowInvoiceInfo=false;
     @Override
@@ -32,7 +27,6 @@ public class DashboardFragment extends BaseFragment  {
 
     private void init(View v)
     {
-
         layoutClient=v.findViewById(R.id.layot_clients);
         layoutReports=v.findViewById(R.id.layot_reports);
         layoutAddInvoice=v.findViewById(R.id.layot_add_invoice);
@@ -44,10 +38,8 @@ public class DashboardFragment extends BaseFragment  {
         layoutClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new FragmentAllClients(),null);
-
-
-
+               loadFragment(new FragmentAllClients(),null);
+                //MainActivity.OpenFragment(new FragmentAllClients(),getResources().getString(R.string.tag_allclients),null,getResources().getString(R.string.tag_allclients));
 
             }
         });
