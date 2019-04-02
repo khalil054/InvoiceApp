@@ -12,6 +12,8 @@ import android.widget.Spinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
+import test.invoicegenerator.fragments.FragmentEditReport;
+import test.invoicegenerator.fragments.FragmentEditReportUpdate;
 
 public class DiscountActivity extends AppCompatActivity {
 
@@ -56,8 +58,17 @@ public class DiscountActivity extends AppCompatActivity {
     }
 
     private void setComponentsValues() throws NullPointerException {
-        String dis_type=getIntent().getStringExtra("discount_type");
-        int discount=getIntent().getIntExtra("discount",0);
+        String dis_type;
+        int discount;
+        if(FragmentEditReport.IsNewInvoice){
+            dis_type=getIntent().getStringExtra("discount_type");
+            discount =getIntent().getIntExtra("discount",0);
+        }else {
+            dis_type= FragmentEditReportUpdate.discount_type;
+            discount=0;
+        }
+
+
         if(!dis_type.equals("") && dis_type!=null)
         {
             if(dis_type.equals("percentage"))

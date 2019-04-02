@@ -1,9 +1,6 @@
 package test.invoicegenerator.NetworksCall;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -18,26 +15,16 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.async.http.body.Part;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.ProgressCallback;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.general.Constants;
-import test.invoicegenerator.general.MyInvoiceModel;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
@@ -554,13 +541,9 @@ public class VolleyService {
                 headers.put("access-token", access_token);
                 headers.put("client",client );
                 headers.put("uid",uid);
-
-
                 return headers;
             }
-        }
-
-                ;
+        };
         strRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(strRequest);
         //first one
@@ -632,8 +615,6 @@ public class VolleyService {
                 headers.put("access-token", access_token);
                 headers.put("client",client );
                 headers.put("uid",uid);
-
-
                 return headers;
             }
 
@@ -657,9 +638,6 @@ public class VolleyService {
                         {
                             if(mResultCallback != null)
                                 mResultCallback.notifySuccess(requestType,response);
-
-
-
                         }
 
 
@@ -694,7 +672,7 @@ public class VolleyService {
             queue.add(strRequest);
 
         }catch(Exception e){
-
+                e.printStackTrace();
         }
     }
 
@@ -710,8 +688,6 @@ public class VolleyService {
                         {
                             if(mResultCallback != null)
                                 mResultCallback.notifySuccess(requestType,response);
-
-
 
                         }
 
@@ -729,7 +705,6 @@ public class VolleyService {
             )
 
             {
-
                 /*@Override
                 protected Map<String, String> getParams()
                 {
@@ -766,8 +741,4 @@ public class VolleyService {
             e.printStackTrace();
         }
     }
-
-
-
-
 }

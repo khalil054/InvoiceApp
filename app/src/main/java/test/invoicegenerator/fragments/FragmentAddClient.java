@@ -93,9 +93,6 @@ public class FragmentAddClient extends BaseFragment{
         return view;
     }
 
-
-
-
     private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
                                      String StrState,String StrCountry,String StrPostalCode) {
         if(StrEmail.equals(""))
@@ -202,9 +199,7 @@ public class FragmentAddClient extends BaseFragment{
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    Boolean status = jsonObject1.getBoolean("status");
-
-
+                    boolean status = jsonObject1.getBoolean("status");
                     if(status)
                     {
 
@@ -222,25 +217,15 @@ public class FragmentAddClient extends BaseFragment{
 
                         snackbar = Snackbar.make(main_layout,"Client Added Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
-
                     } else {
-
-
                         String error = jsonObject.getString("Error");
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
-
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     progressbar.HideProgress();
                 }
-
-
-
-
-
 
             }
 
@@ -251,7 +236,6 @@ public class FragmentAddClient extends BaseFragment{
 
             @Override
             public void notifySuccessResponseHeader(NetworkResponse response) {
-
             }
 
 

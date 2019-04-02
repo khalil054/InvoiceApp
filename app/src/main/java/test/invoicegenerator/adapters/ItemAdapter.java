@@ -20,6 +20,8 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Item;
 
 public class ItemAdapter extends BaseAdapter {
+
+    ViewGroup.LayoutParams layoutparams;
     private final Context context;
     ArrayList<Item> reportModelArrayList = new ArrayList<Item>();
     int index = 0;
@@ -83,7 +85,6 @@ public class ItemAdapter extends BaseAdapter {
             amount.setText(reportModel1.getAmount());
 
         }
-
 
         return rowView;
     }

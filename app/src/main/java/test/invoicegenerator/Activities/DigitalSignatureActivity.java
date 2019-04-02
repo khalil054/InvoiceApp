@@ -59,7 +59,7 @@ public class DigitalSignatureActivity extends AppCompatActivity {
     private String signature_path="";
     @BindView(R.id.signature_by)
     EditText Signed_name;
-    boolean isredrawimage=false;
+    public static boolean isredrawimage=false;
     Bitmap decodedImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,7 +160,7 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                     }else {
                         if(!TextUtils.isEmpty(Str)){
                             FragmentEditReportUpdate.StrSignedBy=Str;
-                            convertImageToBase64(decodedImage);
+                            FragmentEditReportUpdate.StBase64ImageToSave= convertImageToBase64(decodedImage);
                             finish();
                         }else {
                             showMessage("Enter Name");
@@ -229,14 +229,13 @@ public class DigitalSignatureActivity extends AppCompatActivity {
     private void setSignatureToImageView() {
         /*if(!signature_path.equals(""))*/
         if(!TextUtils.isEmpty(FragmentEditReport.StrImagePath)){
-            if(!FragmentEditReport.StrImagePath.equals(""))
-            {
+
                 Signed_name.setText(FragmentEditReport.StrSignedBy);
                 image.setVisibility(View.VISIBLE);
                 erase_all.setVisibility(View.GONE);
                 drawingView.setVisibility(View.GONE);
 
-                File imgFile = new File(FragmentEditReportUpdate.StrImagePath);
+                File imgFile = new File(FragmentEditReport.StrImagePath);
 
                 if(imgFile.exists()){
 
@@ -245,10 +244,10 @@ public class DigitalSignatureActivity extends AppCompatActivity {
                     image.setImageBitmap(myBitmap);
 
                 }
-            }else {
-                Toast.makeText(this, "signature_path null", Toast.LENGTH_SHORT).show();
-            }
 
+
+        }else {
+            Toast.makeText(this, "signature_path null", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -268,6 +267,7 @@ public class DigitalSignatureActivity extends AppCompatActivity {
             File wallpaperDirectory = new File("/sdcard/UserSignatues/");
             wallpaperDirectory.mkdirs();
         }
+
     if(FragmentEditReport.IsNewInvoice){
         FragmentEditReport.StrImagePath="/sdcard/UserSignatues/"+fileName;
 

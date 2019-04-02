@@ -57,16 +57,13 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
     LottieAnimationView confirmationView;
     @BindView(R.id.main_layout)
     ConstraintLayout main_layout;
-
     SwipeMenuListView listView;
-
     ClientWithAddressModel clientWithAddressModel;
     Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
     int DeletePosition = 0;
     addressAdapter addressAdapter;
-
     FloatingActionButton floating_AddClient;
 
     @Override
@@ -77,15 +74,11 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         unbinder = ButterKnife.bind(this, view);
         floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
-
-
         return view;
     }
-
     private void init() {
         GetClientDetail(GlobalData.clientId);
         Btn_AddClient.setText(String.valueOf("Update"));
-
         floating_AddClient.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 loadFragment(new AddAddress(),null);
@@ -96,7 +89,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
             @Override
             public void create(SwipeMenu menu) {
-
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getActivity().getApplicationContext());
@@ -111,7 +103,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 menu.addMenuItem(deleteItem);
             }
         };
-
         listView.setMenuCreator(creator);
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -205,7 +196,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
             DataSendToServerForUpdate();
         }
 
-
     }
 
     void DataSendToServerForUpdate()
@@ -230,12 +220,10 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Boolean status = jsonObject.getBoolean("status");
-
+                    boolean status = jsonObject.getBoolean("status");
 
                     if(status)
                     {
-
                         confirmationView.setVisibility(View.VISIBLE);
                         confirmationView.playAnimation();
                         Handler handler = new Handler();
@@ -257,18 +245,11 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
 
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
                 hideProgressBar();
-
-
-
-
             }
 
             @Override
@@ -332,9 +313,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
         };
     }
 
-
-
-
     public void DeleteAddress(String id)
     {
 
@@ -383,7 +361,6 @@ public class FragmentUpdateClient extends BaseFragment implements View.OnClickLi
 
         void onAddClientFragCallBack(int position);
     }
-
 
 }
 

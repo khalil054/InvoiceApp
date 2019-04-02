@@ -1,5 +1,6 @@
 package test.invoicegenerator.fragments;
 
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -38,17 +39,14 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -80,6 +78,8 @@ import static test.invoicegenerator.general.Constants.TAX_CODE;
 
 public class FragmentEditReportUpdate extends BaseFragment implements View.OnClickListener{
 
+    int totalHeight = 0;
+    int adapterCount=0;
     public static String InvoiceId_ToBeFetch;
     GetSingleInvoiceDetailModel singleInvoiceDetailModel;
     @BindView(R.id.layout_edit)
@@ -128,7 +128,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     public static String InvoiceDueDate,InvoiceCreateDate,StrSignedBy,StrInvoiceName;
     public static String SelectedClientId,SelectedUserID,SelectedCompanyId,SelectedClientName;
     private int tax,discount=0;
-    private String tax_type,discount_type="";
+    public static String tax_type,discount_type="";
     public static String sign_path="";
     String realPath;
     public static String StrImagePath;
@@ -140,6 +140,9 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     public static JSONArray InvoicesArray=new JSONArray();
     IResult mResultCallback = null;
     VolleyService mVolleyService;
+    public String clientID;
+    ItemAdapter itemsAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,24 +163,13 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         tax_card.setOnClickListener(this);
         sign_card.setOnClickListener(this);
         save_invoice.setOnClickListener(this);
+        save_invoice.setText("Update");
         attachment_card.setOnClickListener(this);
         layout_edit_header.setOnClickListener(this);
 
         GetSingleInvoiceDetail();
-       // setInvoiceAndTaxValues();
     }
 
-
-
-
-    /*private void setInvoiceAndTaxValues() {
-       // getInvoiceValues();
-        if(discount_type.equals("percentage"))
-            discount_value.setText(discount+"%");
-        else
-            discount_value.setText(discount+"");
-        tax_value.setText(tax+"");
-    }*/
 
     @Override
     public void onClick(View v) {
@@ -222,7 +214,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                 SelectedUserID=SharedPref.read(SharedPref.CompanyID,"");
 
                 if(InvoicesArray.length()>0){
-                    Toast.makeText(getActivity(), String.valueOf(InvoicesArray), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getActivity(), String.valueOf(InvoicesArray), Toast.LENGTH_SHORT).show();
                     if(isEmptyString(InvoiceDueDate)){
                         showMessage("Invoice Date is Missing");
                     }else if(isEmptyString(comment_field.getText().toString())){
@@ -239,7 +231,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                         showMessage("Client Not Found");
                     }else if(isEmptyString(signature_value.getText().toString())){
                         showMessage("Signature Date Not Found");
-                    }else if(isEmptyString(StrImagePath)){
+                    }else if(isEmptyString(StBase64ImageToSave)){
                         showMessage("Signature Image Not Found");
                     }else if(isEmptyString(StrSignedBy)){
                         showMessage("Signed By Name Not Found");
@@ -252,7 +244,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                             String SignatureValue=signature_value.getText().toString();
                             String[]SignedDateDummy=SignatureValue.split(":");
                             String SignedDate=SignedDateDummy[1];
-                            Toast.makeText(getActivity(), String.valueOf(SignedDate), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getActivity(), String.valueOf(SignedDate), Toast.LENGTH_SHORT).show();
                             InvoiceToBeSend.put("signed_by", StrSignedBy);
                             InvoiceToBeSend.put("invoice_number", "1234");
                             InvoiceToBeSend.put("due_at", InvoiceDueDate);
@@ -306,14 +298,9 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         //intent5.putExtra("info",model);
         startActivityForResult(intent5,INVOICE_INFO_CODE);
     }
-
-
-
     private void openClientActivity() {
         Intent intent=new Intent(getActivity(), ClientSelectionActivity.class);
         startActivityForResult(intent, Constants.CLIENT_CODE);
-
-
     }
 
     private void selectLogoPic()
@@ -343,8 +330,6 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     @Override
     public void onResume() {
         super.onResume();
-
-
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -404,16 +389,18 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         }
         else if(requestCode==ADD_ITEM_CODE)
         {
-            Toast.makeText(getActivity(), String.valueOf(item_values.size()), Toast.LENGTH_SHORT).show();
+           Toast.makeText(getActivity(), String.valueOf("items list size"+item_values.size()), Toast.LENGTH_SHORT).show();
             subtotal_value_field.setText(subtotal_value+"");
-            ItemAdapter itemsAdapter=new ItemAdapter(getActivity(),item_values);
+            itemsAdapter=new ItemAdapter(getActivity(),item_values);
             item_list.setAdapter(itemsAdapter);
+            SetListViewHeight();
+
 
         }else  if (requestCode == REQUEST_IMAGE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getParcelableExtra("path");
                 realPath=String.valueOf(uri);
-                Toast.makeText(getActivity(), String.valueOf(uri), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getActivity(), String.valueOf(uri), Toast.LENGTH_SHORT).show();
                 try {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -430,7 +417,11 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         {
 
             if(DigitalSignatureActivity.is_signed)
-                StBase64ImageToSave=ChangeFileToBase64(StrImagePath);
+                if(DigitalSignatureActivity.isredrawimage){
+                    StBase64ImageToSave=ChangeFileToBase64(StrImagePath);
+
+                }
+                Toast.makeText(getActivity(), String.valueOf(StBase64ImageToSave), Toast.LENGTH_SHORT).show();
             signature_value.setText(String.valueOf("Signed on: "+ Util.getTodayDate()));
         }
         else if(requestCode==INVOICE_INFO_CODE)
@@ -439,6 +430,20 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         }
 
 
+    }
+
+    private void SetListViewHeight() {
+        adapterCount=itemsAdapter.getCount();
+        totalHeight=0;
+        for (int size = 0; size < adapterCount; size++) {
+            View listItem = itemsAdapter.getView(size, null, item_list);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = item_list.getLayoutParams();
+        params.height = (totalHeight
+                + (item_list.getDividerHeight() * (adapterCount)));
+        item_list.setLayoutParams(params);
     }
 
     private void setUpdatedInvoiceInfo() {
@@ -581,6 +586,12 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
 
     void  SetInvoiceAttributesForUpdate(GetSingleInvoiceDetailModel getSingleInvoiceDetailModel){
 
+        if(item_values.size()>0){
+            item_values.clear();
+        }
+        discount_type="percentage";
+        clientID=getSingleInvoiceDetailModel.getId();
+        Toast.makeText(getActivity(), clientID, Toast.LENGTH_SHORT).show();
         InvoiceDueDate=getSingleInvoiceDetailModel.getDue_at();
         StrSignedBy=getSingleInvoiceDetailModel.getSigned_by();
         InvoiceCreateDate=getSingleInvoiceDetailModel.getInvoiced_on();
@@ -612,8 +623,31 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
 
         }
 
-        ItemAdapter itemsAdapter=new ItemAdapter(getActivity(),item_values);
+        itemsAdapter=new ItemAdapter(getActivity(),item_values);
         item_list.setAdapter(itemsAdapter);
+        SetListViewHeight();
+        JSONObject InvoiceItem = new JSONObject();
+        for (int i=0;i<item_values.size();i++){
+            try {
+                InvoiceItem.put("name", item_values.get(i).getAdditional());
+                InvoiceItem.put("description", item_values.get(i).getDescription());
+                InvoiceItem.put("qty",  item_values.get(i).getQuantity());
+                InvoiceItem.put("price", item_values.get(i).getUnit_cost());
+                InvoiceItem.put("subtotal", item_values.get(i).getAmount());
+                InvoiceItem.put("subtotal_with_tax_applied", "0.0");
+                // InvoiceItem.put("tax_code_id","1");
+                InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID, "")));
+
+                InvoicesArray.put(InvoiceItem);
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+
+
+            Toast.makeText(getActivity(), String.valueOf(item_values.size()), Toast.LENGTH_SHORT).show();
     }
 
 
@@ -625,8 +659,8 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
 
         initVolleyCallbackForAddClient();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-
-        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddInvoices,Da );
+        String Str=NetworkURLs.BaseURL + NetworkURLs.GetSingleInvoice+clientID+".json";
+        mVolleyService.putDataVolleyForHeadersWithJson("POSTCALL",Str ,Da );
     }
 
     void initVolleyCallbackForAddClient(){
@@ -652,7 +686,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(layout_edit,"invoice Added Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(layout_edit,"Updated Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
 
                     } else {
@@ -686,24 +720,6 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                     // dialogHelper.showErroDialog(error_response);
                     Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
 
-                    SharedPref.init(getActivity());
-                    String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
-                    String client = SharedPref.read(Constants.CLIENT, "");
-                    String uid = SharedPref.read(Constants.UID, "");
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setCancelable(false);
-                    builder.setMessage(String.valueOf("Error" + error_response + "\n" + access_token + "\n" + client + "\n" + uid));
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                        }
-                    });
-
-                    builder.create().show();
-
-
                     try {
                         JSONObject response_obj = new JSONObject(error_response);
 
@@ -727,9 +743,9 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
 
             }
 
-
-
         };
     }
+
+
 }
 

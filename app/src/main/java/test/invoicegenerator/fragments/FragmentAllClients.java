@@ -14,20 +14,16 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -41,24 +37,16 @@ import test.invoicegenerator.model.ClientModel;
 
 public class FragmentAllClients extends BaseFragment{
 
-
-
     SwipeMenuListView listView;
     FloatingActionButton floating_AddClient;
-
     @BindView(R.id.main_layout)
     RelativeLayout main_layout;
-
     Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
-
     ClientAdapter clientAdapter;
     SearchView searchView;
-
-
     int DeletePosition = 0;
-
     ArrayList<ClientModel> clientModels=new ArrayList<>();
 
 
@@ -70,12 +58,9 @@ public class FragmentAllClients extends BaseFragment{
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
         listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
         floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
-
         init();
         unbinder= ButterKnife.bind(this,view);
-
         GetClientList();
-
         return view;
     }
 
@@ -85,7 +70,6 @@ public class FragmentAllClients extends BaseFragment{
         searchView.onActionViewExpanded();
         searchView.setIconified(false);
         searchView.clearFocus();
-
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
         TextView textView = (TextView) searchView.findViewById(id);
@@ -117,7 +101,6 @@ public class FragmentAllClients extends BaseFragment{
                 loadFragment(new FragmentAddClient(),null);
             }
         });
-
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
 
@@ -169,10 +152,6 @@ public class FragmentAllClients extends BaseFragment{
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
     }
 
-
-
-
-
     // Define the events that the fragment will use to communicate
     public interface OnItemSelectedListener {
 
@@ -182,7 +161,9 @@ public class FragmentAllClients extends BaseFragment{
 
     public void GetClientList()
     {
-
+        if(clientModels.size()>0){
+            clientModels.clear();
+        }
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
@@ -196,8 +177,9 @@ public class FragmentAllClients extends BaseFragment{
             public void notifySuccess(String requestType, String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-
+                    boolean status = jsonObject.getBoolean("status");
+                /*    if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
+                    if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         JSONArray clients = data.getJSONArray("clients");
 
@@ -236,7 +218,6 @@ public class FragmentAllClients extends BaseFragment{
         initVolleyCallbackForDeleteClient();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
         mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteClient + id + ".json" );
-
     }
 
     void initVolleyCallbackForDeleteClient() {
@@ -272,8 +253,4 @@ public class FragmentAllClients extends BaseFragment{
             }
         };
     }
-
-
-
-
 }
