@@ -51,8 +51,6 @@ public class GeneralsFragment extends BaseFragment  {
     private Unbinder unbinder;
     public static int countryID, stateID;
     private String stateNameTextView, countryName,countryCode, countryPhoneCode, countryCurrency, cityName;
-
-
     @BindView(R.id.country_spinner)
     Spinner country_spinner;
 

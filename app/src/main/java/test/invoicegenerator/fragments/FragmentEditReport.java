@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+/*import android.widget.Toast;*/
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.karumi.dexter.Dexter;
@@ -156,7 +157,12 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     }
 
     private void init() {
+        if(!isEmptyString(StBase64ImageToSave)){
+            StBase64ImageToSave="";
+        }
+
         IsNewInvoice=true;
+
         DashboardFragment.ShowInvoiceInfo=false;
         ImagePickerActivity.clearCache(getActivity());
         client_card.setOnClickListener(this);
@@ -225,7 +231,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 SelectedUserID=SharedPref.read(SharedPref.CompanyID,"");
 
                 if(InvoicesArray.length()>0){
-                    Toast.makeText(getActivity(), String.valueOf(InvoicesArray), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), String.valueOf(InvoicesArray), Toast.LENGTH_SHORT).show();
                     if(isEmptyString(InvoiceDueDate)){
                         showMessage("Invoice Date is Missing");
                     }else if(isEmptyString(comment_field.getText().toString())){
@@ -251,17 +257,18 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                         final JSONObject js = new JSONObject();
                         try {
 
-                          //  Toast.makeText(getActivity(), StBase64ImageToSave, Toast.LENGTH_SHORT).show();
+
                             String SignatureValue=signature_value.getText().toString();
                             String[]SignedDateDummy=SignatureValue.split(":");
-                            String SignedDate=SignedDateDummy[1];
-                            Toast.makeText(getActivity(), String.valueOf(SignedDate), Toast.LENGTH_SHORT).show();
+                            String SignedDate=SignedDateDummy[1].trim();
+
+                            //Toast.makeText(getActivity(), String.valueOf(SignedDate), Toast.LENGTH_SHORT).show();
                             InvoiceToBeSend.put("signed_by", StrSignedBy);
                             InvoiceToBeSend.put("invoice_number", "1234");
                             InvoiceToBeSend.put("due_at", InvoiceDueDate);
                             InvoiceToBeSend.put("invoiced_on", InvoiceCreateDate);
                             InvoiceToBeSend.put("signed_at", SignedDate);
-                            InvoiceToBeSend.put("signature", StBase64ImageToSave);
+                            InvoiceToBeSend.put("signature", "data:image/jpeg;base64,"+StBase64ImageToSave);
                             InvoiceToBeSend.put("notes",comment_field.getText().toString());
                             InvoiceToBeSend.put("payment_status", "unpaid");
                             InvoiceToBeSend.put("delivery_status", "draft");
@@ -282,7 +289,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     }
 
                 }else {
-                    Toast.makeText(getActivity(), "Please Add Some Invoice", Toast.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(layout_edit,"Please Add Some Invoice", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
                 }
 
 
@@ -355,8 +364,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                     // do your stuff
                 //    realPath = RealPathUtil.getRealPathFromURI_API19(getActivity(), FilePathUri);
                 } else {
-                    Toast.makeText(getActivity(), "GET_ACCOUNTS Denied",
-                            Toast.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(layout_edit,"GET_ACCOUNTS Denied", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
                 }
                 break;
             default:
@@ -412,7 +422,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
             if (resultCode == Activity.RESULT_OK) {
                 Uri uri = data.getParcelableExtra("path");
                 realPath=String.valueOf(uri);
-                Toast.makeText(getActivity(), String.valueOf(uri), Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getActivity(), String.valueOf(uri), Toast.LENGTH_SHORT).show();
                 try {
                     // You can update this bitmap to your server
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -552,7 +562,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
-                                loadFragment(new FragmentReport(),null);
+                               // loadFragment(new FragmentReport(),null);
 
                             }
                         }, 1000);
@@ -562,7 +572,9 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
                     } else {
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        snackbar = Snackbar.make(layout_edit,error, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -579,22 +591,27 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
 
                     String error_response = new String(error.networkResponse.data);
                     // dialogHelper.showErroDialog(error_response);
-                    Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(layout_edit,"Error" + error_response, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    //Toast.makeText(getActivity(), String.valueOf(), Toast.LENGTH_SHORT).show();
                        try {
                         JSONObject response_obj = new JSONObject(error_response);
 
                         {
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
-
-                            Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+                            snackbar = Snackbar.make(layout_edit,"Error" + error_response, Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            //Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
 
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
+                    snackbar = Snackbar.make(layout_edit,"Error not responding", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                //    Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
                 }
             }
 

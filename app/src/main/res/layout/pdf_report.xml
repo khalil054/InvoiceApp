@@ -17,4 +17,11 @@
         android:layout_alignParentRight="true"
         app:backgroundTint="@color/bgBottomNavigation"
         android:layout_margin="16dp" />
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/image_dummy"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/add_client" />
 </RelativeLayout>

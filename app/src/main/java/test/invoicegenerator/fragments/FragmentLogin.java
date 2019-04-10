@@ -235,7 +235,27 @@ public class FragmentLogin extends BaseFragment{
             @Override
             public void notifyError(String requestType,VolleyError error) {
 
+
                 progressbar.HideProgress();
+                if(error.networkResponse != null && error.networkResponse.data != null) {
+                    String error_response = new String(error.networkResponse.data);
+                    // Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject response_obj = new JSONObject(error_response);
+                        {
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+
+                               Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), String.valueOf("Error" + e.getMessage()), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }else {
+                     Toast.makeText(getActivity(), String.valueOf("Server not responding" ), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

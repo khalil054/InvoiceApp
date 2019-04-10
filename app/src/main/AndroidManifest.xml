@@ -47,6 +47,7 @@
         <activity android:name=".general.UploadImage" />
         <activity android:name=".Activities.DisplayImage" />
         <activity android:name=".Activities.ClientSelectionActivity"/>
+        <activity android:name=".Activities.ActivityAddItemUpdate"/>
        <!-- <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="android3.maxtingapp.provider"

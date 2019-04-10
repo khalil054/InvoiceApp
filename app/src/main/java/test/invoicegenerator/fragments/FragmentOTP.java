@@ -13,28 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.goodiebag.pinview.Pinview;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.Activities.MainActivity;
 
@@ -56,8 +49,8 @@ public class FragmentOTP extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
 
-        verify_btn=(Button)view.findViewById(R.id.verify_btn);
-        pin=(Pinview)view.findViewById(R.id.pinview);
+        verify_btn=view.findViewById(R.id.verify_btn);
+        pin=view.findViewById(R.id.pinview);
 
 
 
@@ -80,13 +73,10 @@ public class FragmentOTP extends BaseFragment{
     void DataSendToServerForVerification()
     {
 
-
-
-        //showProgressBar();
         initVolleyCallbackForVerification();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
 
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("code",pin.getValue());
 
 
@@ -102,7 +92,7 @@ public class FragmentOTP extends BaseFragment{
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Boolean status = jsonObject.getBoolean("status");
+                    boolean status = jsonObject.getBoolean("status");
 
                     if(status)
                     {

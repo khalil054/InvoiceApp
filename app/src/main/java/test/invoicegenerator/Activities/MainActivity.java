@@ -543,8 +543,6 @@ public class MainActivity extends BaseActivity  implements
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
 
@@ -570,7 +568,7 @@ public class MainActivity extends BaseActivity  implements
     @Override
     public void onAllClientFragCallBack(int position) {
 
-        Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
         if(position==1){
             Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
 

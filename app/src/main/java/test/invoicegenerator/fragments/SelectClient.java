@@ -1,7 +1,5 @@
 package test.invoicegenerator.fragments;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -9,23 +7,15 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -33,7 +23,6 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.ClientAdapter;
-import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.ClientModel;
 
 public class SelectClient extends BaseFragment{
@@ -50,7 +39,7 @@ public class SelectClient extends BaseFragment{
     IResult mResultCallback = null;
     VolleyService mVolleyService;
 
-    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
+    ArrayList<ClientModel> clientModels=new ArrayList<>();
 
 
     @Override
@@ -59,7 +48,7 @@ public class SelectClient extends BaseFragment{
 
         View view = inflater.inflate(R.layout.fragment_all_clients,container,false);
         listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
 
         init();
         unbinder= ButterKnife.bind(this,view);

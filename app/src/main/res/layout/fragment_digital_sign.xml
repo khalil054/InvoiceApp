@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/layout_sign"
@@ -43,16 +44,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.9"
-                android:background="#66000000" />
+                android:background="#FFFFFF" />
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.9"
-                android:visibility="gone"
-                android:background="#66000000" />
+                android:background="@null" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/edit_btn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -60,11 +60,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
-                android:background="@drawable/outline"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_pencil" />
 
-            <ImageButton
+                android:scaleType="centerInside"
+                android:src="@drawable/edit" />
+
+            <ImageView
+                android:visibility="gone"
                 android:id="@+id/clear_btn"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -73,9 +74,9 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@+id/edit_btn"
-                android:background="@drawable/outline"
+
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_eraser" />
+                android:src="@drawable/eraser" />
 
             <Button
                 android:id="@+id/erase_all"
@@ -86,7 +87,7 @@
                 android:layout_alignParentTop="true"
                 android:text="Reset"
                 android:textAllCaps="false"
-                android:textColor="@color/blue_700" />
+                android:textColor="@color/red_800" />
         </RelativeLayout>
 
         <Button

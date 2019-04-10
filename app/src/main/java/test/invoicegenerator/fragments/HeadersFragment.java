@@ -83,15 +83,14 @@ public class HeadersFragment extends Fragment {
             public void onClick(View view) {
                 int selectedId = radioGroup.getCheckedRadioButtonId();
 
-               // ProgressDialog dialog=showProgressDialog(getString(R.string.saving_header));
+
                 String selected_index=list_view.getSelectedItemPosition()+"";
-              //  firebase_data.saveHeaderFormat(selected_index,dialog,state);
+
                 if(logo_bitmap!=null)
                     encodeBitmapAndSaveToFirebase(logo_bitmap,getActivity(),LOGO_COLLECTION,LOGO,logo_flag);
             }
         });
-        //   Drawable img = getContext().getResources().getDrawable( R.drawable );
-        // first_header.setCompoundDrawables(null,null,null,null);
+
 
         ArrayList<String> headers=new ArrayList<>();
         headers.add("header 1");headers.add("header 2");headers.add("header 3");headers.add("header 4");
@@ -107,8 +106,7 @@ public class HeadersFragment extends Fragment {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte [] byte_arr = baos.toByteArray();
-        //String image_str = Base64.encode(byte_arr);
-        //String imageEncoded = ImageBase64.encodeTobase64(bitmap);
+
         String imageEncoded = Base64.encodeToString(byte_arr, Base64.DEFAULT);
         Map<String, Object> newContact = new HashMap<>();
         newContact.put(entity_name, imageEncoded);

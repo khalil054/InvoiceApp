@@ -4,7 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.LruCache;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+
+import test.invoicegenerator.Activities.DigitalSignatureActivity;
 import test.invoicegenerator.R;
 import test.invoicegenerator.Activities.MainActivity;
 
@@ -17,6 +28,7 @@ public class DashboardFragment extends BaseFragment  {
     StorageReference storageReference;*/
     LinearLayout layoutClient,layoutReports,layoutAddInvoice,layoutInvoiceReport,layoutConfiguration,layoutSettings;
     public static boolean ShowInvoiceInfo=false;
+    ImageView imageView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,6 +39,14 @@ public class DashboardFragment extends BaseFragment  {
 
     private void init(View v)
     {
+
+       /* imageView=v.findViewById(R.id.img_dummy);
+
+
+        Picasso.get().load("http://9091abb2.ngrok.io/uploads/invoice/signature/76/signature.jpeg").placeholder(R.color.grey).into(imageView);
+
+*/
+
         layoutClient=v.findViewById(R.id.layot_clients);
         layoutReports=v.findViewById(R.id.layot_reports);
         layoutAddInvoice=v.findViewById(R.id.layot_add_invoice);

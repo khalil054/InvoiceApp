@@ -99,24 +99,24 @@ public class InvoiceInfoActivity extends AppCompatActivity {
                 monthOfYear=monthOfYear+1;
                 if(FragmentEditReport.IsNewInvoice){
                     if(identifier.equals("invoice")){
-                        invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                        FragmentEditReport.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                        invoice_date.setText(year + "/" + monthOfYear + "/" + dayOfMonth);
+                        FragmentEditReport.InvoiceCreateDate=year + "/" + monthOfYear + "/" + dayOfMonth;
                     }
                     else{
                         FragmentEditReport.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
                         /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
-                        due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                        due_date.setText(year + "/" + monthOfYear+ "/" + dayOfMonth);
                     }
 
                 }else {
                     if(identifier.equals("invoice")){
                         invoice_date.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
-                        FragmentEditReportUpdate.InvoiceCreateDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                        FragmentEditReportUpdate.InvoiceCreateDate=year + "/" + monthOfYear + "/" + dayOfMonth;
                     }
                     else{
-                        FragmentEditReportUpdate.InvoiceDueDate=year + "-" + monthOfYear + "-" + dayOfMonth;
+                        FragmentEditReportUpdate.InvoiceDueDate=year + "/" + monthOfYear + "/" + dayOfMonth;
                         /* due_date.setText(dayOfMonth + "/" + monthOfYear+ "/" + year);*/
-                        due_date.setText(year + "-" + monthOfYear+ "-" + dayOfMonth);
+                        due_date.setText(year + "/" + monthOfYear+ "/" + dayOfMonth);
                     }
                 }
 

@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RelativeLayout
+
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:ignore="MissingConstraints">
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
