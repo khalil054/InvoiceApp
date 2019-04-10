@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.PDFInvoice;
-import test.invoicegenerator.model.InvoiceModel;
 
 public class FragmentReportDetail extends Fragment {
 
@@ -41,7 +40,6 @@ public class FragmentReportDetail extends Fragment {
     ArrayList<String> tab_name = new ArrayList<>();
     private String is_new;
     private String is_clicked;
-    private InvoiceModel invoice;
     private String invoice_id;
 
 
@@ -59,18 +57,12 @@ public class FragmentReportDetail extends Fragment {
     }
 
     private void init(View rootView ) {
-        is_new = getArguments().getString("new");
-        is_clicked= getArguments().getString("clicked");
-        invoice= (InvoiceModel) getArguments().getSerializable("invoice");
-        invoice_id=invoice.getId();
+
            BottomNavigationView navigation =  getActivity().findViewById(R.id.navigation);
            navigation.setVisibility(View.GONE);
 
-        Bundle args = new Bundle();
-        args.putString("new", "false");
-        args.putString("clicked", "true");
-        args.putSerializable("invoice",invoice);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager(),args);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager(),null);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) rootView.findViewById(R.id.container);

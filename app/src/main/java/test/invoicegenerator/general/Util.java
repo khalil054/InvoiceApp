@@ -27,15 +27,6 @@ import com.android.volley.ParseError;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,45 +130,7 @@ public class Util {
         context.getResources().updateConfiguration(config,
                 context.getResources().getDisplayMetrics());
     }
-    public static void resetPassword(Context context)
-    {
-        SharedPreferenceHelper helper=new SharedPreferenceHelper(context);
-        FirebaseAuth.getInstance().sendPasswordResetEmail(helper.getValue(EMAIL_KEY))
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("", "Email sent.");
-                        }
-                    }
-                });
-    }
-    public static void uploadProfilePic(FirebaseStorage storage,
-                                        StorageReference storageReference, final Context context, Uri filePath)
-    {
-        StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
-        ref.putFile(filePath)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(context, "Uploaded", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                .getTotalByteCount());
-                       // progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                    }
-                });
-    }
+
     public static boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");

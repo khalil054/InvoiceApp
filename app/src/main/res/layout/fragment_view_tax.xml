@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blur_bg">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/confirmationView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32"
+        app:lottie_autoPlay="false"
+        app:lottie_colorFilter="@color/white"
+        app:lottie_fileName="check_animation.json"
+        app:lottie_loop="false" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.110000014">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="5dp">
+
+
+            <EditText
+                android:id="@+id/tax_ammount"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignBottom="@+id/img1"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/img1"
+                android:background="@null"
+                android:backgroundTint="@color/white"
+                android:ems="10"
+                android:hint="Enter Ammount"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="0.7dp"
+                android:layout_below="@+id/tax_ammount"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/white" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Taxes"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spinner_taxes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/outline_bg" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Tax Code"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/spinner_tax_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/outline_bg" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="Total Taxes"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tax_per_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/transparent_button"
+                    android:gravity="center"
+                    android:text="0.0"
+                    android:textColor="@color/titleBadgeTitle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/taxcode_per_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/transparent_button"
+                    android:gravity="center"
+                    android:text="0.0"
+                    android:textColor="@color/titleBadgeTitle" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/cal_tax_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/transparent_button"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Calculate"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -70,7 +70,7 @@ public class TaxConfigurations extends Fragment {
 
         tab_name.add("Company Taxes");
         tab_name.add("Tax Code");
-        tab_name.add("View Tax");
+        tab_name.add("Calculate Tax");
 
 
 
@@ -131,15 +131,15 @@ public class TaxConfigurations extends Fragment {
             switch (position)
             {
                 case 0:
-                    fragment = CompanyDetails.newInstance();
+                    fragment = TaxesList.newInstance();
                     break;
 
                 case 1:
-                    fragment = PlaceLogo.newInstance();
+                    fragment = TaxCodeList.newInstance();
                     break;
 
                 case 2:
-                    fragment = PlaceLogo.newInstance();
+                    fragment = ViewTax.newInstance();
                     break;
 
                 default:

@@ -90,10 +90,7 @@ private void loadHeaderFragment()
                 loadHeaderFragment();
                 break;
             case R.id.logo:
-                loadFragment(new LogoFragment());
-                logo_selector.setVisibility(View.VISIBLE);
-                sign_selector.setVisibility(View.INVISIBLE);
-                header_selector.setVisibility(View.INVISIBLE);
+
                 break;
             case R.id.sign:
 

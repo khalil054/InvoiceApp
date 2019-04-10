@@ -41,22 +41,8 @@
         <activity
             android:name=".Activities.BaseActivity"
             android:label="@string/title_activity_base" />
-        <activity android:name=".Activities.UsersActivity" />
         <activity android:name=".Activities.EraserActivity" />
-        <activity android:name=".Activities.CompanyDetailActivity" />
-        <activity android:name=".general.UploadImage" />
-        <activity android:name=".Activities.DisplayImage" />
         <activity android:name=".Activities.ClientSelectionActivity"/>
-       <!-- <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="android3.maxtingapp.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>-->
-<!-- Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

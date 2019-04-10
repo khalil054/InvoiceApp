@@ -26,15 +26,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -46,9 +37,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
-import test.invoicegenerator.general.SharedPreferenceHelper;
-import test.invoicegenerator.general.UploadImage;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.ImageUploadInfo;
 import test.invoicegenerator.Activities.CompanyDetailActivity;
@@ -92,7 +80,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
 
     @BindView(R.id.phone_num)
     EditText edit_phone_num;
-    DatabaseReference databaseReference;
+
 
     @BindView(R.id.update_profile)
     Button update_profile;
@@ -124,10 +112,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
     }
     private void init(View v)
     {
-        db = FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
-        databaseReference = FirebaseDatabase.getInstance().getReference(UploadImage.Database_Path);
-       // edit_photo=(CircleImageView) v.findViewById(R.id.edit_photo_btn);
+
         edit_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,16 +188,7 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         settingsDialog.show();
     }
 
-    private void settingProfile(DocumentSnapshot document) {
-        edit_name.setText(document.get(NAME_KEY).toString());
-        text_name.setText(document.get(NAME_KEY).toString());
-        edit_company_name.setText(document.get(Constants.COMPANY_NAME).toString());
-        text_company_name.setText(document.get(Constants.COMPANY_NAME).toString());
-        edit_email.setText(document.get(Constants.EMAIL_KEY).toString());
-        text_email.setText(document.get(Constants.EMAIL_KEY).toString());
-        edit_phone_num.setText(document.get(PHONE_KEY).toString());
-        text_phone_num.setText(document.get(PHONE_KEY).toString());
-    }
+
     private void isValidProfileInfo()
     {
         View focusView=null;
@@ -251,7 +227,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            UpdateData();
          //   signUpFirebase(email,password);
         }
     }
@@ -370,22 +345,6 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
 
     }
-    private void UpdateData() {
-        SharedPreferenceHelper helper=new SharedPreferenceHelper(getActivity());
-        String email=helper.getValue(EMAIL_KEY);
 
-        final DocumentReference docRef = db.collection(SIGN_UP_COLLECTION).document(email);
-        docRef.update(NAME_KEY, edit_name.getText().toString());
-       // docRef.update(EMAIL_KEY, edit_email.getText());
-        docRef.update(PHONE_KEY, edit_phone_num.getText().toString())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toasty.success(getActivity(), getString(R.string.profile_updated), Toast.LENGTH_SHORT, true).show();
-                        dismissProgress();
-                        loadCompanyFragment(new ProfileFragment());
-                    }
-                });
-    }
 
 }

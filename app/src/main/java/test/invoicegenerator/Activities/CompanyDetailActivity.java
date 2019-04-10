@@ -12,7 +12,6 @@ import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
-import test.invoicegenerator.fragments.GeneralsFragment;
 import test.invoicegenerator.fragments.VisualsFragment;
 
 public class CompanyDetailActivity extends Fragment implements View.OnClickListener{
@@ -49,8 +48,7 @@ public class CompanyDetailActivity extends Fragment implements View.OnClickListe
         contact.setBackgroundColor(Color.WHITE);
         address.setBackgroundColor(Color.WHITE);
 
-        GeneralsFragment con_frag=new GeneralsFragment();
-        loadFragment(con_frag);
+
 
         address_selector.setVisibility(View.VISIBLE);
         contact_selector.setVisibility(View.INVISIBLE);
@@ -61,8 +59,7 @@ public class CompanyDetailActivity extends Fragment implements View.OnClickListe
         switch(id)
         {
             case R.id.address:
-                GeneralsFragment con_frag=new GeneralsFragment();
-                loadFragment(con_frag);
+
 
                 address_selector.setVisibility(View.VISIBLE);
                 contact_selector.setVisibility(View.INVISIBLE);

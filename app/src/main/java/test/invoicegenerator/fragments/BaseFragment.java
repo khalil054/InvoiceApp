@@ -11,9 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.StorageReference;
 
 import butterknife.Unbinder;
 import test.invoicegenerator.Libraries.Progressbar;
@@ -25,12 +22,6 @@ import test.invoicegenerator.R;
 
 public class BaseFragment extends Fragment {
     public Unbinder unbinder;
-
-    public FirebaseFirestore db;
-
-    public Dialog adminChangeDialog;
-    DatabaseReference databaseReference;
-    public StorageReference storageReference;
     Progressbar progressbar;
 
 
@@ -39,7 +30,7 @@ public class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.header_fragment,null);
-        db = FirebaseFirestore.getInstance();
+
         return null;
     }
     ProgressDialog progressDialog;

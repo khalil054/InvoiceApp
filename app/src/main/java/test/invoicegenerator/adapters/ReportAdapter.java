@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.ClientModel;
-import test.invoicegenerator.model.InvoiceModel;
 import test.invoicegenerator.model.JsonInvoiceModel;
 
 public class ReportAdapter extends BaseAdapter implements Filterable {
