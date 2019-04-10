@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
-import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Constants;

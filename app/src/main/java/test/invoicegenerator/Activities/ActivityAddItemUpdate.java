@@ -3,9 +3,7 @@ package test.invoicegenerator.Activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import butterknife.BindView;
@@ -24,14 +21,14 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.fragments.FragmentEditReportUpdate;
+import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
-
 /**
  * Created by User on 1/14/2019.
  */
 
-public class ActivityAddItem extends AppCompatActivity {
+public class ActivityAddItemUpdate extends AppCompatActivity {
     @BindView(R.id.save_data)
     TextView save_data;
 
@@ -50,6 +47,10 @@ public class ActivityAddItem extends AppCompatActivity {
     @BindView(R.id.taxable_field)
     CheckBox taxable_field;
 
+
+    @BindView(R.id.remove_invoice_item)
+    CheckBox remove_invoice_item;
+
     @BindView(R.id.tax_rate_field)
     EditText tax_rate_field;
 
@@ -65,11 +66,10 @@ public class ActivityAddItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_item_activity);
-        ButterKnife.bind(this);//
+        setContentView(R.layout.update_invoice_item_activity);
+        ButterKnife.bind(this);
         init();
-        //setActionBar();
-        // loadFragment(new FragmentLogin());
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,14 +99,14 @@ public class ActivityAddItem extends AppCompatActivity {
         return true;
     }
     private void init() {
-        SharedPref.init(ActivityAddItem.this);
-
-        FragmentEditReport.is_new="false";
+        SharedPref.init(ActivityAddItemUpdate.this);
+        assignValuesToFields();
+        /*FragmentEditReport.is_new="false";
         if(FragmentEditReport.IsNewInvoice){
             setValuesOfFields();
         }else {
            // setValuesOfFieldsUpdate();
-        }
+        }*/
 
         Toolbar toolbar =  findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
 
@@ -125,12 +125,12 @@ public class ActivityAddItem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+               // finish();
                validateAndSaveData();
             }
         });
 
-        TextWatcher textWatcher = new TextWatcher() {
+       /* TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -155,34 +155,26 @@ public class ActivityAddItem extends AppCompatActivity {
         };
 
         unit_cost_field.addTextChangedListener(textWatcher);
-        quantity_field.addTextChangedListener(textWatcher);
-
+        quantity_field.addTextChangedListener(textWatcher);*/
         handleVisibilityOfTaxRate();
 
 
+
     }
 
-  /*  private void setValuesOfFieldsUpdate() {
-
-        item_id= FragmentEditReportUpdate.item_values.get(0).getId();
-        description.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
-        unit_cost_field.setText(bundle.getString("unit_cost"));
-        quantity_field.setText(bundle.getString("quntity"));
-        amount_field.setText(bundle.getString("amount"));
-        additional_field.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
-    }*/
-
-    private void setValuesOfFields() {
-        Bundle bundle=getIntent().getExtras();
-
-
-        item_id=bundle.getString("id");
-        description.setText(bundle.getString("des"));
-        unit_cost_field.setText(bundle.getString("unit_cost"));
-        quantity_field.setText(bundle.getString("quntity"));
-        amount_field.setText(bundle.getString("amount"));
-        additional_field.setText(bundle.getString("additional"));
+    private void assignValuesToFields() {
+        description.setText(GlobalData.SelectedInvoiceItem.getDescription());
+        unit_cost_field.setText(GlobalData.SelectedInvoiceItem.getUnit_cost());
+        quantity_field.setText(GlobalData.SelectedInvoiceItem.getQuantity());
+        Double d1=Double.parseDouble(GlobalData.SelectedInvoiceItem.getUnit_cost());
+        Integer qty=Integer.parseInt(GlobalData.SelectedInvoiceItem.getQuantity());
+      //  Toast.makeText(this, String.valueOf(d1*qty), Toast.LENGTH_SHORT).show();
+         amount_field.setText(String.valueOf(d1*qty));
+        taxable_field.setChecked(true);
+        additional_field.setText(GlobalData.SelectedInvoiceItem.getAdditional());
     }
+
+
 
     private void handleVisibilityOfTaxRate() {
 
@@ -199,6 +191,8 @@ public class ActivityAddItem extends AppCompatActivity {
     }
 
     private void validateAndSaveData() {
+
+
 
         String CompanyID= String.valueOf(SharedPref.read(SharedPref.CompanyID,""));
         if(TextUtils.isEmpty(description.getText().toString())){
@@ -218,9 +212,7 @@ public class ActivityAddItem extends AppCompatActivity {
               amount_field.requestFocus();*/
             Toast.makeText(this, "Invalid Company:"+CompanyID, Toast.LENGTH_SHORT).show();
         }else {
-
             JSONObject InvoiceItem = new JSONObject();
-
             try {
                 InvoiceItem.put("name", description.getText().toString());
                 InvoiceItem.put("description", description.getText().toString());
@@ -228,18 +220,23 @@ public class ActivityAddItem extends AppCompatActivity {
                 InvoiceItem.put("price", unit_cost_field.getText().toString());
                 InvoiceItem.put("subtotal",amount_field.getText().toString());
                 InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-               // InvoiceItem.put("tax_code_id","1");
-                InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID,"")));
 
+                // InvoiceItem.put("tax_code_id","1");
+                InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID,"")));
+                if(remove_invoice_item.isChecked()){
+                    InvoiceItem.put("_destory", true);
+                }
 
 
                 Item value_item = new Item();
                String nam = description.getText().toString();
                 String amount = amount_field.getText().toString();
+                Double sub_amount=Double.parseDouble(amount);
+               // Toast.makeText(this, String.valueOf(sub_amount), Toast.LENGTH_SHORT).show();
 
-                if(!amount.equals(""))
-                    FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
-              //  FragmentEditReport.items.add(nam);
+                if(!TextUtils.isEmpty(amount))
+                    FragmentEditReportUpdate.subtotal_value = FragmentEditReportUpdate.subtotal_value + sub_amount;
+
                 value_item.setDescription(description.getText().toString());
                 value_item.setAmount(amount_field.getText().toString());
                 value_item.setQuantity( quantity_field.getText().toString());
@@ -254,9 +251,13 @@ public class ActivityAddItem extends AppCompatActivity {
 
                 if(FragmentEditReport.IsNewInvoice){
                     FragmentEditReport.item_values.add(value_item);
-
                     FragmentEditReport.InvoicesArray.put(InvoiceItem);
                 }else {
+                    if(FragmentEditReportUpdate.shouldupdatepreviousvalue){
+                        FragmentEditReportUpdate.shouldupdatepreviousvalue=false;
+                        FragmentEditReportUpdate.InvoicesArray.remove(FragmentEditReportUpdate.selectedLvPosition);
+                        FragmentEditReportUpdate.item_values.remove(FragmentEditReportUpdate.selectedLvPosition);
+                    }
                     FragmentEditReportUpdate.item_values.add(value_item);
 
                     FragmentEditReportUpdate.InvoicesArray.put(InvoiceItem);

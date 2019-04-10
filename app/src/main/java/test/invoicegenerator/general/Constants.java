@@ -37,6 +37,8 @@ public class Constants {
     public static final int SIGN_CODE=5;
     public static final int INVOICE_INFO_CODE =6 ;
 
+    public static final int UPDATE_INVOICE_ITEM=7;
+
     public static String GENERAL="General";
     public static String HEADER_FORMAT="header";
     public static String SELECTED_HEADER="selected_header";

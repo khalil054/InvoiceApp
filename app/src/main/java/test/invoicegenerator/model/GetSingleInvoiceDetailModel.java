@@ -20,7 +20,18 @@ public class GetSingleInvoiceDetailModel {
     private String user_id;
     private String company_id;
     private String client_id;
+    private String Client_name;
     private JSONArray InvoiceItemsArray;
+
+    public String getClient_name() {
+        return Client_name;
+    }
+
+    public void setClient_name(String client_name) {
+        Client_name = client_name;
+    }
+
+
 
     public String getId() {
         return id;
@@ -160,7 +171,6 @@ public class GetSingleInvoiceDetailModel {
             due_at = jsonObject.getString("due_at");
             invoiced_on = jsonObject.getString("invoiced_on");
             signed_at = jsonObject.getString("signed_at");
-            signature = jsonObject.getString("signature");
             notes = jsonObject.getString("notes");
             payment_status = jsonObject.getString("payment_status");
             delivery_status = jsonObject.getString("delivery_status");
@@ -168,9 +178,12 @@ public class GetSingleInvoiceDetailModel {
             updated_at = jsonObject.getString("updated_at");
             user_id = jsonObject.getString("user_id");
             company_id = jsonObject.getString("company_id");
-            client_id = jsonObject.getString("client_id");
             InvoiceItemsArray=jsonObject.getJSONArray("invoice_items");
-
+            JSONObject jsonObject1=jsonObject.getJSONObject("client");
+            client_id = jsonObject1.getString("id");
+            Client_name= jsonObject1.getString("name");
+            JSONObject jsonObject_signature=jsonObject.getJSONObject("signature");
+            signature = jsonObject_signature.getString("url");
             setId(id);
             setSigned_by(signed_by);
             setInvoice_number(invoice_number);
@@ -186,6 +199,7 @@ public class GetSingleInvoiceDetailModel {
             setUser_id(user_id);
             setCompany_id(company_id);
             setClient_id(client_id);
+            setClient_name(Client_name);
             setInvoiceItemsArray(InvoiceItemsArray);
 
         } catch (JSONException e) {

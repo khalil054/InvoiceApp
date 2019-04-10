@@ -15,7 +15,7 @@
     <color name="progress_background">#80000000</color>
 
     <!-- animations color -->
-
+    <color name="grey">#c7c5c5</color>
     <color name="bgTitleLeft">#291466</color>
     <color name="bgTitleRight">#ffffff</color>
     <color name="bgContent">#ffffff</color>
