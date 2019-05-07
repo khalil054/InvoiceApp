@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:gravity="center">
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="start"
+        android:visibility="gone"
+        android:layout_gravity="start"
+        android:src="@drawable/dp"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/blur_bg"
+        android:layout_weight="0.5"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/edit_photo_btn"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/dp"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/text_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/user_name" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EvolversTech"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                android:id="@+id/text_company_name"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123 45676546"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                android:id="@+id/text_phone_num"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="noor@evolverstech.com"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/black"
+                android:id="@+id/text_email"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

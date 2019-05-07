@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "206598171128",
+    "firebase_url": "https://invoicegenerator-e29f1.firebaseio.com",
+    "project_id": "invoicegenerator-e29f1",
+    "storage_bucket": "invoicegenerator-e29f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206598171128:android:8beb142f2b67d160",
+        "android_client_info": {
+          "package_name": "test.invoicegenerator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206598171128-uvhrn7vu4kovevgaf1e0lvjtlldiv7km.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTZiTgXWZTMJdOtfBdMjTa4bLJuE65N28"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

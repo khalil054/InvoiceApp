@@ -1,0 +1,276 @@
+<resources>
+    <string name="app_name">Invoice Generator</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password </string>
+    <string name="action_sign_in">LOGIN</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_name">This name is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="signup">Not a member? Sign up now.</string>
+    <string name="name">Your Name</string>
+    <string name="company_name">Company Name</string>
+    <string name="sign_up_text">SIGN UP</string>
+    <string name="sign_up_with">Sign up with</string>
+    <string name="client_id">1035466803901-i1q1i0bs1tnmp2bojq22fj6p9k1lcqp0.apps.googleusercontent.com</string>
+
+    <!-- animations strings -->
+    <string name="order_id_mock" translatable="false"># 1234–5678</string>
+    <string name="price_mock" translatable="false">$25</string>
+    <string name="requests_count_mock" translatable="false">5</string>
+    <string name="requests_count_badge" translatable="false">REQUESTS</string>
+    <string name="weight_mock" translatable="false">50 oz</string>
+    <string name="weight_badge" translatable="false">WEIGHT</string>
+    <string name="pledge_mock" translatable="false">$150</string>
+    <string name="pledge_badge" translatable="false">PLEDGE</string>
+    <string name="sender_badge" translatable="false">SENDER</string>
+    <string name="client_name_mock" translatable="false">Edward Norton</string>
+    <string name="rating_mock" translatable="false">(26)</string>
+    <string name="from_badge" translatable="false">FROM</string>
+    <string name="to_badge" translatable="false">TO</string>
+    <string name="delivery_date_badge" translatable="false">DELIVERY DATE</string>
+    <string name="delivery_time_mock" translatable="false">6:30 pm</string>
+    <string name="delivery_date_mock" translatable="false">May 16, 2016</string>
+    <string name="deadline_badge" translatable="false">REQUEST DEADLINE</string>
+    <string name="deadline_time_mock" translatable="false">24 minutes</string>
+    <string name="request_btn_text" translatable="false">REQUEST</string>
+    <string name="btn_annotation_mock" translatable="false">5 people have sent a request</string>
+    <string name="content_from1_mock">W 90th St</string>
+    <string name="content_from2_mock">New York, NY 10025</string>
+    <string name="content_to1_mock">46th Ave</string>
+    <string name="content_to2_mock">Woodside, NY 11101</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!--Rotating Circle Strings -->
+
+    <string name="main_sample">Sample Circle menu</string>
+    <string name="main_no_rotation">No rotation</string>
+    <string name="main_attributes">XML attributes</string>
+    <string name="main_dynamic_attributes">Dynamic attributes</string>
+    <string name="main_any_view">Any view</string>
+    <string name="main_dynamic_children">Dynamic children</string>
+    <string name="category">Invoice Category</string>
+    <string name="reports">Reports</string>
+    <string name="facebook">Facebook</string>
+    <string name="clients">Clients</string>
+    <string name="generate_invoice">Generate Invoice</string>
+    <string name="settings">Settings</string>
+    <string name="tag">Tag</string>
+    <string name="voice_search">Voice Search</string>
+    <string name="email_not_verified">Please verify email first</string>
+    <string name="sign_here_title">Sign here</string>
+    <string name="hint_cancel">Cancel</string>
+    <string name="hint_clear">Clear</string>
+    <string name="hint_save">Save</string>
+    <string name="eraser">Eraser</string>
+    <string name="draw">Draw</string>
+    <string name="remember_me">Remember me</string>
+    <string name="email_password_incorrect">Username or password is incorrect</string>
+    <string name="internet_error">Please check your intenet connection</string>
+    <string name="network_error">network error</string>
+    <string name="invalid_password">password is invalid</string>
+    <string name="address_already">address is already</string>
+    <string name="email_in_use">This email is already in use</string>
+    <string name="already_member">Already a member? Login now</string>
+    <string name="enter_code">Enter the 4 digit code we sent you via email to continue</string>
+    <string name="continue_verify">Continue</string>
+    <string name="get_code">Didn\'t get the code?</string>
+    <string name="resend_code">Resend code</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+    <string name="internet_problem">Please check your network connection</string>
+    <string name="update">Update</string>
+    <string name="user_name">Noor Afshan</string>
+    <string name="profile">Profile</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="get_profile_message">Loading Profile ....</string>
+    <string name="phone_num">Phone number</string>
+    <string name="config">Configuration</string>
+    <string name="image_uploading">Image is Uploading...</string>
+    <string name="general">General</string>
+    <string name="visual">Visuals</string>
+    <string name="contact_details">Contact Details</string>
+    <string name="address">Address</string>
+    <string name="type_address">Address</string>
+    <string name="city">City</string>
+    <string name="zip_code">Zip code</string>
+    <string name="header">Invoice Headers</string>
+    <string name="signature">Signature</string>
+    <string name="logo_stamp">Logo and Stamp</string>
+    <string name="select_logo">Select logo</string>
+    <string name="select_stamp">Select stamp</string>
+    <string name="loading_company_detail">Loading Company detail</string>
+    <string name="saving_company_detail">Saving Company Detail</string>
+    <string name="saving_header">Saving Header</string>
+    <string name="loading_header_detail">Loading Header format</string>
+    <string name="saving_signature">Saving Signature</string>
+    <string name="loading_signature">Loading signature</string>
+    <string name="signature_saved">Signature has been saved successfully!</string>
+    <string name="error_message">Something went wrong</string>
+    <string name="loading_stamp">Loading stamp</string>
+    <string name="loading_logo">Loading logo</string>
+    <string name="saving_visual_detail">Saving visual detail</string>
+    <string name="visual_detail_saved">Visual detail saved successfully</string>
+    <string name="company_detail_saved">Company detail saved successfully</string>
+    <string name="updating_profile">Updating profile</string>
+    <string name="profile_updated">Profile updated successfully</string>
+    <string name="company_detail_updated">Company detail updated successfully</string>
+    <string name="header_saved">Header saved successfully</string>
+    <string name="header_updated">Header updated successfully</string>
+    <string name="signature_updated">Signature Updated successfully</string>
+    <string name="visual_detail_updated">Visual detail updated successfully</string>
+    <string name="loading_profile_picture">Loading Profile picture</string>
+    <string name="authentication_error">The user may have been deleted</string>
+    <string name="error_authentication">There is no user record corresponding to this identifier. The user may have been deleted.</string>
+    <string name="country">Country</string>
+    <string name="state_place">State</string>
+    <string name="button_crop">Crop</string>
+    <string name="button_new_picture">New Picture</string>
+    <string name="reset">Reset</string>
+    <string name="logo_size_error">Please select Logo of size 450x150</string>
+    <string name="banner_ad">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
+    <string name="start_level">Level 1</string>
+    <string name="next_level">Next Level</string>
+    <!-- -
+        This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
+        For more information, see https://support.google.com/admob/answer/3052638
+    <!- -->
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="we_value_your_trust_in_providing_us_your_personal_information_thus_we_are_striving_to_use_commercially_acceptable_means_of_protecting_it_but_remember_that_no_method_of_transmission_over_the_internet_or_method_of_electronic_storage_is_100_secure_and_reliable_and_we_cannot_guarantee_its_absolute_security">We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.</string>
+    <string name="_1_security">1 - Security</string>
+    <string name="when_you_chose_our_services_it_means_you_are_willing_to_share_information_with_us_according_with_the_policy_this_information_used_for_providing_and_improving_the_service_we_don_t_share_and_use_your_personal_information_with_anyone_some_important_permissions_and_information_s_which_we_required_from_you_described_below">When you chose our services it means you are willing to share information with us according with the policy this information used for providing and improving the service. We don’t share and use your personal information with anyone. Some important permissions and information’s which we required from you described below.</string>
+    <string name="these_services_do_not_address_anyone_under_the_age_of_13_we_do_not_knowingly_collect_personally_identifiable_information_from_children_under_13_in_the_case_we_discover_that_a_child_under_13_has_provided_us_with_personal_information_we_immediately_delete_this_from_our_servers_if_you_are_a_parent_or_guardian_and_you_are_aware_that_your_child_has_provided_us_with_personal_information_please_contact_us_so_that_we_will_be_able_to_do_necessary_actions">These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.</string>
+    <string name="_2_children_s_privacy">2-Children’s Privacy</string>
+    <string name="we_may_update_our_privacy_policy_from_time_to_time_thus_you_are_advised_to_review_this_page_periodically_for_any_changes_we_will_notify_you_of_any_changes_by_posting_the_new_privacy_policy_on_this_page_these_changes_are_effective_immediately_after_they_are_posted_on_this_page">We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.</string>
+    <string name="_3_changes_to_this_privacy_policy">3-Changes to This Privacy Policy</string>
+    <string name="_4_data_security">4-Data security:</string>
+    <string name="we_collect_information_in_order_to_provide_our_best_services_and_batter_user_experience_our_top_priority_to_protect_your_privacy_this_app_does_not_save_any_data_to_server_like_your_contacts_photos_videos_and_any_other_information">We collect information in order to provide our best services and batter user experience. Our top priority to protect your privacy. This app does not save any data to server like your contacts photos videos and any other information.</string>
+    <string name="_5_required_data">5-Required data:</string>
+    <string name="we_use_only_necessary_information_required_for_application_like_your_location_and_contacts_use_location_data_to_suggest_nearest_place_and_driving_information_we_collect_we_may_collect_information_about_device_such_as_its_operating_system_android_id_and_language_your_ip_address_and_log_files">We use only necessary information required for application like your location and contacts Use location data to suggest nearest place and driving Information we collect: We may collect information about device such as its operating system, android ID and language. Your IP address and log files.</string>
+    <string name="_6_internet">6-Internet:</string>
+    <string name="see_the_direction_with_use_of_maps_service_access_internet_to_request_ads">See the direction with use of maps service. Access internet to request ads.</string>
+    <string name="_7_camera">7-Camera:</string>
+    <string name="capture_images_from_the_camera_to_when_using_pictures">Capture images from the camera to when using pictures.</string>
+    <string name="_8_location">8-Location:</string>
+    <string name="use_location_data_to_suggest_the_nearest_place_and_driving_routes">Use location data to suggest the nearest place and driving routes.</string>
+    <string name="permission_grants_access_to_your_device_s_external_storage_enabling_photo_frames_unlimited_to_take_store_and_retrieve_picture">Permission grants access to your device’s external storage, enabling photo frames unlimited to take store and retrieve picture</string>
+    <string name="_9_write_external_storage">9-Write external storage:</string>
+    <string name="_10_flashlight">10-Flashlight</string>
+    <string name="use_the_app_in_night_mode">Use the app in night mode</string>
+    <string name="_11_network_permission">11-Network permission:</string>
+    <string name="many_apps_work_with_dynamic_data_app_use_network_to_sync_data_from_server_to_maintain_the_up_to_date_information_on_demand_basis_app_never_uses_network_bandwidth_unnecessarily">Many apps work with dynamic data. App use network to sync data from server to maintain the up to date information on demand basis. App never uses network bandwidth unnecessarily.</string>
+    <string name="_12_take_picture_and_videos">12-Take picture and videos:</string>
+    <string name="we_require_camera_permission_and_use_your_device_s_camera_flashlight_new_apps_technology_will_not_take_photos_and_videos_by_itself_and_pass_it_on_to_any_third_party">We require camera permission and use your device’s camera flashlight. New Apps technology will not take photos and videos by itself and pass it on to any third party.</string>
+    <string name="_13_approximate_location_network_based">13-Approximate location (network-based)</string>
+    <string name="this_permission_is_used_to_display_apps_installed_by_anonymous_surrounding_users_and_to_recommend_popular_apps_based_on_users_location_in_advance_technology_apps_radar_this_information_is_untraceable">This permission is used to display apps installed by anonymous surrounding users and to recommend popular apps based on users’ location in Advance Technology Apps Radar. This information is untraceable</string>
+    <string name="_14_read_your_contacts">14-Read your contacts:</string>
+    <string name="we_do_not_upload_and_saved_your_personal_contacts_permission_to_access_contact_information_is_only_used_when_required">We do not upload and saved your personal contacts. Permission to access contact information is only used when required.</string>
+    <string name="_15_find_accounts_on_the_devices">15-Find accounts on the devices:</string>
+    <string name="advance_technology_apps_does_not_recognize_or_save_your_account_information_for_any_programs_we_only_detects_whether_users_have_a_google_account_linked_with_the_device_which_helps_us_confirm_the_state_of_google_service_and_provide_users_with_appropriate_application_download_and_update_methods">Advance Technology Apps does not recognize or save your account information for any programs. we only detects whether users have a Google account linked with the device which helps us confirm the state of Google Service and provide users with appropriate application download and update methods</string>
+    <string name="_16_read_google_services_configuration">16-Read Google services configuration:</string>
+    <string name="this_information_is_used_to_acquire_advertising_id_we_provide_users_with_better_advertising_service_by_using_such_anonymous_id">This information is used to acquire advertising ID. We provide users with better advertising service by using such anonymous ID.</string>
+    <string name="_17_closed_other_apps">17-Closed other apps:</string>
+    <string name="this_permission_is_used_to_turn_off_the_back_end_apps_and_make_the_phone_run_faster">This permission is used to turn off the back-end apps and make the phone run faster.</string>
+    <string name="_18_contact_us">18-Contact us:</string>
+    <string name="if_you_want_any_information_about_our_apps_and_you_can_email_us">If You want any information about our apps and you can email us</string>
+    <string name="email_info_evolverstech_com">Email: info@evolverstech.com</string>
+    <string name="phone_92_42_35772142">Phone: +92 42 35772142</string>
+    <string name="title_activity_authentication">AuthenticationActivity</string>
+    <string name="instruction_sent">Instructions sent on email</string>
+    <string name="verification_code">Verification code doesn\'t match</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="wrong_email_pas">Incorrect email or password</string>
+    <string name="password_mismatch">Passwords are not matched</string>
+    <string name="phone_num_digits">0123456789</string>
+    <string name="error_invalid_zip_code">Invalid Zip code</string>
+
+    <string name="bill_to">Bill to</string>
+    <string name="add_client">Add Client</string>
+    <string name="add_item">Add Item</string>
+    <string name="Subtotal">Subtotal</string>
+    <string name="add_discount">Discount</string>
+    <string name="add_tax">Tax</string>
+    <string name="total">Total</string>
+    <string name="balance">Balance</string>
+    <string name="Signature">Signature</string>
+    <string name="comments">Comments</string>
+    <string name="add_attachment">Attach Photos</string>
+    <string name="items">Items</string>
+    <string name="name_hint">Name</string>
+    <string name="mobile">Mobile</string>
+    <string name="phone">Phone</string>
+    <string name="fax">Fax</string>
+    <string name="contact">Contact</string>
+    <string name="line1">Line 1</string>
+    <string name="line2">Line 2</string>
+    <string name="line3">Line 3</string>
+    <string name="description_hint">Description</string>
+    <string name="unit_cost">Unit cost</string>
+    <string name="quantity">Quantity</string>
+    <string name="amount">Amount</string>
+    <string name="taxable">Taxable</string>
+    <string name="tax_rate">Tax Rate</string>
+    <string name="additional_detail">Additional Detail</string>
+    <string name="save_toolbar">Save</string>
+    <string name="invalid_cost">Invalid cost</string>
+    <string name="invalid_quantity">Invalid quantity</string>
+    <string name="item_detail">Item Detail</string>
+    <string name="client_detail">Client Detail</string>
+    <string name="Invoice_name">Invoice Name</string>
+    <string name="invoice_date">Invoice Date</string>
+    <string name="due_date">Due Date</string>
+    <string-array name="array_name">
+        <item>percentage</item>
+        <item>Flat Item</item>
+    </string-array>
+    <string-array name="array_name1">
+        <item>On the total</item>
+        <item>Deducted</item>
+    </string-array>
+
+
+    <!-- font families -->
+    <string name="font_family_light">sans-serif-light</string>
+    <string name="font_family_medium">sans-serif-medium</string>
+    <string name="font_family_regular">sans-serif</string>
+    <string name="font_family_condensed">sans-serif-condensed</string>
+    <string name="font_family_black">sans-serif-black</string>
+    <string name="font_family_thin">sans-serif-thin</string>
+    <string name="dialog_permission_title">Grant Permissions</string>
+    <string name="dialog_permission_message">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="go_to_settings">GOTO SETTINGS</string>
+
+    <string name="profile_desc">Rowan Sebastian Atkinson CBE is an English actor,  comedian and screenwriter</string>
+    <string name="profile_title">Mr Bean</string>
+    <string name="posts">posts</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="msg_error_unable_select_profile_pic">Unable to set profile image. Please try again!</string>
+    <string name="lbl_set_profile_photo">Set profile image</string>
+    <string name="lbl_take_camera_picture">Take a picture</string>
+    <string name="lbl_choose_from_gallery">Choose from gallery</string>
+    <string name="toast_image_intent_null">Image picker option is missing!</string>
+
+
+
+    <string name="tag_dashboard">Dashboard Frag</string>
+    <string name="tag_allclients">AllClients Frag</string>
+    <string name="tag_update_client">UpdateClients Frag</string>
+    <string name="customer_name">Customer name</string>
+    <string name="set_invoice_name">Set Invoice name</string>
+    <string name="buisness_name">Buisness name</string>
+    <string name="due_on_receipt">Due on receipt</string>
+</resources>

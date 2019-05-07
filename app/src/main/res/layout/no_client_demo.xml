@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/layout_empty"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/blur_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textSize="25sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:text="No client added yet"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/bgBottomNavigation"
+
+        android:id="@+id/floating_add_new_client_empty"
+        app:srcCompat="@drawable/ic_new_user"
+        android:focusable="true" />
+
+</RelativeLayout>

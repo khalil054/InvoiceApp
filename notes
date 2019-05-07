@@ -1,0 +1,41 @@
+1) Firebase Sign in and Sign up
+2) Animations library circle (2) and folding listview
+3) HTML to pdf conversion
+4) Bottom Sheet View
+5) Send Email
+6) Sparking Buttons
+7) Create and Read documents from collections in firebase
+8) Blurr background login screen and transparent button
+9) Boom Menus
+10)Curve Menus
+11)Sweet Alert Dialog
+
+10-08-2018
+
+1) Document specifications
+2) Multi lingual practice
+3) Delete documents from firebase practice
+
+10-09-2018
+
+1) Digital Signature
+2) Designs Discussion
+
+10-17-2018
+
+1) Dashboard Design
+
+10-18-2018
+
+1) Upload and download profile pic from firebase
+2) Testing on Android 7 phone and emulator
+3) Navigation Drawer
+
+10-19-2018
+
+1) Profile pic upload name
+2) Multi lingual name
+
+firebase.firestore().collection('users').doc(currentUser.uid).set(currentUser)
+
+Dashboard Tabs: config, clients, generate invoice, invoice categories, reports, settings

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/blur_bg"
+        android:focusableInTouchMode="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <ListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:choiceMode="singleChoice"
+                android:listSelector="@color/contentDividerLine"></ListView>
+    <RadioGroup
+        android:id="@+id/radio_visual"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/first_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/headerpic1"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/second_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@drawable/headerpic2" />
+        <RadioButton
+            android:id="@+id/third_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@drawable/headerpic3" />
+        <RadioButton
+            android:id="@+id/fourth_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@drawable/headerpic4" />
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_weight="1"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/light_blue"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/select_logo"/>
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/camera_icon"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/buttonStyle"
+        android:layout_marginTop="20dp"
+        android:text="@string/hint_save"/>
+        </LinearLayout>
+    </ScrollView>
+    <include
+        android:id="@+id/snakbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        layout="@layout/snakbar" />
+
+</LinearLayout>

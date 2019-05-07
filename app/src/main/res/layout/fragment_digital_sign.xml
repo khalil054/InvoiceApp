@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/layout_sign"
+    android:layout_height="match_parent"
+    android:background="@drawable/blur_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/titleTextColor"
+                android:text="Signed By"/>
+            <EditText
+                android:textColorHint="@color/hintTextColornew"
+                android:hint="Methow Brain"
+                android:textColor="@color/titleTextColor"
+                android:id="@+id/signature_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+            <test.invoicegenerator.general.DrawingView
+                android:id="@+id/drawing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:background="#FFFFFF" />
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:background="@null" />
+
+            <ImageView
+                android:id="@+id/edit_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+
+                android:scaleType="centerInside"
+                android:src="@drawable/edit" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/clear_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/edit_btn"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@+id/edit_btn"
+
+                android:scaleType="centerInside"
+                android:src="@drawable/eraser" />
+
+            <Button
+                android:id="@+id/erase_all"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="65dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Reset"
+                android:textAllCaps="false"
+                android:textColor="@color/red_800" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/save_btn"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/transparent_button"
+            android:padding="10dp"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
