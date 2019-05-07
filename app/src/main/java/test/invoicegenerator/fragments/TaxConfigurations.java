@@ -57,11 +57,10 @@ public class TaxConfigurations extends Fragment {
 
 
 
-
         tabLayout = (TabLayout ) rootView.findViewById(R.id.tabs);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setOffscreenPageLimit(0);
+        mViewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(mViewPager);
 
         tab_icon.add(R.drawable.ic_companytax);
@@ -71,7 +70,6 @@ public class TaxConfigurations extends Fragment {
         tab_name.add("Company Taxes");
         tab_name.add("Tax Code");
         tab_name.add("Calculate Tax");
-
 
 
 

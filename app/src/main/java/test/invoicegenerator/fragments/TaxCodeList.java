@@ -157,6 +157,7 @@ public class TaxCodeList extends BaseFragment {
                         GlobalData.taxCodeModels = taxModels;
                         taxAdapter = new taxcodeAdapter(getActivity(), taxModels);
                         listView.setAdapter(taxAdapter);
+                        ViewTax.getInstance().TaxesCodeSpinnerSetup();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

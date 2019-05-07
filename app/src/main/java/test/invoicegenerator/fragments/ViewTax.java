@@ -1,9 +1,11 @@
 package test.invoicegenerator.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -26,17 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Activities.MainActivity;
-import test.invoicegenerator.Libraries.Progressbar;
-import test.invoicegenerator.NetworksCall.IResult;
-import test.invoicegenerator.NetworksCall.NetworkURLs;
-import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.SharedPref;
@@ -46,16 +37,17 @@ import test.invoicegenerator.model.TaxModel;
 public class ViewTax extends BaseFragment  {
 
 
+    private static ViewTax instance = null;
     public static ViewTax newInstance() {
         ViewTax fragment = new ViewTax();
         return fragment;
     }
 
+
     Snackbar snackbar;
     Spinner spinner_taxes,spinner_tax_code;
     EditText tax_ammount;
     TextView tax_per_txt,taxcode_per_txt;
-    ArrayList<String> Data1 = new ArrayList<String>();
 
     private FragmentAddClient.OnItemSelectedListener listener;
     @Override
@@ -77,6 +69,10 @@ public class ViewTax extends BaseFragment  {
 
                 if(TextUtils.isEmpty(tax_ammount.getText().toString())) {
 
+                    tax_ammount.setError(getString(R.string.error_field_required));
+
+                }else {
+
                     if(GlobalData.taxModels.size() != 0)
                     {
                         int position1 = spinner_taxes.getSelectedItemPosition();
@@ -85,27 +81,17 @@ public class ViewTax extends BaseFragment  {
                         double total = percentage + Ammount;
 
                         tax_per_txt.setText(String.valueOf(total));
-                        taxcode_per_txt.setText(String.valueOf(GlobalData.taxModels.get(position1).getPercent()));
                     }
 
-                    if(GlobalData.taxModels.size() != 0)
+                    if(GlobalData.taxCodeModels.size() != 0)
                     {
-//                        int position2 = spinner_tax_code.getSelectedItemPosition();
-//                        double Ammount = Double.valueOf(tax_ammount.getText().toString());
-//                        double percentage = (Ammount / 100) * GlobalData.taxCodeModels.get(position2).getPercent();
-//                        double total = percentage + Ammount;
-//
-//                        tax_per_txt.setText(String.valueOf(total));
-//                        taxcode_per_txt.setText(String.valueOf(GlobalData.taxCodeModels.get(position2).getPercent()));
+                        int position2 = spinner_tax_code.getSelectedItemPosition();
+                        double Ammount = Double.valueOf(tax_ammount.getText().toString());
+                        double percentage = (Ammount / 100) * GlobalData.taxCodeModels.get(position2).getTotal_tax_percent();
+                        double total = percentage + Ammount;
+
+                        taxcode_per_txt.setText(String.valueOf(total));
                     }
-
-
-
-
-
-                }else {
-
-                    tax_ammount.setError(getString(R.string.error_field_required));
 
                 }
 
@@ -115,9 +101,14 @@ public class ViewTax extends BaseFragment  {
         TaxesSpinnerSetup();
         TaxesCodeSpinnerSetup();
 
-
+        instance = this;
         return view;
     }
+
+    public static ViewTax getInstance() {
+        return instance;
+    }
+
 
     public void TaxesSpinnerSetup()
     {

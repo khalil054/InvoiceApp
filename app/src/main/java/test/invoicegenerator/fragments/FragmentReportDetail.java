@@ -28,8 +28,6 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.PDFInvoice;
-import test.invoicegenerator.model.GetSingleInvoiceDetailModel;
-import test.invoicegenerator.model.InvoiceModel;
 
 public class FragmentReportDetail extends BaseFragment {
 

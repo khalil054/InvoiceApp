@@ -13,6 +13,7 @@ public class TaxCodeModel {
     String id;
     String code;
     String des;
+    double total_tax_percent;
     JSONArray company_taxes;
     ArrayList<TaxModel> taxModels = new ArrayList<TaxModel>();
 
@@ -24,6 +25,7 @@ public class TaxCodeModel {
             code = jsonObject.getString("code");
             des = jsonObject.getString("description");
             company_taxes = jsonObject.getJSONArray("company_taxes");
+            total_tax_percent = jsonObject.getDouble("total_tax_in_percent");
 
             for (int i = 0; i<= company_taxes.length(); i++)
             {
@@ -35,6 +37,7 @@ public class TaxCodeModel {
             setId(id);
             setCode(code);
             setDes(des);
+            setTotal_tax_percent(total_tax_percent);
 
 
         } catch (JSONException e) {
@@ -74,5 +77,13 @@ public class TaxCodeModel {
 
     public void setDes(String des) {
         this.des = des;
+    }
+
+    public double getTotal_tax_percent() {
+        return total_tax_percent;
+    }
+
+    public void setTotal_tax_percent(double total_tax_percent) {
+        this.total_tax_percent = total_tax_percent;
     }
 }
