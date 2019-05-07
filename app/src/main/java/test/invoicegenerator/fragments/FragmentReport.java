@@ -92,13 +92,13 @@ public class FragmentReport extends BaseFragment{
         add_invoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle args = new Bundle();
-                args.putString("new", "true");
-                args.putString("clicked", "false");
-                if(FragmentEditReport.item_values.size()>0){
-                    FragmentEditReport.item_values.clear();
-                }
-                loadFragment(new FragmentEditReport(),args);
+//                Bundle args = new Bundle();
+//                args.putString("new", "true");
+//                args.putString("clicked", "false");
+//                if(FragmentEditReport.item_values.size()>0){
+//                    FragmentEditReport.item_values.clear();
+//                }
+//                loadFragment(new FragmentEditReport(),args);
             }
         });
         SwipeMenuCreator creator = new SwipeMenuCreator() {

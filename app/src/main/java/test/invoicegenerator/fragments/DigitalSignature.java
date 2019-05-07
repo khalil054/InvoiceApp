@@ -39,8 +39,8 @@ public class DigitalSignature extends Fragment {
         /** Inflating the layout for this fragment **/
         View rootView = inflater.inflate(R.layout.fragment_digital_sign, container, false);
 
-        initializeObject(rootView);
-        eventListeners();
+//        initializeObject(rootView);
+//        eventListeners();
 
         return rootView;
 

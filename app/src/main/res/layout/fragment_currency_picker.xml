@@ -63,7 +63,7 @@
                         android:layout_margin="10dp"
                         android:layout_weight="2"
                         android:gravity="center_vertical"
-                        android:text="TextView" />
+                        android:text="Select Currency" />
 
                     <Spinner
                         android:layout_width="33dp"
