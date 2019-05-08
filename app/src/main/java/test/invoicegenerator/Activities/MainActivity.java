@@ -400,12 +400,12 @@ public class MainActivity extends BaseActivity  implements
         cdd.ShowProgress();
         initVolleyCallbackForSignOut();
         mVolleyService = new VolleyService(mResultCallback,MainActivity.this);
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         SharedPref.init(MainActivity.this);
         String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
         String client=SharedPref.read(Constants.CLIENT,"");
         String uid=SharedPref.read(Constants.UID,"");
-        HashMap<String, String>  headers = new HashMap<String, String>();
+        HashMap<String, String>  headers = new HashMap<>();
         headers.put("access-token", access_token);
         headers.put("client",client );
         headers.put("uid",uid);
