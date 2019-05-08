@@ -30,17 +30,12 @@ import com.seatgeek.placesautocomplete.model.AddressComponent;
 import com.seatgeek.placesautocomplete.model.AddressComponentType;
 import com.seatgeek.placesautocomplete.model.Place;
 import com.seatgeek.placesautocomplete.model.PlaceDetails;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -48,7 +43,6 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.menu_adapter;
-import test.invoicegenerator.fragment_handler.Fragment_Model;
 import test.invoicegenerator.fragments.Configrations;
 import test.invoicegenerator.fragments.DashboardFragment;
 import test.invoicegenerator.fragments.FragmentAddClient;
@@ -107,12 +101,9 @@ public class MainActivity extends BaseActivity  implements
 
 
     private void init() {
-      /*  FragmentsList = new ArrayList<>();
-        fm = getSupportFragmentManager();
-*/
 
         cdd=new Progressbar(MainActivity.this);
-        //db=new DBHelper(this);
+
         BottomNavigationView navigation =  findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         menu_icon =  findViewById(R.id.menu_icon);
@@ -419,7 +410,6 @@ public class MainActivity extends BaseActivity  implements
         headers.put("client",client );
         headers.put("uid",uid);
       //  mVolleyService.DeleteDataVolley("DELETECALL", NetworkURLs.BaseURL + NetworkURLs.SignOut,data,headers );
-
 
     }
 
