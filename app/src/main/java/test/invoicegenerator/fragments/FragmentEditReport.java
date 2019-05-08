@@ -206,7 +206,6 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 break;
             case R.id.card5:
                 Intent intent2=new Intent(getActivity(), DiscountActivity.class);
-
                 intent2.putExtra("discount_type",discount_type);
                 intent2.putExtra("discount",discount);
                 startActivityForResult(intent2, Constants.DISCOUNT_CODE);
