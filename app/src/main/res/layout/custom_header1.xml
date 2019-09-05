@@ -6,10 +6,13 @@
     android:layout_marginTop="7dp"
     android:layout_height="100dp">
 <ImageView
+    android:contentDescription="@string/app_name"
     android:layout_width="0dp"
+    android:id="@+id/img_lock"
     android:layout_weight="1"
-    android:src="@drawable/dp"
-    android:layout_height="80dp" />
+    android:layout_gravity="center"
+    android:src="@drawable/aa"
+    android:layout_height="50dp" />
     <View
         android:layout_width="1.5dp"
         android:layout_height="100dp"
@@ -36,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:text="@string/user_name" />
+                android:text="Khalil Ahmad" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,6 +60,7 @@
                 android:id="@+id/text_email"/>
         </LinearLayout>
     <ImageView
+        android:contentDescription="@string/app_name"
         android:layout_width="0.5dp"
         android:layout_weight="1"
         android:visibility="invisible"

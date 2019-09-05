@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
@@ -36,13 +37,13 @@ import test.invoicegenerator.model.SharedPref;
 
 public class FragmentSignUp extends BaseFragment implements View.OnClickListener{
 
-    Snackbar snackbar;
+
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
     LottieAnimationView confirmationView;
     public Unbinder unbinder;
-
+    LinearLayout LayoutHeader;
 
     @BindView(R.id.name)
     EditText name;
@@ -68,7 +69,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.activity_sign_up,container,false);
         unbinder= ButterKnife.bind(this,view);
         confirmationView =  view.findViewById(R.id.confirmationView);
-
+        LayoutHeader=view.findViewById(R.id.layout_main);
         Button mEmailSignInButton =  view.findViewById(R.id.sign_up_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,13 +165,13 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     void DataSendToServerForSignUp()
     {
 
-        //showProgressBar();
+        showProgressBar();
 
 
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
 
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         data.put("password",password.getText().toString());
         data.put("email",email.getText().toString());
         data.put("name",name.getText().toString());
@@ -222,7 +223,7 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                     e.printStackTrace();
                 }
 
-                //hideProgressBar();
+                hideProgressBar();
 
 
 
@@ -231,7 +232,29 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             @Override
             public void notifyError(String requestType,VolleyError error) {
                 {
-                    //hideProgressBar();
+                   hideProgressBar();
+                    if(error.networkResponse != null && error.networkResponse.data != null) {
+
+                        String error_response = new String(error.networkResponse.data);
+
+
+                        try {
+                            JSONObject response_obj = new JSONObject(error_response);
+
+                            {
+                                JSONObject error_obj = response_obj.getJSONObject("error");
+                                String message = error_obj.getString("message");
+                                showErrorMessage(LayoutHeader,"Error" + message);
+
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }else {
+                        showErrorMessage(LayoutHeader,"Error  not responding");
+
+                    }
 
                 }
             }

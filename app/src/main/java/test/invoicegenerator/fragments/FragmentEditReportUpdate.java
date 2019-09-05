@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,7 +139,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     public static String tax_type,discount_type="";
   // public static String sign_path="";
     String realPath;
-    public static String StrImagePath;
+    public static String StrImagePath="";
     //public static File Signaturefile;
     public static final int REQUEST_IMAGE = 100;
     public static Double subtotal_value=0.0;
@@ -160,7 +159,6 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     JSONArray Invoice_Items_values;
     public static Bitmap SignatureBitmap;
 
- //   public static GetSingleInvoiceDetailModel singleInvoiceDetailModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -174,6 +172,9 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
     }
 
     private void init() {
+
+        //showProgressBar();
+
         Picasso.Builder builder = new Picasso.Builder(getActivity());
         LruCache picassoCache = new LruCache(getActivity());
         builder.memoryCache(picassoCache);
@@ -183,7 +184,6 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
             e.printStackTrace();
         }
         picassoCache.clear();
-       // Glide.with(this).load("http://9091abb2.ngrok.io/uploads/invoice/signature/76/signature.jpeg").into(image1);
         FragmentEditReport.IsNewInvoice=false;
         client_card.setOnClickListener(this);
         add_item_card.setOnClickListener(this);
@@ -195,23 +195,16 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         attachment_card.setOnClickListener(this);
         layout_edit_header.setOnClickListener(this);
 
-        //        GetSingleInvoiceDetail();
-        SetInvoiceAttributesForUpdate(GlobalData.singleInvoiceDetailModel);
-        //  singleInvoiceDetailModel=GlobalData.singleInvoiceDetailModel;
-        item_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       SetInvoiceAttributesForUpdate(GlobalData.singleInvoiceDetailModel);
+
+         item_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 shouldupdatepreviousvalue=true;
                 GlobalData.SelectedInvoiceItem=item_values.get(i);
-              //  GlobalData.singleInvoiceDetailModel=
+
                 SelctedItemID=GlobalData.SelectedInvoiceItem.getId();
-                /*try {
-                    SelectedItemsModel=new GetSingleInvoiceItemDetail(Invoice_Items_values.getJSONObject(i));
-                    Toast.makeText(getActivity(), String.valueOf(SelectedItemsModel.getStrId()+","+SelectedItemsModel.getStrInvoiceDescription()), Toast.LENGTH_SHORT).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
 
                 selectedLvPosition=i;
                 Intent intent1=new Intent(getActivity(), ActivityAddItemUpdate.class);
@@ -409,10 +402,13 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         }
         else if(requestCode==TAX_CODE)
         {
-            tax_value.setText(String.valueOf(TaxActivity.tax_amount + ""));
+   /*         tax_value.setText(String.valueOf(TaxActivity.tax_amount + ""));
             if(!subtotal_value_field.getText().toString().equals(""))
                 total_value.setText(String.valueOf(Util.calculateTotalValue(Integer.parseInt(subtotal_value_field.getText().toString()),
                         discount, tax, discount_type,tax_type ) + ""));
+*/
+
+            total_value.setText(subtotal_value_field.getText().toString());
         }
         else if(requestCode==ADD_ITEM_CODE)
         {
@@ -458,8 +454,6 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         {
                   Toast.makeText(getActivity(), String.valueOf("Update Invoice Item"), Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void SetListViewHeight() {
@@ -612,13 +606,13 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         discount_type="percentage";
         InvoiceID=GlobalData.singleInvoiceDetailModel.getId();
 
-        //Toast.makeText(getActivity(), "Invoice Id: "+InvoiceID, Toast.LENGTH_SHORT).show();
+
 
         InvoiceDueDate=getSingleInvoiceDetailModel.getDue_at();
         StrSignedBy=getSingleInvoiceDetailModel.getSigned_by();
         InvoiceCreateDate=getSingleInvoiceDetailModel.getInvoiced_on();
         SelectedClientId=getSingleInvoiceDetailModel.getClient_id();
-     //   StBase64ImageToSave=getSingleInvoiceDetailModel.getSignature();
+      //  discount_value.setText(get);
         ImagePath=getSingleInvoiceDetailModel.getSignature();
         comment_field.setText(getSingleInvoiceDetailModel.getNotes());
         due_date.setText(InvoiceDueDate);
@@ -626,8 +620,8 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         signature_value.setText(String.valueOf("Signed on: "+ getSingleInvoiceDetailModel.getSigned_at()));
         Invoice_Items_values =getSingleInvoiceDetailModel.getInvoiceItemsArray();
         String ImgUrl=NetworkURLs.BaseURLForImages+ImagePath;
-     //   Picasso.get().load(ImgUrl).placeholder(R.color.grey).into(image1);
-        Picasso.get()
+
+       /* Picasso.get()
                 .load(ImgUrl)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(image1, new com.squareup.picasso.Callback() {
@@ -640,7 +634,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                             SignatureBitmap=bitmap;
                             StBase64ImageToSave=getEncoded64ImageStringFromBitmap(bitmap);
 
-                              /*PDFInvoice.getInstance().create_pdf_file();*/
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -652,29 +646,8 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                         Toast.makeText(getActivity(), "Image not Loaded", Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
-                });
+                });*/
 
- /*   if(hasImage(image1)){
-        image1.buildDrawingCache();
-        Bitmap bitmap = image1.getDrawingCache();
-        ByteArrayOutputStream stream=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
-        byte[] image=stream.toByteArray();
-        FragmentEditReportUpdate.StBase64ImageToSave= Base64.encodeToString(image, 0);
-
-        if(!TextUtils.isEmpty(StBase64ImageToSave)){
-            showMessage("Signature Found");
-        }else {
-            showMessage("Signature Not Found");
-        }
-    }*/
-
-
-      /*  if(hasImage(image1)){
-            convertImageToBase64FromImageView(image1);
-        }else {
-            Toast.makeText(getActivity(), "Image Not found", Toast.LENGTH_SHORT).show();
-        }*/
 
         for (int i = 0; i < Invoice_Items_values.length(); i++) {
             try {
@@ -686,6 +659,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                 value_item.setQuantity(ItemsModel.getStrInvoiceQty());
                 value_item.setTax_rate(ItemsModel.getStr_subtotal_with_tax_applied());
                 value_item.setTaxable("true");
+                value_item.setTax_Id(ItemsModel.getStrInvoiceTaxCode_Id());
                 value_item.setUnit_cost(ItemsModel.getStrInvoicePrice());
                 value_item.setDescription(ItemsModel.getStrInvoiceDescription());
                 item_values.add(value_item);
@@ -716,7 +690,7 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
                 e.printStackTrace();
             }
         }
-         //   Toast.makeText(getActivity(), String.valueOf(item_values.size()), Toast.LENGTH_SHORT).show();
+
     }
                         /*Volley Request For Update*/
 
@@ -851,5 +825,8 @@ public class FragmentEditReportUpdate extends BaseFragment implements View.OnCli
         String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
         return imgString;
     }
+
+
+
 }
 

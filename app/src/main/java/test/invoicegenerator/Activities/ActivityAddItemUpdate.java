@@ -58,7 +58,8 @@ public class ActivityAddItemUpdate extends AppCompatActivity {
 
     @BindView(R.id.tax_rate_layout)
     LinearLayout tax_rate_layout;
-
+    @BindView(R.id.tax_code_field)
+    TextView tax_code_field;
    // DBHelper db;
     String item_id;
 
@@ -172,6 +173,8 @@ public class ActivityAddItemUpdate extends AppCompatActivity {
          amount_field.setText(String.valueOf(d1*qty));
         taxable_field.setChecked(true);
         additional_field.setText(GlobalData.SelectedInvoiceItem.getAdditional());
+
+        tax_code_field.setText(GlobalData.SelectedInvoiceItem.getTax_Id());
     }
 
 

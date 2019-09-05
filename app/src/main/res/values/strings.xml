@@ -265,7 +265,6 @@
     <string name="toast_image_intent_null">Image picker option is missing!</string>
 
 
-
     <string name="tag_dashboard">Dashboard Frag</string>
     <string name="tag_allclients">AllClients Frag</string>
     <string name="tag_update_client">UpdateClients Frag</string>
@@ -273,4 +272,10 @@
     <string name="set_invoice_name">Set Invoice name</string>
     <string name="buisness_name">Buisness name</string>
     <string name="due_on_receipt">Due on receipt</string>
+    <string name="client_address">Client Address</string>
+    <string name="state">State</string>
+    <string name="add">Add</string>
+    <string name="client_name">Client Name</string>
+    <string name="client_email">Client Email</string>
+    <string name="client_phone">Client Phone</string>
 </resources>

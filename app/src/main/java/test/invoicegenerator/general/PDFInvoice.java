@@ -383,8 +383,9 @@ public class PDFInvoice extends Fragment {
 
     private Image AddSignatureInReport() throws IOException, DocumentException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        Bitmap icon = ChangeBase64ToImage(FragmentEditReportUpdate.StBase64ImageToSave);
-        cropCenter(icon).compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+       /* Bitmap icon = ChangeBase64ToImage(FragmentEditReportUpdate.StBase64ImageToSave);*/
+
+        cropCenter(FragmentEditReportUpdate.SignatureBitmap).compress(Bitmap.CompressFormat.JPEG, 100 , stream);
         Image myImg = Image.getInstance(stream.toByteArray());
         myImg.setScaleToFitHeight(true);
         myImg.setAlignment(Image.ALIGN_TOP);
@@ -480,7 +481,7 @@ public class PDFInvoice extends Fragment {
         cell2.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell2);
 
-        /*PdfPCell cell3 = new PdfPCell();
+       /* PdfPCell cell3 = new PdfPCell();
         cell3.setPadding(10);
         cell3.setBorder(Rectangle.NO_BORDER);
         cell3.addElement(AddSignatureInReport());

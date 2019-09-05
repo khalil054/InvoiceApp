@@ -39,6 +39,9 @@ import test.invoicegenerator.model.SharedPref;
 
 public class AddTax  extends BaseFragment{
 
+    @BindView(R.id.switch_idActive)
+    android.support.v7.widget.SwitchCompat aSwitch_Admin;
+
     @BindView(R.id.add_tax_button)
     Button Btn_AddTax;
     @BindView(R.id.tax_name)
@@ -128,13 +131,22 @@ public class AddTax  extends BaseFragment{
 
         SharedPref.init(getActivity());
         String company_id = SharedPref.read(SharedPref.CompanyID,"");
+        boolean is_active=aSwitch_Admin.isChecked();
+        String Str_active="false";
+        if(is_active){
+            Str_active="true";
+        }else {
+            Str_active="false";
+        }
 
+
+        Toast.makeText(getActivity(), Str_active, Toast.LENGTH_SHORT).show();
         Map<String, String> data = new HashMap<String, String>();
         data.put("company_tax[name]",Et_Tax_Name.getText().toString());
         data.put("company_tax[agency_name]",Et_Tax_Agency.getText().toString());
         data.put("company_tax[description]",Et_Tax_Description.getText().toString());
         data.put("company_tax[percent]",Et_Tax_Percentage.getText().toString());
-        data.put("company_tax[active]","true");
+        data.put("company_tax[active]",Str_active);
         data.put("company_tax[company_id]",company_id);
         mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddTax,data );
 

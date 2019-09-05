@@ -1,6 +1,5 @@
 package test.invoicegenerator.fragments;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,15 +9,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
 import butterknife.Unbinder;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.R;
 
-/**
- * Created by User on 10/22/2018.
- */
 
 public class BaseFragment extends Fragment {
     public Unbinder unbinder;
@@ -51,11 +45,6 @@ public class BaseFragment extends Fragment {
     }
 
 
-
-
-    /**
-     * Uses snackbar to show error message.
-     */
     public void showErrorMessage(View view, String message) {
         Snackbar snackbar = Snackbar.make(view, message, Snackbar
                 .LENGTH_LONG);

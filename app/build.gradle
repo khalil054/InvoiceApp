@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     useLibrary 'org.apache.http.legacy'
-    
+
     defaultConfig {
         applicationId "test.invoicegenerator"
         minSdkVersion 19
@@ -26,6 +26,16 @@ android {
         sourceCompatibility 'JavaVersion.VERSION_1_8'
         targetCompatibility 'JavaVersion.VERSION_1_8'
     }*/
+
+    packagingOptions {
+        exclude 'lib/arm64-v8a/libmodpdfium.so'
+        exclude 'lib/x86/libmodpdfium.so'
+        exclude 'lib/mips/libmodpdfium.so'
+        exclude 'lib/x86_64/libmodpdfium.so'
+        exclude 'lib/arm64-v8a/libmodpdfium.so'
+        exclude 'lib/armeabi/libmodpdfium.so'
+        exclude 'lib/armeabi-v7a/libmodpdfium.so'
+    }
 }
 repositories {
 
@@ -87,5 +97,8 @@ dependencies {
     //dexter permissions
     implementation "com.karumi:dexter:5.0.0"
     implementation 'com.seatgeek:placesautocomplete:0.3-SNAPSHOT'
+
+        // Crop Image
+    implementation 'com.steelkiwi:cropiwa:1.0.3'
 }
 apply plugin: 'com.google.gms.google-services'

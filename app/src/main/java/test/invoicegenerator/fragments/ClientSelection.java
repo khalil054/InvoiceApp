@@ -46,9 +46,9 @@ public class ClientSelection extends BaseFragment{
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_client_selection,container,false);
-        listView = (ListView) view.findViewById(R.id.clientList);
-        searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        listView = view.findViewById(R.id.clientList);
+        searchView = view.findViewById(R.id.searchView); // inititate a search view
+        floating_AddClient =view.findViewById(R.id.floating_add_new_client);
         init();
         unbinder= ButterKnife.bind(this,view);
         GetClientList();
@@ -63,9 +63,9 @@ public class ClientSelection extends BaseFragment{
 
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView = (TextView) searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText = (EditText) searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

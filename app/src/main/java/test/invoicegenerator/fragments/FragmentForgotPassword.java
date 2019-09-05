@@ -2,22 +2,31 @@ package test.invoicegenerator.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Util;
@@ -30,7 +39,7 @@ public class FragmentForgotPassword extends BaseFragment{
 
     @BindView(R.id.email)
     EditText email_txt;
-
+    TextView TvBack;
     @BindView(R.id.get_password_btn)
     Button password_btn;
 
@@ -53,6 +62,14 @@ public class FragmentForgotPassword extends BaseFragment{
     private void init(View view) {
 
         cdd=new Progressbar(getActivity());
+        TvBack=view.findViewById(R.id.login_text);
+
+        TvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new FragmentLogin());
+            }
+        });
     }
 
     @OnClick(R.id.get_password_btn)
@@ -80,22 +97,14 @@ public class FragmentForgotPassword extends BaseFragment{
     void sendDataForgotPasswordData()
     {
 
-        cdd.ShowProgress();
-
-
+        showProgressBar();
         initVolleyCallbackForgotPassword();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        JSONObject data=new JSONObject();
 
-        try {
-            data.put("email",email_txt.getText().toString());
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("email",email_txt.getText().toString());
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword,data );
-
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword,data );
 
     }
 
@@ -108,19 +117,20 @@ public class FragmentForgotPassword extends BaseFragment{
 
                         JSONObject jsonObject = new JSONObject(response);
                         JSONObject data_obj = jsonObject.getJSONObject("data");
-                        String status=data_obj.getString("status");
+                        String status=jsonObject.getString("status");
 
 
                         if(status.equals("true"))
                         {
+
                             Toasty.success(getActivity(),"Verifivation code sent on email", Toast.LENGTH_SHORT).show();
 
 
-                            cdd.HideProgress();
+
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
-                                   // loadFragment(new FragmentOTPForgotPassword());
+                                   loadFragment(new FragmentOTPForgotPassword());
 
                                     // finish();
 
@@ -128,7 +138,6 @@ public class FragmentForgotPassword extends BaseFragment{
                             }, 1000);//1000
                         }else {
 
-                            cdd.HideProgress();
                             String error = jsonObject.getString("Error");
 
                             Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
@@ -143,14 +152,14 @@ public class FragmentForgotPassword extends BaseFragment{
                     }
 
 
-
+                hideProgressBar();
 
                 }
 
                 @Override
                 public void notifyError(String requestType,VolleyError error) {
 
-                    cdd.HideProgress();
+                    hideProgressBar();
                     error.printStackTrace();
 
                     if(error.networkResponse != null && error.networkResponse.data != null){
@@ -160,8 +169,8 @@ public class FragmentForgotPassword extends BaseFragment{
                             JSONObject response_obj=new JSONObject(error_response);
 
                             {
-                                JSONObject error_obj=response_obj.getJSONObject("error");
-                                String message=error_obj.getString("message");
+                              //  JSONObject error_obj=response_obj.getJSONObject("error");
+                                String message=response_obj.getString("errors");
                                 Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -182,5 +191,12 @@ public class FragmentForgotPassword extends BaseFragment{
 
     }
 
-
+    private void loadFragment(Fragment dashboardFragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
+        fragmentTransaction.addToBackStack(dashboardFragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+    }
 }

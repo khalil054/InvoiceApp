@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/rectangle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_country_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:text="Pakistan"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:ignore="RtlCompat" />
+
+
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:contentDescription="@string/app_name"
+        android:id="@+id/selection_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:clickable="false"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="0dp"
+        android:background="@null"
+        android:padding="20dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/ic_checked" />
+</RelativeLayout>
+
+<!--
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/main_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   &lt;!&ndash; <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/rectangle"
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">&ndash;&gt;
+
+        <RelativeLayout
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+               android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_country_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Khalil"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+
+
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/selection_btn"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="0dp"
+                android:background="@null"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_checked" />
+        </RelativeLayout>
+  &lt;!&ndash;  </LinearLayout>&ndash;&gt;
+
+</android.support.constraint.ConstraintLayout>-->

@@ -115,10 +115,9 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/transparent_button"
         android:padding="10dp"
         android:text="@string/action_sign_in"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <TextView
@@ -140,15 +139,15 @@
 
     <Button
         android:id="@+id/forgot_password_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:background="@drawable/transparent_button"
         android:layout_below="@+id/email_sign_in_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="Forgot Password"
-        android:textColor="@color/white" />
+        android:background="@drawable/bg_navigation"
+        android:textColor="@color/light_blue" />
     <include
         android:id="@+id/snackbar"
         android:visibility="gone"

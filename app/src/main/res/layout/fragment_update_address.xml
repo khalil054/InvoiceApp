@@ -40,16 +40,16 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginEnd="5dp">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/img4"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_location" />
 
@@ -59,12 +59,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/img4"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/img4"
+                android:layout_toEndOf="@+id/img4"
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:ems="10"
-                android:hint="Client Address"
+                android:hint="@string/client_address"
                 android:inputType="textPersonName"
                 android:textColor="@color/white"
                 android:textColorHint="@android:color/darker_gray"
@@ -72,7 +71,8 @@
                 app:pacv_clearEnabled="true"
                 app:pacv_googleMapsApiKey="AIzaSyCDSQMLSZkDr_qC-NqXoVKaVo6HtnIk8IA"
                 app:pacv_languageCode="en"
-                app:pacv_resultType="no_type" />
+                app:pacv_resultType="no_type"
+                tools:ignore="UnusedAttribute" />
 
             <View
                 android:id="@+id/view4"
@@ -86,6 +86,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:baselineAligned="false"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="2"
@@ -95,8 +96,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1">
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
 
                 <EditText
                     android:id="@+id/client_city"
@@ -104,15 +106,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="14dp"
                     android:background="@null"
                     android:backgroundTint="@color/white"
                     android:ems="10"
-                    android:hint="City"
+                    android:hint="@string/city"
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
                     android:textColorHint="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="Autofill,UnusedAttribute" />
 
                 <View
                     android:id="@+id/view5"
@@ -129,7 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1">
 
                 <EditText
@@ -138,15 +140,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="14dp"
                     android:background="@null"
                     android:backgroundTint="@color/white"
                     android:ems="10"
-                    android:hint="State"
+                    android:hint="@string/state"
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
                     android:textColorHint="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="Autofill,UnusedAttribute" />
 
                 <View
                     android:id="@+id/view6"
@@ -161,6 +163,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:baselineAligned="false"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="2"
@@ -170,8 +173,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1">
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights">
 
                 <EditText
                     android:id="@+id/client_country"
@@ -179,15 +183,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="14dp"
                     android:background="@null"
                     android:backgroundTint="@color/white"
                     android:ems="10"
-                    android:hint="Country"
+                    android:hint="@string/country"
                     android:inputType="textPersonName"
                     android:textColor="@color/white"
                     android:textColorHint="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="Autofill,UnusedAttribute" />
 
                 <View
                     android:id="@+id/view7"
@@ -204,7 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1">
 
                 <EditText
@@ -213,7 +217,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="10dp"
-                    android:layout_marginLeft="14dp"
                     android:background="@null"
                     android:backgroundTint="@color/white"
                     android:digits="0123456789"
@@ -222,7 +225,8 @@
                     android:inputType="number"
                     android:textColor="@color/white"
                     android:textColorHint="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="Autofill,HardcodedText,UnusedAttribute" />
 
                 <View
                     android:id="@+id/view8"
@@ -237,16 +241,16 @@
         </LinearLayout>
 
         <Button
+            android:background="@drawable/bg_navigation"
+            android:textColor="@color/light_blue"
             android:id="@+id/update_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_margin="20dp"
-            android:background="@drawable/transparent_button"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Add"
-            android:textColor="@color/white"
+            android:text="@string/update"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>

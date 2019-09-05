@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
@@ -140,7 +142,8 @@ public class TaxesList extends BaseFragment {
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetTaxesList);
+        String StrAPi=NetworkURLs.BaseURL + NetworkURLs.AddTax;
+        mVolleyService.getDataVolley("GETCALL", StrAPi);
 
     }
 
@@ -175,6 +178,21 @@ public class TaxesList extends BaseFragment {
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
+                if(error.networkResponse != null && error.networkResponse.data != null){
+                    String error_response=new String(error.networkResponse.data);
+                    try {
+                        JSONObject response_obj=new JSONObject(error_response);
+
+                        {
+
+                            String message=response_obj.getString("errors");
+                            Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
 
             @Override

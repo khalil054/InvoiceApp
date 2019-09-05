@@ -2,66 +2,43 @@ package test.invoicegenerator.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-
+import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
+import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Libraries.Progressbar;
+import test.invoicegenerator.Activities.MyCompanyDetail;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
-import test.invoicegenerator.general.Util;
-import test.invoicegenerator.model.SharedPref;
-import test.invoicegenerator.Activities.MainActivity;
+import test.invoicegenerator.general.GlobalData;
 
-public class CompanyDetails extends Fragment {
-    @BindView(R.id.company_name)
-    EditText company_name;
+public class CompanyDetails extends BaseFragment {
 
-    @BindView(R.id.company_email)
-    EditText company_email;
-
-    @BindView(R.id.company_phone)
-    EditText company_phone;
-
-    @BindView(R.id.company_address)
-    EditText company_address;
-
-    @BindView(R.id.city)
-    EditText city;
-
-    @BindView(R.id.state)
-    EditText state;
-
-
-    @BindView(R.id.country)
-    EditText country;
-
-    @BindView(R.id.email_sign_in_button)
-    Button email_sign_in_button;
-
-    @BindView(R.id.zip_code)
-    EditText zip_code;
-
-    Progressbar cdd;
     private VolleyService mVolleyService;
+
     IResult mResultCallback = null;
+
+    TextView TvName,TvEmail,TvPhone,TvAddress,TvCity,TvPostalCode,TvSlug,TvCountry,TvState;
+
+    String StrName,StrEmail,StrPhone,StrAddress,StrCity,StrPostalCode,StrSlug,StrCountry,StrState,StrLogoImgae,StrStampImage;
+    String StruserProfile,StrUserSignature;
+    Button BtnUpdate;
+
+    ImageView imageViewLogo,imageViewStamp,imageViewUser;
 
     public static CompanyDetails newInstance() {
         CompanyDetails fragment = new CompanyDetails();
@@ -70,216 +47,248 @@ public class CompanyDetails extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /** Inflating the layout for this fragment **/
+
         View rootView = inflater.inflate(R.layout.fragment_company_details, container, false);
-      ///  View rootView = inflater.inflate(R.layout.frag, container, false);
-        ButterKnife.bind(this, rootView);
-        init();
+        init(rootView);
         return rootView;
 
     }
-    private void init()
+    private void init(View v)
     {
-        cdd=new Progressbar(getActivity());
-        email_sign_in_button.setOnClickListener(new View.OnClickListener() {
+
+        imageViewLogo=v.findViewById(R.id.logo_image);
+        imageViewStamp=v.findViewById(R.id.stamp_image);
+        imageViewUser=v.findViewById(R.id.profile_image);
+        TvName=v.findViewById(R.id.tv_company_name);
+        TvEmail=v.findViewById(R.id.tv_company_email);
+        TvPhone=v.findViewById(R.id.tv_company_phone);
+        TvCity=v.findViewById(R.id.tv_company_city);
+        TvAddress=v.findViewById(R.id.tv_company_addres);
+        TvPostalCode=v.findViewById(R.id.tv_company_postal_code);
+        TvSlug=v.findViewById(R.id.tv_company_slug);
+        TvCountry=v.findViewById(R.id.tv_company_country);
+        TvState=v.findViewById(R.id.tv_company_state);
+        BtnUpdate=v.findViewById(R.id.btn_update);
+
+        BtnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                validateAndSendDataToServer();
+            public void onClick(View view) {
+                Intent Send=new Intent(getActivity(), MyCompanyDetail.class);
+                getActivity().startActivity(Send);
+               /* loadFragment(new CompanyFrame());*/
             }
         });
-    }
 
-    private void validateAndSendDataToServer() {
-        if(company_name.getText().toString().equals(""))
-        {
-            company_name.setError(getString(R.string.error_field_required));
-            company_name.requestFocus();
-        }
-        else if(!Util.isFullname(company_name.getText().toString()))
-        {
-            company_name.setError(getString(R.string.error_invalid_name));
-            company_name.requestFocus();
-        }
-        else if(company_email.getText().toString().equals(""))
-        {
-            company_email.setError(getString(R.string.error_field_required));
-            company_email.requestFocus();
-        }
-        else if(!Util.isEmailValid(company_email.getText().toString()))
-        {
-            company_email.setError(getString(R.string.error_invalid_email));
-            company_email.requestFocus();
-        }
-        else if(company_phone.getText().toString().equals(""))
-        {
-            company_phone.setError(getString(R.string.error_field_required));
-            company_phone.requestFocus();
-        }
-        else if(company_address.getText().toString().equals(""))
-        {
-            company_address.setError(getString(R.string.error_field_required));
-            company_address.requestFocus();
-        }
-        else if(city.getText().toString().equals(""))
-        {
-            city.setError(getString(R.string.error_field_required));
-            city.requestFocus();
-        }
-        else if(country.getText().toString().equals(""))
-        {
-            country.setError(getString(R.string.error_field_required));
-            country.requestFocus();
-        }
-        else if(state.getText().toString().equals(""))
-        {
-            state.setError(getString(R.string.error_field_required));
-            state.requestFocus();
-        }
-        else if(zip_code.getText().toString().equals(""))
-        {
-            zip_code.setError(getString(R.string.error_field_required));
-            zip_code.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(zip_code.getText().toString()))
-        {
-            zip_code.setError(getString(R.string.error_invalid_zip_code));
-            zip_code.requestFocus();
-        }
+        GetCompanyDetail();
 
     }
 
-    void DataSendToServerForAddCompany()
+    public void GetCompanyDetail()
     {
-        cdd.ShowProgress();
 
-
-        initVolleyCallbackForSignIn();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-        /*Map<String, String> data = new HashMap<String, String>();
-
-        data.put("email",email_txt.getText().toString());
-        data.put("password",password_txt.getText().toString());
-*/
-        JSONObject data=new JSONObject();
-
-        try {
-            data.put("email",company_name.getText().toString());
-
-            data.put("password",company_email.getText().toString());
-            data.put("password",company_address.getText().toString());
-            data.put("password",company_phone.getText().toString());
-            data.put("password",city.getText().toString());
-            data.put("password",country.getText().toString());
-            data.put("password",state.getText().toString());
-            data.put("password",zip_code.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
-
+        showProgressBar();
+        initVolleyCallbackForClientList();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL+ NetworkURLs.GetCompanyDetail);
 
     }
 
-    void initVolleyCallbackForSignIn(){
+    void initVolleyCallbackForClientList() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
+
+
                 try {
-
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data=jsonObject.getJSONObject("data");
-                    String status = data.getString("status");
+                    boolean status = jsonObject.getBoolean("status");
+                    /*    if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
+                    if (status) {
+                        JSONObject data = jsonObject.getJSONObject("data");
+                        JSONObject settings_data = data.getJSONObject("company");
+
+                        StrName=settings_data.getString("name");
+                        StrEmail=settings_data.getString("email");
+                        StrPhone=settings_data.getString("phone");
+                        StrAddress=settings_data.getString("address");
+                        StrPostalCode=settings_data.getString("zip_code");
+                        StrCity=settings_data.getString("city");
+                        StrCountry=settings_data.getString("country");
+                        StrSlug=settings_data.getString("slug");
+                        StrState=settings_data.getString("state");
+
+                        StrLogoImgae=settings_data.getString("logo");
+                        StrStampImage=settings_data.getString("stamp");
+
+                        JSONObject user_data = settings_data.getJSONObject("user");
+
+                        if(user_data.has("image")){
+                            StruserProfile=user_data.getString("image");
+
+                        }else {
+                            StruserProfile="";
+
+                        }
+
+                        if(user_data.has("signature")){
+                            StrUserSignature=user_data.getString("signature");
+                        }else {
+                            StrUserSignature="";
+
+                        }
 
 
-                    if(status.equals("true"))
-                    {
-                        JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                        TvName.setText(StrName);
+                        TvEmail.setText(StrEmail);
+                        TvPhone.setText(StrPhone);
+                        TvAddress.setText(StrAddress);
+                        TvPostalCode.setText(StrPostalCode);
+                        TvCity.setText(StrCity);
+                        TvCountry.setText(StrCountry);
+                        TvSlug.setText(StrSlug);
+                        TvState.setText(StrState);
 
-                        JSONObject inner_data = jsonObject1.getJSONObject("data");
-                        JSONObject header_obj = jsonObject.getJSONObject("headers");
+                        showImageLogo(StrLogoImgae);
+                        showImageStamp(StrStampImage);
 
-                        String access_token=header_obj.getString("access-token");
-                        String client=header_obj.getString("client");
-                        String uid=header_obj.getString("uid");
-
-                        String login_id = inner_data.getString("id");
-
-
-                        SharedPref.init(getActivity());
-                        SharedPref.write(SharedPref.LoginID, login_id);
-                        SharedPref.write(Constants.ACCESS_TOKEN,access_token);
-                        SharedPref.write(Constants.CLIENT,client);
-                        SharedPref.write(Constants.UID,uid);
+                        showUserProfile(StruserProfile);
 
 
-                        cdd.HideProgress();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            public void run() {
-
-
-                                //  loadFragment(new FragmentOTP());
-                                Intent intent = new Intent(getActivity(),MainActivity.class);
-                                startActivity(intent);
-                                // finish();
-
-                            }
-                        }, 1000);//1000
-                    }else {
-
-                        cdd.HideProgress();
-                        String error = jsonObject.getString("Error");
-
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        GlobalData.StrCompanyName=StrName;
+                        GlobalData.StrCompanyEmail=StrEmail;
+                        GlobalData.StrCompanyAddress=StrAddress;
+                        GlobalData.StrCompanyCity=StrCity;
+                        GlobalData.StrCompanyPhone=StrPhone;
+                        GlobalData.StrCompanyZipCode=StrPostalCode;
+                        GlobalData.StrCompanyCountry=StrCountry;
+                        GlobalData.StrCompanyState=StrState;
+                        GlobalData.StrCompanyLogoUrl=StrLogoImgae;
+                        GlobalData.StrCompanyStampUrl=StrStampImage;
+                        GlobalData.StrUserProfileUrl=StruserProfile;
                     }
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
-
-
+                hideProgressBar();
             }
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
-//                Log.d(TAG, "Volley requester " + requestType);
-//                Log.d(TAG, "Volley JSON post" + "That didn't work!");
-                cdd.HideProgress();
-                error.printStackTrace();
-
-                if(error.networkResponse != null && error.networkResponse.data != null){
-                    VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
-                    String error_response=new String(error.networkResponse.data);
-                    try {
-                        JSONObject response_obj=new JSONObject(error_response);
-                        String status=response_obj.getString("status");
-                        if(status.equals("false"))
+            public void notifyError(String requestType, VolleyError error) {
+                hideProgressBar();
+                if(error.networkResponse != null && error.networkResponse.data != null) {
+                    String error_response = new String(error.networkResponse.data);
+                   /* try {
+                        JSONObject response_obj = new JSONObject(error_response);
                         {
-                            JSONObject error_obj=response_obj.getJSONObject("error");
-                            String message=error_obj.getString("message");
-                            Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+
+                            Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+
                         }
                     } catch (JSONException e) {
+                        Toast.makeText(getActivity(), String.valueOf("Error" + e.getMessage()), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                    }
+                    }*/
+                }else {
+                    //Toast.makeText(getActivity(), String.valueOf("Server not responding" ), Toast.LENGTH_SHORT).show();
                 }
-
-                //  return error;
-                // snackbar = Snackbar.make(main_layout, error.toString(), Snackbar.LENGTH_LONG);
-                //snackbar.show();
             }
 
             @Override
             public void notifySuccessResponseHeader(NetworkResponse response) {
 
             }
-
         };
     }
 
+    private void loadFragment(Fragment dashboardFragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
+        fragmentTransaction.addToBackStack(dashboardFragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+    }
+
+
+
+
+    public void showImageLogo(String ImgPath){
+        Picasso.get()
+                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .placeholder(R.color.grey) // Your dummy image...
+                .into(imageViewLogo, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                   /*     imageView_Dummy.buildDrawingCache();
+                        Bitmap bitmap = imageView_Dummy.getDrawingCache();
+                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+                        byte[] image=stream.toByteArray();
+                        FragmentEditReportUpdate.StBase64ImageToSave= Base64.encodeToString(image, 0);
+                        Toast.makeText(getActivity(), FragmentEditReportUpdate.StBase64ImageToSave, Toast.LENGTH_SHORT).show();*/
+                       /* imageView_Dummy.buildDrawingCache();
+                        Bitmap bitmap = imageView_Dummy.getDrawingCache();
+                        ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+                        byte[] image=stream.toByteArray();
+
+                        //  System.out.println("byte array:"+image);
+                        FragmentEditReportUpdate.StBase64ImageToSave= Base64.encodeToString(image, 0);*/
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                       // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Unable to load image, may be due to incorrect URL, no network...
+                    }
+
+
+                });
+    }
+
+
+    public void showImageStamp(String ImgPath){
+        Picasso.get()
+                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .placeholder(R.color.grey) // Your dummy image...
+                .into(imageViewStamp, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                       // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Unable to load image, may be due to incorrect URL, no network...
+                    }
+
+
+                });
+    }
+
+
+    public void showUserProfile(String ImgPath){
+        Picasso.get()
+                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .placeholder(R.color.grey) // Your dummy image...
+                .into(imageViewUser, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                     //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Unable to load image, may be due to incorrect URL, no network...
+                    }
+
+
+                });
+    }
 }

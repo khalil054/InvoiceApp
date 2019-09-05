@@ -1,5 +1,6 @@
 package test.invoicegenerator.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.databaseutilities.Item;
 import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.fragments.FragmentEditReportUpdate;
+import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
@@ -32,6 +34,8 @@ import test.invoicegenerator.model.SharedPref;
  */
 
 public class ActivityAddItem extends AppCompatActivity {
+
+
     @BindView(R.id.save_data)
     TextView save_data;
 
@@ -40,6 +44,11 @@ public class ActivityAddItem extends AppCompatActivity {
 
     @BindView(R.id.unit_cost_field)
     EditText unit_cost_field;
+
+    @BindView(R.id.tax_code_field)
+    TextView tax_code_field;
+
+
 
     @BindView(R.id.quantity_field)
     EditText quantity_field;
@@ -130,6 +139,14 @@ public class ActivityAddItem extends AppCompatActivity {
             }
         });
 
+        tax_code_field.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Send=new Intent(ActivityAddItem.this,SelectTextCodeFromList.class);
+                startActivity(Send);
+            }
+        });
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -182,6 +199,8 @@ public class ActivityAddItem extends AppCompatActivity {
         quantity_field.setText(bundle.getString("quntity"));
         amount_field.setText(bundle.getString("amount"));
         additional_field.setText(bundle.getString("additional"));
+
+
     }
 
     private void handleVisibilityOfTaxRate() {
@@ -213,11 +232,13 @@ public class ActivityAddItem extends AppCompatActivity {
         }else if(TextUtils.isEmpty(amount_field.getText().toString())){
             amount_field.setError(getString(R.string.invalid_quantity));
             amount_field.requestFocus();
-        }else if(TextUtils.isEmpty(CompanyID)){
+        }else if(TextUtils.isEmpty(tax_code_field.getText().toString())){
              /* amount_field.setError(getString(R.string.invalid_quantity));
               amount_field.requestFocus();*/
-            Toast.makeText(this, "Invalid Company:"+CompanyID, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid Text Code:"+CompanyID, Toast.LENGTH_SHORT).show();
         }else {
+
+          //  Toast.makeText(this, "Tax ID:"+ GlobalData.Text_Code_ID, Toast.LENGTH_SHORT).show();
 
             JSONObject InvoiceItem = new JSONObject();
 
@@ -228,8 +249,8 @@ public class ActivityAddItem extends AppCompatActivity {
                 InvoiceItem.put("price", unit_cost_field.getText().toString());
                 InvoiceItem.put("subtotal",amount_field.getText().toString());
                 InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-               // InvoiceItem.put("tax_code_id","1");
-                InvoiceItem.put("company_id", String.valueOf(SharedPref.read(SharedPref.CompanyID,"")));
+                InvoiceItem.put("tax_code_id",GlobalData.Text_Code_ID);
+                InvoiceItem.put("company_id", SharedPref.read(SharedPref.CompanyID,""));
 
 
 
@@ -261,8 +282,8 @@ public class ActivityAddItem extends AppCompatActivity {
 
                     FragmentEditReportUpdate.InvoicesArray.put(InvoiceItem);
                 }
-
-
+                GlobalData.Text_Code_ID="";
+                tax_code_field.setText("");
                 finish();
 
             } catch (JSONException e) {
@@ -271,5 +292,18 @@ public class ActivityAddItem extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+       // Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
+        tax_code_field.setText(GlobalData.Text_Code_ID);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+     //   Toast.makeText(this, "restart", Toast.LENGTH_SHORT).show();
     }
 }

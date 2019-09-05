@@ -126,16 +126,21 @@
                 android:background="@color/white" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_selct_code"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
         <me.gujun.android.taggroup.TagGroup
             android:id="@+id/tag_group"
+            android:clickable="false"
+            android:focusable="false"
             style="@style/TagGroup.Large"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/img3"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
+
             android:layout_marginStart="10dp"
             android:layout_marginLeft="14dp"
             android:layout_marginTop="0dp"
@@ -151,6 +156,7 @@
             app:atg_inputHint="Make Combination"
             app:atg_textColor="@color/white" />
 
+        </LinearLayout>
 
         <Button
             android:id="@+id/add_tax_button"

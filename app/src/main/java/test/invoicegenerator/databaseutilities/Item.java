@@ -25,6 +25,15 @@ public class Item {
     private String additional;
     private String id;
     private String taxable;
+    private String tax_Id;
+
+    public String getTax_Id() {
+        return tax_Id;
+    }
+
+    public void setTax_Id(String tax_Id) {
+        this.tax_Id = tax_Id;
+    }
 
     public String getTaxable() {
         return taxable;

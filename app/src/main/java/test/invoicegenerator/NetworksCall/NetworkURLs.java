@@ -8,8 +8,9 @@ public class NetworkURLs {
 
     public static String BaseURL = "http://et-invoice.herokuapp.com/api/v1/";
     public static String BaseURLForImages = "http://et-invoice.herokuapp.com";
-   /* public static String BaseURL = "http://cee62814.ngrok.io/api/v1/";
-    public static String BaseURLForImages = "http://cee62814.ngrok.io";*/
+
+   // public static String BaseURL = "http://7188322f.ngrok.io/api/v1/";
+    //public static String BaseURLForImages = " http://7188322f.ngrok.io";
 
     public static String SignUp = "auth.json";
     public static String SignIn = "auth/sign_in.json";
@@ -39,7 +40,11 @@ public class NetworkURLs {
     public static String UpdateTax="company_taxes/";
     public static String AddTaxCode="tax_codes.json";
     public static String UpdateTaxCode="tax_codes/";
-
-
-
+    public static String Country="countries.json";
+    public static String UpdateCompanuDetail="companies/update.json";
+    public static String CompanySettings="companies/settings.json";
+    public static String UpdateCompanySettings="companies/update_settings.json";
+    public static String GetCompanyDetail="companies/detail.json";
+    public static String GetCompanyHeaders="header_templates.json";
+    public static String UpdateCompanyHeader="header_templates/";
 }

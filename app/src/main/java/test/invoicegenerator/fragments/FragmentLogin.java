@@ -95,8 +95,6 @@ public class FragmentLogin extends BaseFragment{
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 attemptLogin();
 
             }
@@ -180,7 +178,7 @@ public class FragmentLogin extends BaseFragment{
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    Boolean status = jsonObject.getBoolean("status");
+                    boolean status = jsonObject.getBoolean("status");
                    // JSONObject jsonObjecst = jsonObject.getJSONObject("data");
 
                     progressbar.HideProgress();
@@ -287,6 +285,9 @@ public class FragmentLogin extends BaseFragment{
     public void openSignUpPage()
     {
         loadFragment(new FragmentSignUp());
+      //  loadFragment(new FragmentOTP());
+
+
 
     }
     @OnClick(R.id.forgot_password_btn)

@@ -31,20 +31,34 @@ public class CompanyFrame extends Fragment {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    ArrayList<String> tab_name = new ArrayList<String>();
-    ArrayList<Integer> tab_icon = new ArrayList<Integer>();
+    ArrayList<String> tab_name = new ArrayList<>();
+    ArrayList<Integer> tab_icon = new ArrayList<>();
+
+ /*   public static String StrCompanyName;
+    public static String StrCompanyEmail;
+    public static String StrCompanyPhone;
+    public static String StrCompanyAddress;
+    public static String StrCompanyCity;
+    public static String StrCompanyState;
+    public static String StrCompanyCountry;
+    public static String StrCompanyZipCode;
+    public static String StrCompanyLogo;
+    public static String StrCompanyHeader;
+    public static String StrCompanyStamp;
+    public static String StrCompanySignature;
+    public static String StrUserProfile;
+    public static String StrCountryID;*/
+
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /** Inflating the layout for this fragment **/
+        /* Inflating the layout for this fragment **/
         View rootView = inflater.inflate(R.layout.fragment_companyframe,container, false);
 
 
-        main_layout = (ConstraintLayout) rootView.findViewById(R.id.main_layout);
-
-
-
+        main_layout =  rootView.findViewById(R.id.main_layout);
 
 
 
@@ -53,28 +67,32 @@ public class CompanyFrame extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) rootView.findViewById(R.id.container);
+        mViewPager =  rootView.findViewById(R.id.container);
 
 
 
 
-        tabLayout = (TabLayout ) rootView.findViewById(R.id.tabs);
+        tabLayout =rootView.findViewById(R.id.tabs);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(0);
         tabLayout.setupWithViewPager(mViewPager);
 
         tab_icon.add(R.drawable.ic_companydetails);
+        tab_icon.add(R.drawable.flag);
         tab_icon.add(R.drawable.ic_addlogo);
         tab_icon.add(R.drawable.ic_headerdetails);
         tab_icon.add(R.drawable.ic_stampicon);
         tab_icon.add(R.drawable.ic_digitalsignature);
 
+
         tab_name.add("Company Details");
+        tab_name.add("Country");
         tab_name.add("Place Logo");
         tab_name.add("Header Details");
         tab_name.add("Stamp");
         tab_name.add("Digital Signature");
+
 
 
 
@@ -84,8 +102,8 @@ public class CompanyFrame extends Fragment {
 
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.tab_item, null);
 
-            TextView tab_label = (TextView) linearLayout.findViewById(R.id.label);
-            ImageView tab_pic = (ImageView) linearLayout.findViewById(R.id.img);
+            TextView tab_label = linearLayout.findViewById(R.id.label);
+            ImageView tab_pic =  linearLayout.findViewById(R.id.img);
 
 
             tab_pic.setImageResource(tab_icon.get(i));
@@ -135,24 +153,32 @@ public class CompanyFrame extends Fragment {
             switch (position)
             {
                 case 0:
-                    fragment = CompanyDetails.newInstance();
+                    fragment = CompanyDetailsUpdate.newInstance();
                     break;
 
                 case 1:
-                    fragment = PlaceLogo.newInstance();
-                break;
+                    fragment = CountryFragment.newInstance();
+                      break;
 
                 case 2:
-                    fragment = HeadersFragment.newInstance();
-                break;
+
+                    fragment = PlaceLogo.newInstance();
+
+                    break;
 
                 case 3:
-                    fragment = AddStamp.newInstance();
+                    fragment = HeadersFragment.newInstance();
+
                 break;
 
                 case 4:
-                    fragment = DigitalSignature.newInstance();
+                    fragment = AddStamp.newInstance();
+
                 break;
+                case 5:
+                    fragment = DigitalSignature.newInstance();
+
+                    break;
 
                     default:
                         break;

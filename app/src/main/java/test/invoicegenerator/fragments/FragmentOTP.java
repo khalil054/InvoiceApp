@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
@@ -36,8 +37,8 @@ public class FragmentOTP extends BaseFragment{
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
+    LinearLayout LayoutHeader;
 
-    @BindView(R.id.confirmationView)
     LottieAnimationView confirmationView;
 
     Pinview pin;
@@ -51,17 +52,23 @@ public class FragmentOTP extends BaseFragment{
 
         verify_btn=view.findViewById(R.id.verify_btn);
         pin=view.findViewById(R.id.pinview);
-
-
+        confirmationView =  view.findViewById(R.id.confirmationView);
+        LayoutHeader=view.findViewById(R.id.linearLayout);
 
         verify_btn.setOnClickListener( new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                if(!(pin.getValue().toString().length()<4))
+
+                if(pin.getPinLength()==4)
                 {
                     DataSendToServerForVerification();
+
+                    Toast.makeText(getActivity(), String.valueOf(pin.getValue()), Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(getActivity(), "else"+String.valueOf(pin.getPinLength()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -72,16 +79,15 @@ public class FragmentOTP extends BaseFragment{
 
     void DataSendToServerForVerification()
     {
+        showProgressBar();
 
         initVolleyCallbackForVerification();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
 
         Map<String, String> data = new HashMap<>();
         data.put("code",pin.getValue());
-
-
-        mVolleyService.putDataVolleyWithHeader("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.Confirm_User,data );
-
+        String Str=NetworkURLs.BaseURL + NetworkURLs.Confirm_User;
+        mVolleyService.postDataVolleyUsingHeaders("POSTCALL", Str,data );
 
     }
 
@@ -90,6 +96,7 @@ public class FragmentOTP extends BaseFragment{
             @Override
             public void notifySuccess(String requestType,String response) {
                 try {
+                    hideProgressBar();
 
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
@@ -128,19 +135,38 @@ public class FragmentOTP extends BaseFragment{
                         Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
                     }
 
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
             }
 
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                //hideProgressBar();
+                hideProgressBar();
+                if(error.networkResponse != null && error.networkResponse.data != null) {
+
+                    String error_response = new String(error.networkResponse.data);
+
+
+                    try {
+                        JSONObject response_obj = new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+                            showErrorMessage(LayoutHeader,"Error" + message);
+
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    showErrorMessage(LayoutHeader,"Error  not responding");
+
+                }
             }
 
             @Override

@@ -37,7 +37,8 @@ public class Configrations extends BaseFragment {
         layout_company.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new CompanyFrame());
+                /*loadFragment(new CompanyFrame());*/
+                loadFragment(new CompanyDetails());
             }
         });
 
@@ -51,7 +52,7 @@ public class Configrations extends BaseFragment {
         layot_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new AddNote());
+                loadFragment(new FragmentUpdatePassword());
             }
         });
 

@@ -127,7 +127,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     LinearLayout layout_edit_header;
     public static int subtotal_value=0;
     private int tax,discount=0;
-    private String tax_type,discount_type="";
+    private String tax_type,discount_type="percentage";
     public static ArrayList<Item> item_values=new ArrayList<>();
     public static long invoice_id;
     public static String is_new;
@@ -224,7 +224,7 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                 startActivityForResult(intent4, Constants.SIGN_CODE);
                 break;
             case R.id.card11:
-                selectLogoPic();
+              //  selectLogoPic();
                 break;
             case R.id.save_invoice:
             {
@@ -264,11 +264,15 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                             String[]SignedDateDummy=SignatureValue.split(":");
                             String SignedDate=SignedDateDummy[1].trim();
 
-                            //Toast.makeText(getActivity(), String.valueOf(SignedDate), Toast.LENGTH_SHORT).show();
                             InvoiceToBeSend.put("signed_by", StrSignedBy);
                             InvoiceToBeSend.put("invoice_number", "1234");
                             InvoiceToBeSend.put("due_at", InvoiceDueDate);
+                            InvoiceToBeSend.put("name", StrInvoiceName);
                             InvoiceToBeSend.put("invoiced_on", InvoiceCreateDate);
+                            InvoiceToBeSend.put("discount", discount);
+                            InvoiceToBeSend.put("total", total_value.getText());
+                            InvoiceToBeSend.put("sub_total", subtotal_value);
+                            InvoiceToBeSend.put("tax", TaxActivity.tax_amount);
                             InvoiceToBeSend.put("signed_at", SignedDate);
                             InvoiceToBeSend.put("signature", "data:image/jpeg;base64,"+StBase64ImageToSave);
                             InvoiceToBeSend.put("notes",comment_field.getText().toString());
@@ -380,6 +384,8 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+        Toast.makeText(getActivity(), requestCode+" ", Toast.LENGTH_SHORT).show();
           if(requestCode==CLIENT_CODE)
         {
             add_client_text.setText(SelectedClientName);
@@ -402,20 +408,30 @@ public class FragmentEditReport extends BaseFragment implements View.OnClickList
                         total_value.setText(String.valueOf(Util.calculateTotalValue(Integer.parseInt(subtotal_value_field.getText().toString()),
                                 discount, tax, discount_type,tax_type ) + ""));
                 }
+            }else {
+
             }
 
         }
         else if(requestCode==TAX_CODE)
         {
+           // Toast.makeText(getActivity(), "in text code condition", Toast.LENGTH_SHORT).show();
            tax_value.setText(String.valueOf(TaxActivity.tax_amount + ""));
-            if(!subtotal_value_field.getText().toString().equals(""))
+            /*if(!subtotal_value_field.getText().toString().equals("")){
+                Toast.makeText(getActivity(), String.valueOf(Util.calculateTotalValue(Integer.parseInt(subtotal_value_field.getText().toString()),
+                        discount, tax, discount_type,tax_type ) + ""), Toast.LENGTH_SHORT).show();
                 total_value.setText(String.valueOf(Util.calculateTotalValue(Integer.parseInt(subtotal_value_field.getText().toString()),
                         discount, tax, discount_type,tax_type ) + ""));
+            }else {
+                Toast.makeText(getActivity(), "empty"+subtotal_value_field.getText().toString(), Toast.LENGTH_SHORT).show();
+            }*/
+            total_value.setText(subtotal_value_field.getText().toString());
         }
         else if(requestCode==ADD_ITEM_CODE)
         {
             Toast.makeText(getActivity(), String.valueOf(item_values.size()), Toast.LENGTH_SHORT).show();
             subtotal_value_field.setText(String.valueOf(subtotal_value+""));
+
             itemsAdapter=new ItemAdapter(getActivity(),item_values);
             item_list.setAdapter(itemsAdapter);
             SetListViewHeight();

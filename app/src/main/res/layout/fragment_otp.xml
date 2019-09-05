@@ -61,15 +61,14 @@
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/rememberme_chkbox"
+        android:background="@drawable/bg_navigation"
+        android:textColor="@color/light_blue"
         android:layout_alignParentStart="true"
         android:layout_marginStart="18dp"
         android:layout_marginTop="140dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/transparent_button"
         android:padding="10dp"
         android:text="Verify"
-        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -91,6 +90,7 @@
         app:lottie_autoPlay="false"
         app:lottie_colorFilter="@color/white"
         app:lottie_fileName="check_animation.json"
-        app:lottie_loop="true" />
+        app:lottie_loop="true"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>

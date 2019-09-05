@@ -41,7 +41,7 @@ public class TaxConfigurations extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_companyframe,container, false);
 
 
-        main_layout = (ConstraintLayout) rootView.findViewById(R.id.main_layout);
+        main_layout = rootView.findViewById(R.id.main_layout);
 
 
 
@@ -80,8 +80,8 @@ public class TaxConfigurations extends Fragment {
 
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.tab_item, null);
 
-            TextView tab_label = (TextView) linearLayout.findViewById(R.id.label);
-            ImageView tab_pic = (ImageView) linearLayout.findViewById(R.id.img);
+            TextView tab_label =  linearLayout.findViewById(R.id.label);
+            ImageView tab_pic = linearLayout.findViewById(R.id.img);
 
 
             tab_pic.setImageResource(tab_icon.get(i));

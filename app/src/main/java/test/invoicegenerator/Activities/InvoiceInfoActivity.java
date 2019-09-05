@@ -41,12 +41,10 @@ public class InvoiceInfoActivity extends AppCompatActivity {
 
         if(!FragmentEditReport.IsNewInvoice){
             setDateToFields();
+        }else {
+            setDateToFieldsNew();
         }
-       /* InvoiceModel invoice= (InvoiceModel) getIntent().getSerializableExtra("info");
-        invoice_name.setText(invoice.getInvoice_name());
-        due_date.setText(invoice.getDue_date());
-        invoice_date.setText(invoice.getInvoice_date());*/
-      //  db=new DBHelper(this);
+
         Toolbar toolbar =  findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
         // setActionBar(toolbar);
         setSupportActionBar(toolbar);
@@ -89,6 +87,14 @@ public class InvoiceInfoActivity extends AppCompatActivity {
     private void setDateToFields() {
         invoice_date.setText(FragmentEditReportUpdate.InvoiceCreateDate);
         due_date.setText(FragmentEditReportUpdate.InvoiceDueDate);
+        invoice_name.setText(FragmentEditReportUpdate.StrInvoiceName);
+    }
+
+    private void setDateToFieldsNew() {
+        invoice_date.setText(FragmentEditReport.InvoiceCreateDate);
+        due_date.setText(FragmentEditReport.InvoiceDueDate);
+        invoice_name.setText(FragmentEditReport.StrInvoiceName);
+
     }
 
     public void DateDialog(final String identifier){

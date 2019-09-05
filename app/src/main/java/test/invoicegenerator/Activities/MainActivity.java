@@ -43,7 +43,9 @@ import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.menu_adapter;
+import test.invoicegenerator.fragments.CompanyDetails;
 import test.invoicegenerator.fragments.Configrations;
+import test.invoicegenerator.fragments.CurrencyPickerFragment;
 import test.invoicegenerator.fragments.DashboardFragment;
 import test.invoicegenerator.fragments.FragmentAddClient;
 import test.invoicegenerator.fragments.FragmentAllClients;
@@ -51,6 +53,10 @@ import test.invoicegenerator.fragments.FragmentEditReport;
 import test.invoicegenerator.fragments.FragmentLogin;
 import test.invoicegenerator.fragments.FragmentReport;
 import test.invoicegenerator.fragments.FragmentUpdateClient;
+import test.invoicegenerator.fragments.FragmentUpdatePassword;
+import test.invoicegenerator.fragments.SendSMSClient;
+import test.invoicegenerator.fragments.SettingsFragment;
+import test.invoicegenerator.fragments.TaxConfigurations;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.model.SharedPref;
 
@@ -60,11 +66,6 @@ public class MainActivity extends BaseActivity  implements
         FragmentAddClient.OnItemSelectedListener,
         FragmentUpdateClient.OnItemSelectedListener
         {
-           /* public static Fragment_Model CurrentFragment;
-            public static FragmentTransaction fragmentTransaction;
-            public static FragmentManager fm;
-            public static List<Fragment_Model> FragmentsList;
-            public static int FragmentPosition = -1;*/
 
     Progressbar cdd;
     Snackbar snackbar;
@@ -197,7 +198,7 @@ public class MainActivity extends BaseActivity  implements
                 final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 switch (position){
                     case 0:
-                        Pic.set( position, R.drawable.ic_menu_clients );
+                        Pic.set( position, R.drawable.homepage_click );
                         loadFragment(new DashboardFragment(),null);
                         break;
 
@@ -209,36 +210,32 @@ public class MainActivity extends BaseActivity  implements
                         break;
                     case 2:
                         Pic.set( position, R.drawable.ic_menu_report );Pic.set(position, R.drawable.ic_menu_report);
-                        loadFragment(new FragmentEditReport(),null);
+                        loadFragment(new FragmentReport(),null);
 
                         break;
-                    case 3:
+                    /*case 3:
                         Pic.set( position, R.drawable.ic_menu_addinvoice );
+                        loadFragment(new FragmentEditReport(),null);
+                        break;*/
+                    case 3:
+                        Pic.set( position, R.drawable.ic_menu_invoicereport );
+                        loadFragment(new FragmentEditReport(),null);
                         break;
                     case 4:
-                        Pic.set( position, R.drawable.ic_menu_invoicereport );
-
-                        break;
-                    case 5:
                         Pic.set( position, R.drawable.ic_menu_configurations );
                         loadFragment(new Configrations(),null);
                         break;
-                    case 6:
+                    case 5:
                         Pic.set( position, R.drawable.ic_menu_settings );
-
+                        loadFragment(new SettingsFragment(),null);
                         break;
-                    case 7:
+                    case 6:
                         Pic.set( position, R.drawable.ic_menu_logout );
                         Logout();
                         break;
 
                 }
-
                 menulist.setAdapter(new menu_adapter(MainActivity.this,Name,Pic,position) );
-
-
-
-
             }
         });
 
@@ -307,18 +304,18 @@ public class MainActivity extends BaseActivity  implements
 
         Name.add("DASHBOARD");
         Name.add("CLIENTS");
-        Name.add("REPORTS");
+        Name.add("INVOICE REPORTS");
         Name.add("ADD INVOICE");
-        Name.add("INVOICE REPORT");
+       /* Name.add("INVOICE REPORT");*/
         Name.add("CONFIGRATION");
         Name.add("SETTINGS");
         Name.add("LOGOUT");
 
+        Pic.add(R.drawable.homepage);
         Pic.add(R.drawable.ia_client);
-        Pic.add(R.drawable.ia_client);
-        Pic.add(R.drawable.ia_report);
-        Pic.add(R.drawable.ia_addinvoice);
         Pic.add(R.drawable.ia_invoicereport);
+        Pic.add(R.drawable.ia_addinvoice);
+       /* Pic.add(R.drawable.ia_invoicereport);*/
         Pic.add(R.drawable.ia_configurations);
         Pic.add(R.drawable.ia_settings);
         Pic.add(R.drawable.ia_logout);
@@ -409,7 +406,7 @@ public class MainActivity extends BaseActivity  implements
         headers.put("access-token", access_token);
         headers.put("client",client );
         headers.put("uid",uid);
-      //  mVolleyService.DeleteDataVolley("DELETECALL", NetworkURLs.BaseURL + NetworkURLs.SignOut,data,headers );
+      mVolleyService.SignOut(NetworkURLs.BaseURL + NetworkURLs.SignOut);
 
     }
 
@@ -486,7 +483,8 @@ public class MainActivity extends BaseActivity  implements
         headers.put("client",client );
         headers.put("uid",uid);
 
-        mVolleyService.putDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ChangePassword,data,headers );
+       // mVolleyService.putDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ChangePassword,data,headers );
+        mVolleyService.putDataVolley("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.ChangePassword,data );
 
 
     }
@@ -645,7 +643,35 @@ public class MainActivity extends BaseActivity  implements
 
     }
 
-          /*  @Override
+            @Override
+            public void onBackPressed() {
+                Fragment f =getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
+                if(f instanceof FragmentAllClients||f instanceof SettingsFragment) {
+                    loadFragment(new DashboardFragment(),null);
+                }
+                else if(f instanceof CompanyDetails||f instanceof CurrencyPickerFragment||f instanceof FragmentUpdatePassword||f instanceof TaxConfigurations) {
+                    loadFragment(new Configrations(), null);
+                }else if(f instanceof Configrations) {
+                    loadFragment(new DashboardFragment(), null);
+                }else if(f instanceof FragmentReport) {
+                    loadFragment(new DashboardFragment(), null);
+                }else if(f instanceof SendSMSClient) {
+                    loadFragment(new DashboardFragment(), null);
+                }
+               else if(f instanceof FragmentEditReport) {
+                    loadFragment(new FragmentReport(),null);
+                }else {
+                    Intent Send=new Intent(Intent.ACTION_MAIN);
+                    Send.addCategory(Intent.CATEGORY_HOME);
+                    Send.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(Send);
+                    finish();
+                }
+
+            }
+
+    /*  @Override
             public void onBackPressed() {
                 if (FragmentsList.size() > 1) {
 

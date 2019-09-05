@@ -10,11 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.ClientSelectModel;
 
 public class SelectionAdapter extends ArrayAdapter<String> implements Filterable {
@@ -52,6 +49,7 @@ public class SelectionAdapter extends ArrayAdapter<String> implements Filterable
         TextView tvPhone = (TextView) rootView.findViewById(R.id.tv_client_phone);
         TextView tvAddress = (TextView) rootView.findViewById(R.id.tv_client_address);
         ImageButton selection_btn = (ImageButton) rootView.findViewById(R.id.selection_btn);
+        selection_btn.setClickable(false);
 
         tvName.setText(clientModel.getName());
         tvPhone.setText(clientModel.getEmail());

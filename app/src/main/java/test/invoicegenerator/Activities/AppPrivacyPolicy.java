@@ -11,6 +11,7 @@ import test.invoicegenerator.R;
 public class AppPrivacyPolicy extends AppCompatActivity {
 
     ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

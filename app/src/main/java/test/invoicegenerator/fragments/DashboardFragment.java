@@ -18,6 +18,7 @@ import java.io.File;
 import test.invoicegenerator.Activities.DigitalSignatureActivity;
 import test.invoicegenerator.R;
 import test.invoicegenerator.Activities.MainActivity;
+import test.invoicegenerator.general.GlobalData;
 
 
 public class DashboardFragment extends BaseFragment  {
@@ -84,10 +85,12 @@ public class DashboardFragment extends BaseFragment  {
 
             @Override
             public void onClick(View view) {
+                GlobalData.Text_Code_ID="";
                 FragmentReport.CanUpdateInvoice=false;
                 Bundle args = new Bundle();
                 args.putString("new", "true");
                 args.putString("clicked", "false");
+                FragmentEditReport.StrImagePath="";
                 loadFragment(new FragmentEditReport(),args);
             }
         });
@@ -114,6 +117,8 @@ public class DashboardFragment extends BaseFragment  {
         layoutSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+               loadFragment(new SettingsFragment(),null);
 
             }
         });

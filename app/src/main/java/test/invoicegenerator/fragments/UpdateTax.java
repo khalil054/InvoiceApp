@@ -35,7 +35,8 @@ import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.SharedPref;
 
 public class UpdateTax extends BaseFragment{
-
+    @BindView(R.id.switch_idActive)
+    android.support.v7.widget.SwitchCompat aSwitch_Admin;
     @BindView(R.id.add_tax_button)
     Button Btn_AddTax;
     @BindView(R.id.delete_btn)
@@ -136,6 +137,12 @@ public class UpdateTax extends BaseFragment{
         Et_Tax_Agency.setText(GlobalData.taxModel.getAgency_name());
         Et_Tax_Percentage.setText(String.valueOf(GlobalData.taxModel.getPercent()));
         Et_Tax_Description.setText(GlobalData.taxModel.getDescription());
+
+        if(GlobalData.taxModel.getActive()){
+            aSwitch_Admin.setChecked(true);
+        }else {
+            aSwitch_Admin.setChecked(false);
+        }
     }
     void DataSendToServerForAddTax()
     {

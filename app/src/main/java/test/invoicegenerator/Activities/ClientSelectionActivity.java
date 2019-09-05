@@ -23,8 +23,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import test.invoicegenerator.Activities.BaseActivity;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
@@ -56,8 +54,8 @@ public class ClientSelectionActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_selection);
 
-        listView = (ListView) findViewById(R.id.clientList);
-        searchView = (SearchView)findViewById(R.id.searchView); // inititate a search view
+        listView =  findViewById(R.id.clientList);
+        searchView =findViewById(R.id.searchView); // inititate a search view
         buttonBack=findViewById(R.id.back_btn);
         floating_AddClient = (FloatingActionButton) findViewById(R.id.floating_add_new_client);
 
@@ -74,9 +72,9 @@ public class ClientSelectionActivity extends BaseActivity {
 
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView = (TextView) searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText = (EditText) searchView.findViewById(id);
+        EditText editText =  searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

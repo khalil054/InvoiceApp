@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,10 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -34,20 +29,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Util;
-import test.invoicegenerator.model.ImageUploadInfo;
 import test.invoicegenerator.Activities.CompanyDetailActivity;
 
 import static android.app.Activity.RESULT_OK;
-import static test.invoicegenerator.general.Constants.EMAIL_KEY;
 import static test.invoicegenerator.general.Constants.Image_Request_Code;
-import static test.invoicegenerator.general.Constants.NAME_KEY;
-import static test.invoicegenerator.general.Constants.PHONE_KEY;
-import static test.invoicegenerator.general.Constants.SIGN_UP_COLLECTION;
-import static test.invoicegenerator.general.Constants.Storage_Path;
 
 /**
  * Created by User on 10/22/2018.
@@ -168,9 +156,9 @@ public class ProfileFragment extends BaseFragment implements View.OnClickListene
         //    settingsDialog.onCreatePanelView()
         View view=getLayoutInflater().inflate(R.layout.profile_pic,null);
         settingsDialog.setContentView(view);
-        profile_picture=(ImageView)view.findViewById(R.id.profile_pic);
-        ImageButton edit_dp=(ImageButton)view.findViewById(R.id.edit_dp);
-        Button update_pic=(Button)view.findViewById(R.id.update_pic);
+        profile_picture=view.findViewById(R.id.profile_pic);
+        ImageButton edit_dp=view.findViewById(R.id.edit_dp);
+        Button update_pic=view.findViewById(R.id.update_pic);
         if(profile_pic_url!=null && !profile_pic_url.equals(""))
         Picasso.get().load(profile_pic_url).into(profile_picture);
         update_pic.setOnClickListener(new View.OnClickListener() {

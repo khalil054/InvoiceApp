@@ -3,36 +3,44 @@ package test.invoicegenerator.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
+import android.support.constraint.ConstraintLayout;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.R;
+import test.invoicegenerator.general.GlobalData;
 
 import static android.app.Activity.RESULT_OK;
 import static test.invoicegenerator.general.Constants.Image_Request_Code;
 import static test.invoicegenerator.general.Constants.PIC_CROP;
 
-public class PlaceLogo extends Fragment {
+public class PlaceLogo extends BaseFragment {
+
+    ConstraintLayout constraintLayoutl;
 
     @BindView(R.id.save_btn)
     Button save_btn;
 
-    @BindView(R.id.imageButton)
-    ImageButton imageButton;
+    @BindView(R.id.SelectLog)
+    Button imageButton;
 
     @BindView(R.id.logo_image)
     ImageView logo_image;
@@ -42,6 +50,8 @@ public class PlaceLogo extends Fragment {
 
     private Uri FilePathUri;
     private Bitmap logo_bitmap;
+    String encodedImageData;
+
 
     public static PlaceLogo newInstance() {
         PlaceLogo fragment = new PlaceLogo();
@@ -53,12 +63,15 @@ public class PlaceLogo extends Fragment {
         /** Inflating the layout for this fragment **/
         View rootView = inflater.inflate(R.layout.fragment_place_logo, container, false);
         ButterKnife.bind(this,rootView);
+        constraintLayoutl=rootView.findViewById(R.id.layout_headerr);
         init();
         return rootView;
 
     }
 
     private void init() {
+
+        showImageStamp(GlobalData.StrCompanyLogoUrl);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +82,20 @@ public class PlaceLogo extends Fragment {
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                logo_image.buildDrawingCache();
+                Bitmap bmap = logo_image.getDrawingCache();
+                 encodedImageData =getEncoded64ImageStringFromBitmap(bmap);
+                GlobalData.StrCompanyLogo=encodedImageData;
+
+                if(GlobalData.StrCompanyLogo.isEmpty()){
+                    showErrorMessage(constraintLayoutl,"Select Logo Of Company");
+                }else {
+                    showErrorMessage(constraintLayoutl,"Switch Tab To Fill Other Informations,Thanks");
+                }
+
+               // Toast.makeText(getActivity(), "Click"+encodedImageData, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -91,6 +118,7 @@ public class PlaceLogo extends Fragment {
 
             FilePathUri = data.getData();
 
+
             try {
 
                 // Getting selected image into Bitmap.
@@ -98,9 +126,7 @@ public class PlaceLogo extends Fragment {
 
                 // Setting up bitmap selected image into ImageView.
                 logo_image.setImageBitmap(logo_bitmap);
-                performCrop(FilePathUri);
-                // After selecting image change choose button above text.
-                // ChooseButton.setText("Image Selected");
+                logo_image.buildDrawingCache();
 
             }
             catch (IOException e) {
@@ -119,7 +145,7 @@ public class PlaceLogo extends Fragment {
                 logo_image.setImageBitmap(selectedBitmap);
             }
         }
-        imageButton.setVisibility(View.GONE);
+      //  imageButton.setVisibility(View.GONE);
         add_logo_text.setVisibility(View.GONE);
     }
     private void performCrop(Uri picUri) {
@@ -147,5 +173,37 @@ public class PlaceLogo extends Fragment {
             Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        byte[] byteFormat = stream.toByteArray();
+        // get the base 64 string
+        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+
+        return imgString;
+    }
+
+    public void showImageStamp(String ImgPath){
+
+        Toast.makeText(getActivity(), NetworkURLs.BaseURLForImages+ImgPath, Toast.LENGTH_SHORT).show();
+        Picasso.get()
+                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .placeholder(R.color.grey) // Your dummy image...
+                .into(logo_image, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                      //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Unable to load image, may be due to incorrect URL, no network...
+                    }
+
+
+                });
     }
 }

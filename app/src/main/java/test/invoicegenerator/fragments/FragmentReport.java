@@ -10,11 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-//import android.widget.Toast;
-/*import android.widget.Toast;*/
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -54,6 +53,8 @@ public class FragmentReport extends BaseFragment{
     SearchView searchView;
     ReportAdapter adapter;
     public static boolean CanUpdateInvoice=false;
+    @BindView(R.id.img_dummy)
+    ImageView imageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +67,7 @@ public class FragmentReport extends BaseFragment{
     }
 
     private void init() {
+
         //items=new ArrayList<>();
         GetInvoiceList();
         searchView.setQueryHint("Search Invoice");
@@ -303,6 +305,7 @@ public class FragmentReport extends BaseFragment{
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType, String response) {
+                hideProgressBar();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
 
@@ -314,7 +317,46 @@ public class FragmentReport extends BaseFragment{
                         //  singleInvoiceDetailModel=new GetSingleInvoiceDetailModel(InvoiceModel);
                         GlobalData.singleInvoiceDetailModel=new GetSingleInvoiceDetailModel(InvoiceModel);
                        // FragmentEditReportUpdate.ImagePath=GlobalData.singleInvoiceDetailModel.getSignature();
-                        loadFragment(new FragmentReportDetail(),null);
+
+                           loadFragment(new FragmentReportDetail(),null);
+
+                       /* Toast.makeText(getActivity(), String.valueOf(NetworkURLs.BaseURLForImages+GlobalData.singleInvoiceDetailModel.getSignature()), Toast.LENGTH_SHORT).show();
+
+                        Picasso.get()
+                                .load(NetworkURLs.BaseURLForImages+GlobalData.singleInvoiceDetailModel.getSignature())
+                                .placeholder(R.color.grey) // Your dummy image...
+                                .into(imageView, new com.squareup.picasso.Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        //    Toast.makeText(getActivity(), "Image Loaded", Toast.LENGTH_SHORT).show();
+                                        try {
+                                            imageView.buildDrawingCache();
+                                            Bitmap bitmap = imageView.getDrawingCache();
+                                            FragmentEditReportUpdate.SignatureBitmap=bitmap;
+                                          //  FragmentEditReportUpdate.StBase64ImageToSave=getEncoded64ImageStringFromBitmap(bitmap);
+
+                                            *//*PDFInvoice.getInstance().create_pdf_file();*//*
+                                            snackbar = Snackbar.make(main_layout,"image converted:"+String.valueOf(FragmentEditReportUpdate.SignatureBitmap), Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+
+                                       //     loadFragment(new FragmentReportDetail(),null);
+
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+
+                                            snackbar = Snackbar.make(main_layout,e.getMessage(), Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onError(Exception e) {
+                                        Toast.makeText(getActivity(), "Image not Loaded", Toast.LENGTH_SHORT).show();
+                                        // Unable to load image, may be due to incorrect URL, no network...
+                                    }
+                                });*/
+
+
+
 
                     }else {
                         //Toast.makeText(getActivity(), "Status found false", Toast.LENGTH_SHORT).show();
@@ -323,7 +365,7 @@ public class FragmentReport extends BaseFragment{
                     e.printStackTrace();
                 }
 
-                hideProgressBar();
+
             }
 
             @Override

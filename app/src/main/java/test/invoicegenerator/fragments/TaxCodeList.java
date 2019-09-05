@@ -47,7 +47,7 @@ public class TaxCodeList extends BaseFragment {
     VolleyService mVolleyService;
     taxcodeAdapter taxAdapter;
     SearchView searchView;
-    ArrayList<TaxCodeModel> taxModels = new ArrayList<TaxCodeModel>();
+    ArrayList<TaxCodeModel> taxModels = new ArrayList<>();
 
     public static TaxCodeList newInstance() {
         TaxCodeList fragment = new TaxCodeList();
@@ -59,10 +59,12 @@ public class TaxCodeList extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View view = inflater.inflate(R.layout.fragment_taxcodes_list, container, false);
-        searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
-        listView = (ListView) view.findViewById(R.id.clientList);
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        searchView =  view.findViewById(R.id.searchView); // inititate a search view
+        listView =  view.findViewById(R.id.clientList);
+        floating_AddClient =  view.findViewById(R.id.floating_add_new_client);
         init();
         unbinder = ButterKnife.bind(this, view);
         GetClientList();
@@ -77,9 +79,9 @@ public class TaxCodeList extends BaseFragment {
         searchView.clearFocus();
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView = (TextView) searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText = (EditText) searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
 
 

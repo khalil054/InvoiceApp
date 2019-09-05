@@ -20,25 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.LruCache;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -102,12 +90,14 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         drawingView.setColor("#000000");
         signature_path=getIntent().getStringExtra("signature");
         if(FragmentEditReport.IsNewInvoice){
-            FragmentEditReport.StrImagePath="";
+            //FragmentEditReport.StrImagePath="";
             setSignatureToImageView();
+
 
         }else{
          //   Toast.makeText(this, "On update Section", Toast.LENGTH_SHORT).show();
             setSignatureToImageViewUpdate();
+
 
         }
                 /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -127,35 +117,70 @@ public class DigitalSignatureActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(FragmentEditReport.IsNewInvoice){
+                    Toast.makeText(DigitalSignatureActivity.this, "new image", Toast.LENGTH_SHORT).show();
                     String Str=Signed_name.getText().toString();
                     if(TextUtils.isEmpty(Str)){
                         showMessage("Enter Signed By Name First");
                     }else{
                         FragmentEditReport.StrSignedBy=Str;
-                        drawingView.setDrawingCacheEnabled(true);
-                        String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
-                        String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                        String StoredPath = DIRECTORY + pic_name + ".png";
-                        if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this)){
-                            //drawingView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                            Bitmap b = drawingView.getDrawingCache();
-                            createDirectoryAndSaveFile(b,pic_name+".png");
-                            Intent intent = new Intent();
-                            intent.putExtra("drawPath", FragmentEditReportUpdate.ImagePath);
-                            setResult(13, intent);
-                            is_signed=true;
+                        if(FragmentEditReport.StrImagePath.length()>0){
+                            if(!isredrawimage){
+                                drawingView.setDrawingCacheEnabled(true);
+                                String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
+                                String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                                String StoredPath = DIRECTORY + pic_name + ".png";
+                                if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this)){
+                                    //drawingView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                                    Bitmap b = drawingView.getDrawingCache();
+                                    createDirectoryAndSaveFile(b,pic_name+".png");
+                                    Intent intent = new Intent();
+                                    intent.putExtra("drawPath", FragmentEditReportUpdate.ImagePath);
+                                    // intent.putExtra("drawPath", FragmentEditReportUpdate.ImagePath);
+                                    setResult(13, intent);
+                                    is_signed=true;
 
 
+                                }else {
+                                    Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }else {
+                                is_signed=true;
+                            }
                         }else {
-                            Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+                            drawingView.setDrawingCacheEnabled(true);
+                            String DIRECTORY = Environment.getExternalStorageDirectory().getPath() + "/UserSignature/";
+                            String pic_name = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+                            String StoredPath = DIRECTORY + pic_name + ".png";
+                            if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(DigitalSignatureActivity.this)){
+                                //drawingView.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                                Bitmap b = drawingView.getDrawingCache();
+                                createDirectoryAndSaveFile(b,pic_name+".png");
+                                Intent intent = new Intent();
+                                intent.putExtra("drawPath", FragmentEditReportUpdate.ImagePath);
+                                // intent.putExtra("drawPath", FragmentEditReportUpdate.ImagePath);
+                                setResult(13, intent);
+                                is_signed=true;
 
+
+                            }else {
+                                Toast.makeText(DigitalSignatureActivity.this, String.valueOf("Storage Permission not allowed"), Toast.LENGTH_SHORT).show();
+
+                            }
+                            is_signed=true;
                         }
+
+
                         finish();
                     }
 
                 }else {
+
+                  //  Toast.makeText(DigitalSignatureActivity.this, "update image", Toast.LENGTH_SHORT).show();
                     String Str=Signed_name.getText().toString();
+
                     FragmentEditReportUpdate.ImageHaseBeenEdited=false;
+
                     if(isredrawimage){
 
                         if(!TextUtils.isEmpty(Str)){
@@ -209,8 +234,6 @@ public class DigitalSignatureActivity extends AppCompatActivity {
 
                 }
 
-
-
             }
         });
 
@@ -246,10 +269,8 @@ public class DigitalSignatureActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isredrawimage=true;
                drawingView.ClearAll();
-               drawingView.invalidate();
-               // drawingView.setErase(true);
                 drawingView.invalidate();
-                setSignatureToImageView();
+
             }
         });
     }
@@ -267,12 +288,24 @@ public class DigitalSignatureActivity extends AppCompatActivity {
 
             image.setVisibility(View.VISIBLE);
 
-            Picasso.get().load(NetworkURLs.BaseURLForImages+FragmentEditReportUpdate.ImagePath).placeholder(R.color.grey).into(image);
-           /* if(hasImage(image)){
-                Toast.makeText(this, "Image found", Toast.LENGTH_SHORT).show();
+            if(FragmentEditReportUpdate.StrImagePath.length()>0){
+                File imgFile = new File(FragmentEditReportUpdate.StrImagePath);
+
+                if(imgFile.exists()){
+
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+                    image.setImageBitmap(myBitmap);
+
+                }else {
+                    Toast.makeText(this, "signature not exist", Toast.LENGTH_SHORT).show();
+                }
             }else {
-                Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show();
-            }*/
+                Picasso.get().load(NetworkURLs.BaseURLForImages+FragmentEditReportUpdate.ImagePath).placeholder(R.color.grey).into(image);
+
+            }
+
+
         }
 
 
@@ -290,12 +323,15 @@ public class DigitalSignatureActivity extends AppCompatActivity {
 
     private void setSignatureToImageView() {
         /*if(!signature_path.equals(""))*/
-        if(!TextUtils.isEmpty(FragmentEditReport.StrImagePath)){
+     //   Toast.makeText(this, "image path "+FragmentEditReport.StrImagePath, Toast.LENGTH_SHORT).show();
 
+        if(!TextUtils.isEmpty(FragmentEditReport.StrImagePath)){
                 Signed_name.setText(FragmentEditReport.StrSignedBy);
                 image.setVisibility(View.VISIBLE);
                 erase_all.setVisibility(View.GONE);
-                drawingView.setVisibility(View.GONE);
+                drawingView.setVisibility(View.VISIBLE);
+
+           // Toast.makeText(this, "image path "+FragmentEditReport.StrImagePath, Toast.LENGTH_SHORT).show();
 
                 File imgFile = new File(FragmentEditReport.StrImagePath);
 
@@ -305,6 +341,8 @@ public class DigitalSignatureActivity extends AppCompatActivity {
 
                     image.setImageBitmap(myBitmap);
 
+                }else {
+                    Toast.makeText(this, "signature not exist", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -313,9 +351,9 @@ public class DigitalSignatureActivity extends AppCompatActivity {
         }
     }
     private void initializeObject() {
-        edit_btn = (ImageView) findViewById(R.id.edit_btn);
+        edit_btn =  findViewById(R.id.edit_btn);
        // clear_btn = (ImageView) findViewById(R.id.clear_btn);
-        erase_all = (Button) findViewById(R.id.erase_all);
+        erase_all = findViewById(R.id.erase_all);
     }
     private void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         File fileToBeReturn = null;

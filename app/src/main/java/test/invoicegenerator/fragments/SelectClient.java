@@ -27,8 +27,6 @@ import test.invoicegenerator.model.ClientModel;
 
 public class SelectClient extends BaseFragment{
 
-
-
     ListView listView;
     FloatingActionButton floating_AddClient;
 
@@ -68,11 +66,6 @@ public class SelectClient extends BaseFragment{
                 loadFragment(new FragmentAddClient(),null);
             }
         });
-
-
-
-
-
     }
 
 

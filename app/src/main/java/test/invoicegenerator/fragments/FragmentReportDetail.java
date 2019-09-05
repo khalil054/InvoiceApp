@@ -1,8 +1,5 @@
 package test.invoicegenerator.fragments;
 
-/*
- * Created by User on 1/28/2019.
- */
 
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -18,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.ArrayList;
 
 import test.invoicegenerator.NetworksCall.IResult;
-import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.PDFInvoice;
@@ -40,10 +35,7 @@ public class FragmentReportDetail extends BaseFragment {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     public static String InvoiceId_ToBeFetch;
     ArrayList<String> tab_name = new ArrayList<>();
-   /* private String is_new;
-    private String is_clicked;
-    private InvoiceModel invoice;
-    private String invoice_id;*/
+
 
 
     @Override

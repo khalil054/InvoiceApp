@@ -22,7 +22,7 @@ public class TaxActivity extends AppCompatActivity {
     @BindView(R.id.tax_value)
     EditText tax_value;
 
-    public static String type;
+    public static String type="On the total";
     public static int tax_amount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

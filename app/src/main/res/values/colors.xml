@@ -36,5 +36,6 @@
     <color name="commentTextColor">#FFFFFF</color>
     <color name="hintTextColor">#55000000</color>
     <color name="hintTextColornew">#55C5C1C1</color>
+    <color name="white_color">#FFFFFF</color>
     <!-- circle animation color -->
 </resources>

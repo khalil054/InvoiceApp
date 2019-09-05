@@ -140,7 +140,7 @@ public class ViewTax extends BaseFragment  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 //Change the selected item's text color
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+               // ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             }
 
             @Override
@@ -169,7 +169,7 @@ public class ViewTax extends BaseFragment  {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 //Change the selected item's text color
-                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+              //  ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
             }
 
             @Override

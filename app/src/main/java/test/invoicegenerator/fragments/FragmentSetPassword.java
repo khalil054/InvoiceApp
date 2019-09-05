@@ -19,21 +19,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
+import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.general.Util;
-import test.invoicegenerator.model.SharedPref;
 
-/**
- * Created by User on 1/9/2019.
- */
 
 public class FragmentSetPassword extends BaseFragment{
 
@@ -96,17 +93,21 @@ public class FragmentSetPassword extends BaseFragment{
 
        // Map<String, String> data = new HashMap<String, String>();
 
-        SharedPref.init(getActivity());
+      /*  SharedPref.init(getActivity());
         String access_token=SharedPref.read(Constants.ACCESS_TOKEN_FORGOT_PASSWORD,"");
         String client=SharedPref.read(Constants.CLIENT_FORGOT_PASSWORD,"");
         String uid=SharedPref.read(Constants.UID_FORGOT_PASSWORD,"");
         HashMap<String, String>  headers = new HashMap<String, String>();
         headers.put("access-token", access_token);
         headers.put("client",client );
-        headers.put("uid",uid);
+        headers.put("uid",uid);*/
 
 
-        JSONObject data=new JSONObject();
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("password",password.getText().toString());
+        data.put("password_confirmation",confirm_password.getText().toString());
+
+       /* JSONObject data=new JSONObject();
 
         try {
             data.put("password",password.getText().toString());
@@ -114,9 +115,9 @@ public class FragmentSetPassword extends BaseFragment{
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        //mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.password,data,headers );
+        mVolleyService.putDataVolleyForHeaders("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.password,data);
     }
 
     private void initVolleyCallbackForSettingPassword() {
@@ -126,16 +127,17 @@ public class FragmentSetPassword extends BaseFragment{
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data_obj=jsonObject.getJSONObject("data");
-                    String status=data_obj.getString("status");
+                    /*JSONObject data_obj=jsonObject.getJSONObject("data");*/
+                    String status=jsonObject.getString("status");
 
 
                     if(status.equals("true"))
                     {
+                       // JSONObject data_obj=jsonObject.getJSONObject("data");
                         Toasty.success(getActivity(),"Your password has been successfully updated.", Toast.LENGTH_SHORT).show();
 
 
-                        cdd.HideProgress();
+
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
@@ -148,9 +150,9 @@ public class FragmentSetPassword extends BaseFragment{
                     }else {
 
                         cdd.HideProgress();
-                        String error = data_obj.getString("Error");
+                       // String error = data_obj.getString("Error");
 
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(),"Unable To Update Password", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -160,7 +162,7 @@ public class FragmentSetPassword extends BaseFragment{
                 }
 
 
-
+                cdd.HideProgress();
 
             }
 

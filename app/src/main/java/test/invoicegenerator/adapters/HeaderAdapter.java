@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.HeaderDetail;
+import test.invoicegenerator.model.HeaderDetailSimple;
 
 /**
  * Created by User on 11/9/2018.
@@ -22,10 +23,10 @@ public class HeaderAdapter extends BaseAdapter {
     private ArrayList<String> mData = new ArrayList();
     private LayoutInflater mInflater;
     private Context context;
-    private HeaderDetail header;
+    private HeaderDetailSimple header;
     private int index;
 
-    public HeaderAdapter(Context con,ArrayList<String> data,HeaderDetail header_detail,int selected_index) {
+    public HeaderAdapter(Context con, ArrayList<String> data, HeaderDetailSimple header_detail, int selected_index) {
         context=con;
         mData=data;
         index=selected_index;
@@ -45,7 +46,7 @@ public class HeaderAdapter extends BaseAdapter {
 
     @Override
     public String getItem(int position) {
-        return header.getName();
+        return header.getCompanyName();
     }
 
     @Override
@@ -73,19 +74,19 @@ public class HeaderAdapter extends BaseAdapter {
                // convertView.setBackgroundColor(context.getResources().getColor(R.color.contentDividerLine));
 
             holder = new ViewHolder();
-            holder.textView = (TextView)convertView.findViewById(R.id.text_name);
-            holder.addressView=(TextView)convertView.findViewById(R.id.text_company_name);
-            holder.phone=(TextView)convertView.findViewById(R.id.text_phone_num);
-            holder.email=(TextView)convertView.findViewById(R.id.text_email);
+            holder.textView = convertView.findViewById(R.id.text_name);
+           holder.addressView=convertView.findViewById(R.id.text_company_name);
+            holder.phone=convertView.findViewById(R.id.text_phone_num);
+            holder.email=convertView.findViewById(R.id.text_email);
             convertView.setTag(holder);
             convertView.setBackgroundColor(Color.TRANSPARENT);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
-        holder.textView.setText(header.getName());
-        holder.addressView.setText(header.getAddressDetail());
-        holder.email.setText(header.getEmail());
-        holder.phone.setText(header.getPhone_no());
+        holder.textView.setText(header.getCompanyName());
+        holder.addressView.setText(header.getCompanyName());
+        holder.email.setText(header.getCompany_Email());
+        holder.phone.setText(header.getCompany_Phone_no());
       //  LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 40);
        // convertView.setLayoutParams(params);
 
