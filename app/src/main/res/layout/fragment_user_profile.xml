@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/layout_header"
     android:layout_height="match_parent"
@@ -26,7 +27,8 @@
             android:textColor="@color/bgTitleLeft"
             android:textSize="20sp"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/SelectProfile"
@@ -42,7 +44,8 @@
             android:padding="10dp"
             android:clickable="true"
             android:text="Select"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,KeyboardInaccessibleWidget" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -60,11 +63,11 @@
                 android:id="@+id/add_logo_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageButton"
                 android:gravity="center_horizontal"
                 android:text="Add Profile Picture Here"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
         </RelativeLayout>
 
         <Button
@@ -80,6 +83,7 @@
             android:padding="10dp"
             android:clickable="true"
             android:text="Save"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,KeyboardInaccessibleWidget" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

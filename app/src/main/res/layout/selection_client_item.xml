@@ -23,7 +23,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <ImageView
                 android:id="@+id/p_logo_saved_location"
@@ -34,7 +35,6 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="13dp"
                 android:background="@drawable/ic_client_def"
                 android:clickable="false"
@@ -47,8 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
-                android:layout_toLeftOf="@+id/selection_btn"
-                android:layout_toRightOf="@+id/p_logo_saved_location"
+                android:layout_toStartOf="@+id/selection_btn"
+                android:layout_toEndOf="@+id/p_logo_saved_location"
                 android:orientation="vertical">
 
                 <TextView
@@ -62,7 +62,7 @@
                     android:text="Khalil"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
-                    tools:ignore="RtlCompat" />
+                    tools:ignore="HardcodedText,RtlCompat" />
 
                 <TextView
                     android:id="@+id/tv_client_phone"
@@ -76,7 +76,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#ffffff"
                     android:textSize="8sp"
-                    tools:ignore="RtlCompat,SmallSp" />
+                    tools:ignore="HardcodedText,RtlCompat,SmallSp" />
 
                 <TextView
                     android:id="@+id/tv_client_address"
@@ -89,10 +89,11 @@
                     android:text="21 3rd Floor,Ross Residentia"
                     android:textColor="#ffffff"
                     android:textSize="8sp"
-                    tools:ignore="RtlCompat,SmallSp" />
+                    tools:ignore="HardcodedText,RtlCompat,SmallSp" />
             </LinearLayout>
 
             <ImageButton
+                android:contentDescription="@string/app_name"
                 android:id="@+id/selection_btn"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

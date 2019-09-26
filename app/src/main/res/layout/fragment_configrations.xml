@@ -65,7 +65,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:clickable="false"
-                    app:srcCompat="@drawable/ic_currency" />
+                    app:srcCompat="@drawable/microsoft" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
                     android:clickable="false"
-                    android:text="Currency"
+                    android:text="Header Templates"
                     android:textColor="#092950" />
 
             </LinearLayout>

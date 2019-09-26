@@ -3,9 +3,6 @@ package test.invoicegenerator.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import test.invoicegenerator.databaseutilities.Item;
-import test.invoicegenerator.fragments.FragmentEditReport;
-import test.invoicegenerator.fragments.FragmentEditReportUpdate;
 
 public class GetSingleInvoiceItemDetail {
 
@@ -70,6 +67,7 @@ public class GetSingleInvoiceItemDetail {
     public void setStrInvoiceSubTotal(String strInvoiceSubTotal) {
         StrInvoiceSubTotal = strInvoiceSubTotal;
     }
+
     public String getStrId() {
         return StrId;
     }
@@ -156,9 +154,6 @@ public class GetSingleInvoiceItemDetail {
             setStrInvoiceTaxCode_Id(StrInvoiceTaxCode_Id);
             setStrCompanyID(StrCompanyID);
             setStrInvoiceId(StrInvoiceID);
-
-
-
 
 
         } catch (JSONException e) {

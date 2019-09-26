@@ -7,13 +7,10 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
@@ -44,45 +41,42 @@ import static test.invoicegenerator.general.Constants.EMAIL_KEY;
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
-/**
- * Created by User on 9/12/2018.
- */
 
 public class Util {
     public static boolean isFullname(String str) {
         String expression = "[a-zA-Z ]*";//^[a-zA-Z\\s]+
         return str.matches(expression);
     }
-   /* public static boolean isZipCodeValid(String s)
-    {
-        Pattern digitPattern = Pattern.compile("\\d");
-         return digitPattern.matcher(s).matches();
-    }*/
-    public static boolean isZipCodeValid(String s)
-    {
+
+    /* public static boolean isZipCodeValid(String s)
+     {
+         Pattern digitPattern = Pattern.compile("\\d");
+          return digitPattern.matcher(s).matches();
+     }*/
+    public static boolean isZipCodeValid(String s) {
         String regex = "^\\d+$";
         //  Pattern digitPattern = Pattern.compile("[0-9]");
         return !regex.matches(regex);
     }
-    public static void hideKeyPad(Activity context,View view) {
+
+    public static void hideKeyPad(Activity context, View view) {
         View v = context.getCurrentFocus();
-        if (v != null)
-        {
-            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
-        else
-        {
-            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        } else {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    public static void showToastAlpha(String message,Context context) {
+
+    public static void showToastAlpha(String message, Context context) {
         Toast toast = Toast.makeText(context, "" + message, Toast.LENGTH_SHORT);
         //  toast.setGravity(Gravity.TOP | Gravity.CENTER, 0, 0);
         toast.show();
         //  Toast.makeText(getApplicationContext(), "" + message, Toast.LENGTH_SHORT).show();
     }
+
     public static final void showAlertBox(String Message, String title,
                                           final Context context, final boolean finishOnOk) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -105,24 +99,11 @@ public class Util {
 
 
     }
+
     public static void updateResources(Context context, String language) {
-       /* Locale locale = new Locale(language);
-        Locale.setDefault(locale);
 
-        Resources res = context.getResources();
-        Configuration config = new Configuration(res.getConfiguration());
-        config.locale = locale;
-        res.updateConfiguration(config, res.getDisplayMetrics());*/
 
-        /*Resources res = context.getResources();
-// Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(language_code.toLowerCase())); // API 17+ only.
-// Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm);*/
-
-       // String languageToLoad  = "fr"; // your language
+        // String languageToLoad  = "fr"; // your language
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -135,68 +116,64 @@ public class Util {
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
-    public static DisplayMetrics gettingDeviceSize(Activity context)
-    {
+
+    public static DisplayMetrics gettingDeviceSize(Activity context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
         return displayMetrics;
     }
-    public static String auth_idOfLoggedInUser(Context context)
-    {
-        SharedPreferenceHelper helper=new SharedPreferenceHelper(context);
+
+    public static String auth_idOfLoggedInUser(Context context) {
+        SharedPreferenceHelper helper = new SharedPreferenceHelper(context);
         return helper.getValue(AUTH_ID);
     }
-public static ArrayList<String> getStateList(ArrayList<StateModel> list)
-{
-    ArrayList<String> states=new ArrayList<>();
-    for(int i=0;i<list.size();i++)
-    {
-        states.add(list.get(i).getName());
-    }
-    return states;
-}
-    public static ArrayList<String> getCountryList(ArrayList<Country> list)
-    {
-        ArrayList<String> states=new ArrayList<>();
-        for(int i=0;i<list.size();i++)
-        {
+
+    public static ArrayList<String> getStateList(ArrayList<StateModel> list) {
+        ArrayList<String> states = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
             states.add(list.get(i).getName());
         }
         return states;
     }
-    public static String getCountryId(String country_name, ArrayList<Country> list)
-    {
-        for(int i=0;i<list.size();i++)
-        {
-            if(list.get(i).getName().equals(country_name))
+
+    public static ArrayList<String> getCountryList(ArrayList<Country> list) {
+        ArrayList<String> states = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            states.add(list.get(i).getName());
+        }
+        return states;
+    }
+
+    public static String getCountryId(String country_name, ArrayList<Country> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals(country_name))
                 return list.get(i).getId();
         }
         return "";
     }
-    public static String getSelectedCountryIndex(String country_name, ArrayList<Country> list)
-    {
-        try{
-        for(int i=0;i<list.size();i++)
-        {
-            if(list.get(i).getName().equals(country_name))
-                return i+"";
-        }
-    } catch (NullPointerException e) {
-        System.out.print("Caught the NullPointerException");
-    }
-        return "";
-    }
-    public static String getSelectedStateIndex(String country_name,String country_id, ArrayList<StateModel> list)
-    {
-        for(int i=0;i<list.size();i++)
-        {
-            if(list.get(i).getName().equals(country_name) && list.get(i).getCountry_id().equals(country_id))
-                return i+"";
+
+    public static String getSelectedCountryIndex(String country_name, ArrayList<Country> list) {
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getName().equals(country_name))
+                    return i + "";
+            }
+        } catch (NullPointerException e) {
+            System.out.print("Caught the NullPointerException");
         }
         return "";
     }
+
+    public static String getSelectedStateIndex(String country_name, String country_id, ArrayList<StateModel> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals(country_name) && list.get(i).getCountry_id().equals(country_id))
+                return i + "";
+        }
+        return "";
+    }
+
     public static List<String> retrieveAllItems(Spinner theSpinner) {
         Adapter adapter = theSpinner.getAdapter();
         int n = adapter.getCount();
@@ -207,6 +184,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
         }
         return users;
     }
+
     public static int getColorWithAlpha(int color, float ratio) {
         int newColor = 0;
         int alpha = Math.round(Color.alpha(color) * ratio);
@@ -216,10 +194,11 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
         newColor = Color.argb(alpha, r, g, b);
         return newColor;
     }
-    public static String getMessage(VolleyError error){
+
+    public static String getMessage(VolleyError error) {
         if (error instanceof TimeoutError) {
             return "Time out error";
-        } else if(error instanceof NoConnectionError) {
+        } else if (error instanceof NoConnectionError) {
             return "Please check your connection";
         } else if (error instanceof AuthFailureError) {
             return "Authentication failed";
@@ -229,10 +208,11 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
             return "There is network issue ";
         } else if (error instanceof ParseError) {
             return "Parsing error";
-        } else{
+        } else {
             return DEFAULT;
         }
     }
+
     public static boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -249,7 +229,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
                     ActivityCompat
                             .requestPermissions(
                                     (Activity) context,
-                                    new String[] { android.Manifest.permission.READ_EXTERNAL_STORAGE },
+                                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                                     MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                 }
                 return false;
@@ -261,6 +241,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
             return true;
         }
     }
+
     public static void showDialog(final String msg, final Context context,
                                   final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -271,13 +252,14 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions((Activity) context,
-                                new String[] { permission },
+                                new String[]{permission},
                                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                     }
                 });
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
+
     public static boolean checkPermissionWRITE_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -294,7 +276,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
                     ActivityCompat
                             .requestPermissions(
                                     (Activity) context,
-                                    new String[] { android.Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
                 }
                 return false;
@@ -306,6 +288,7 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
             return true;
         }
     }
+
     public static void showDialogWrite(final String msg, final Context context,
                                        final String permission) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -316,54 +299,43 @@ public static ArrayList<String> getStateList(ArrayList<StateModel> list)
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         ActivityCompat.requestPermissions((Activity) context,
-                                new String[] { permission },
+                                new String[]{permission},
                                 MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
                     }
                 });
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
-    public static String getTodayDate()
-    {
-       /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");*/
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd",Locale.ENGLISH);
+
+    public static String getTodayDate() {
+        /* SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");*/
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         Date date = new Date();
         return formatter.format(date);
     }
-    public static int calculateTotalValue(int sub_total,int discount,int tax,String discount_type,String tax_type)
-    {
-        if(discount_type.equals("Flat Item") && tax==0) {
-            if (discount != 0 && discount<sub_total)
-            {
-                return sub_total-discount;
+
+    public static int calculateTotalValue(int sub_total, int discount, int tax, String discount_type, String tax_type) {
+        if (discount_type.equals("Flat Item") && tax == 0) {
+            if (discount != 0 && discount < sub_total) {
+                return sub_total - discount;
             }
-        }
-        else if(discount_type.equals("percentage") && tax==0)
-        {
-            if (discount != 0)
-            {
-                return (int) ((sub_total - ((discount* sub_total)/100))+0.9);
+        } else if (discount_type.equals("percentage") && tax == 0) {
+            if (discount != 0) {
+                return (int) ((sub_total - ((discount * sub_total) / 100)) + 0.9);
 
             }
+        } else if (discount_type.equals("Flat Item") && discount != 0 && tax_type.equals("Deducted")) {
+            int sum = sub_total - discount;
+            return (int) ((sum - tax) + 0.9);
+        } else if (discount_type.equals("percentage") && discount != 0 && tax_type.equals("Deducted")) {
+            int sum = sub_total - ((discount * sub_total) / 100);
+            ;
+            return (int) ((sum - tax) + 0.9);
+        } else if (discount == 0 && tax == 0) {
+            return (int) ((sub_total) + 0.9);
+        } else if (discount == 0 && tax_type.equals("Deducted")) {
+            return (int) ((sub_total - tax) + 0.9);
         }
-        else if(discount_type.equals("Flat Item") && discount!=0 && tax_type.equals("Deducted"))
-        {
-            int sum=sub_total-discount;
-            return (int) ((sum-tax)+0.9);
-        }
-        else if(discount_type.equals("percentage")&& discount!=0 && tax_type.equals("Deducted"))
-        {
-            int sum=sub_total - ((discount* sub_total)/100);;
-            return (int) ((sum-tax)+0.9);
-        }
-        else if(discount==0 && tax==0)
-        {
-            return (int) ((sub_total)+0.9);
-        }
-        else if(discount==0 && tax_type.equals("Deducted"))
-        {
-            return (int) ((sub_total-tax)+0.9);
-        }
-        return (int) (0+0.9);
+        return (int) (0 + 0.9);
     }
 }

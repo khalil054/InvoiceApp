@@ -2,13 +2,13 @@ package test.invoicegenerator.model;
 
 public class ReportModel {
 
-    String report_id;
-    String report_name;
-    String report_no;
-    String report_price;
-    String report_time;
-    String report_date;
-    String Day;
+    private String report_id;
+    private String report_name;
+    private String report_no;
+    private String report_price;
+    private String report_time;
+    private String report_date;
+    private String Day;
 
     public String getDay() {
         return Day;

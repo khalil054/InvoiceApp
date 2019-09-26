@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import test.invoicegenerator.R;
 import test.invoicegenerator.fragments.VisualsFragment;
 
-public class CompanyDetailActivity extends Fragment implements View.OnClickListener{
+public class CompanyDetailActivity extends Fragment implements View.OnClickListener {
     @BindView(R.id.address)
     Button address;
 
@@ -33,14 +33,14 @@ public class CompanyDetailActivity extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_company_detail,container,
+        View view = inflater.inflate(R.layout.activity_company_detail, container,
                 false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         init();
         return view;
     }
-    private void init()
-    {
+
+    private void init() {
         address.setOnClickListener(this);
         contact.setOnClickListener(this);
         signature.setOnClickListener(this);
@@ -49,15 +49,14 @@ public class CompanyDetailActivity extends Fragment implements View.OnClickListe
         address.setBackgroundColor(Color.WHITE);
 
 
-
         address_selector.setVisibility(View.VISIBLE);
         contact_selector.setVisibility(View.INVISIBLE);
     }
+
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
+        int id = view.getId();
+        switch (id) {
             case R.id.address:
 
 

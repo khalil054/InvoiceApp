@@ -2,7 +2,6 @@ package test.invoicegenerator.Activities;
 
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,12 +15,16 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -41,30 +44,29 @@ public class ClientSelectionActivity extends BaseActivity {
     @BindView(R.id.main_layout)
     RelativeLayout main_layout;
     SearchView searchView;
-    Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
     Button buttonBack;
-    int AddPosition = 0;
     int OpenPosition = 0;
     Progressbar cdd;
-    ArrayList<ClientModel> clientModels=new ArrayList<ClientModel>();
+    ArrayList<ClientModel> clientModels = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_selection);
 
-        listView =  findViewById(R.id.clientList);
-        searchView =findViewById(R.id.searchView); // inititate a search view
-        buttonBack=findViewById(R.id.back_btn);
-        floating_AddClient = (FloatingActionButton) findViewById(R.id.floating_add_new_client);
+        listView = findViewById(R.id.clientList);
+        searchView = findViewById(R.id.searchView); // inititate a search view
+        buttonBack = findViewById(R.id.back_btn);
+        floating_AddClient = findViewById(R.id.floating_add_new_client);
 
         init();
-       // unbinder= ButterKnife.bind(ClientSelectionActivity.this);
         GetClientList();
     }
+
     private void init() {
-        cdd=new Progressbar(ClientSelectionActivity.this);
+        cdd = new Progressbar(ClientSelectionActivity.this);
         searchView.setQueryHint("Search Client");
         searchView.onActionViewExpanded();
         searchView.setIconified(false);
@@ -74,7 +76,7 @@ public class ClientSelectionActivity extends BaseActivity {
                 null);
         TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText =  searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -99,16 +101,12 @@ public class ClientSelectionActivity extends BaseActivity {
             }
         });
 
-      /*  BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setVisibility(View.GONE);
-*/
         floating_AddClient.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-              //  loadFragment(new FragmentAddClient(),null);
+                //  loadFragment(new FragmentAddClient(),null);
                 Toast.makeText(ClientSelectionActivity.this, "In Progroess", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
@@ -116,15 +114,15 @@ public class ClientSelectionActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 OpenPosition = position;
 
-                if(FragmentEditReport.IsNewInvoice){
-                    FragmentEditReport.SelectedClientId=clientModels.get(OpenPosition).getId();
-                    FragmentEditReport.SelectedClientName=clientModels.get(OpenPosition).getName();
-                    Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" +String.valueOf(FragmentEditReport.SelectedClientId), Toast.LENGTH_SHORT).show();
+                if (FragmentEditReport.IsNewInvoice) {
+                    FragmentEditReport.SelectedClientId = clientModels.get(OpenPosition).getId();
+                    FragmentEditReport.SelectedClientName = clientModels.get(OpenPosition).getName();
+                   // Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" + String.valueOf(FragmentEditReport.SelectedClientId), Toast.LENGTH_SHORT).show();
 
-                }else {
-                    FragmentEditReportUpdate.SelectedClientId=clientModels.get(OpenPosition).getId();
-                    FragmentEditReportUpdate.SelectedClientName=clientModels.get(OpenPosition).getName();
-                    Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" +String.valueOf(FragmentEditReportUpdate.SelectedClientId), Toast.LENGTH_SHORT).show();
+                } else {
+                    FragmentEditReportUpdate.SelectedClientId = clientModels.get(OpenPosition).getId();
+                    FragmentEditReportUpdate.SelectedClientName = clientModels.get(OpenPosition).getName();
+                   // Toast.makeText(ClientSelectionActivity.this, "Selected Client Id:" + String.valueOf(FragmentEditReportUpdate.SelectedClientId), Toast.LENGTH_SHORT).show();
 
                 }
                 finish();
@@ -133,7 +131,7 @@ public class ClientSelectionActivity extends BaseActivity {
     }
 
     public void loadFragment(Fragment dashboardFragment, Bundle bundle) {
-        FragmentManager fragmentManager =getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         dashboardFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
@@ -141,13 +139,13 @@ public class ClientSelectionActivity extends BaseActivity {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
-    public void GetClientList()
-    {
+
+    public void GetClientList() {
 
         cdd.ShowProgress();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, ClientSelectionActivity.this);
-        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetClientList);
 
     }
 
@@ -167,7 +165,7 @@ public class ClientSelectionActivity extends BaseActivity {
                             clientModels.add(clientModel);
                         }
 
-                        clientAdapter = new ClientAdapter(ClientSelectionActivity.this,clientModels);
+                        clientAdapter = new ClientAdapter(ClientSelectionActivity.this, clientModels);
                         listView.setAdapter(clientAdapter);
                     }
                 } catch (JSONException e) {

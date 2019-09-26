@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.pepperonas.materialdialog.MaterialDialog;
@@ -30,13 +31,14 @@ import com.seatgeek.placesautocomplete.model.AddressComponent;
 import com.seatgeek.placesautocomplete.model.AddressComponentType;
 import com.seatgeek.placesautocomplete.model.Place;
 import com.seatgeek.placesautocomplete.model.PlaceDetails;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+
 import butterknife.ButterKnife;
-import es.dmoral.toasty.Toasty;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
@@ -56,16 +58,17 @@ import test.invoicegenerator.fragments.FragmentUpdateClient;
 import test.invoicegenerator.fragments.FragmentUpdatePassword;
 import test.invoicegenerator.fragments.SendSMSClient;
 import test.invoicegenerator.fragments.SettingsFragment;
+import test.invoicegenerator.fragments.TaxCodeList;
 import test.invoicegenerator.fragments.TaxConfigurations;
+import test.invoicegenerator.fragments.TaxesList;
 import test.invoicegenerator.general.Constants;
 import test.invoicegenerator.model.SharedPref;
 
 
-public class MainActivity extends BaseActivity  implements
+public class MainActivity extends BaseActivity implements
         FragmentAllClients.OnItemSelectedListener,
         FragmentAddClient.OnItemSelectedListener,
-        FragmentUpdateClient.OnItemSelectedListener
-        {
+        FragmentUpdateClient.OnItemSelectedListener {
 
     Progressbar cdd;
     Snackbar snackbar;
@@ -79,8 +82,7 @@ public class MainActivity extends BaseActivity  implements
 
     ArrayList<String> Name = new ArrayList<>();
     ArrayList<Integer> Pic = new ArrayList<>();
-  /*  DBHelper sqliteHelper;
-    private DBHelper db;*/
+
 
     Button back_btn;
 
@@ -90,9 +92,8 @@ public class MainActivity extends BaseActivity  implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainframe);
         ButterKnife.bind(this);
-       // sqliteHelper=new DBHelper(MainActivity.this);
 
-        loadFragment(new DashboardFragment(),null);
+        loadFragment(new DashboardFragment(), null);
 
         init();
 
@@ -103,57 +104,18 @@ public class MainActivity extends BaseActivity  implements
 
     private void init() {
 
-        cdd=new Progressbar(MainActivity.this);
+        cdd = new Progressbar(MainActivity.this);
 
-        BottomNavigationView navigation =  findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        menu_icon =  findViewById(R.id.menu_icon);
+        menu_icon = findViewById(R.id.menu_icon);
         leftMenuView = findViewById(R.id.leftDrawerLayout);
-        mDrawerLayout =  findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         menulist = findViewById(R.id.menu_list);
-        back_btn =findViewById(R.id.back_btn);
-
-        //OpenFragment(new DashboardFragment(),getResources().getString(R.string.tag_dashboard),null,getResources().getString(R.string.tag_dashboard));
-
+        back_btn = findViewById(R.id.back_btn);
     }
 
-
-
-          /*  public static void OpenFragment(Fragment fragment, String tag, Bundle bundle, String Title)
-            {
-                try
-                {
-                    for (int count = 0; count < FragmentsList.size(); count++)
-                    {
-                        if (FragmentsList.get(count).getTagName().equals(tag))
-                        {
-                            fragment = FragmentsList.get(count).getFragment();
-                            FragmentsList.remove(count);
-                            FragmentPosition--;
-                            break;
-                        }
-                    }
-
-
-                    Fragment_Model fragment_model = new Fragment_Model(tag, fragment, bundle, Title);
-                    FragmentsList.add(fragment_model);
-
-                    fragmentTransaction = fm.beginTransaction();
-
-                    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
-                            R.anim.slide_left, R.anim.slide_right);
-                    fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
-                    fragmentTransaction.commit();
-                    FragmentPosition++;
-
-                }
-                catch (Exception e)
-                {
-                    Log.d("tag", "OpenFragment : \n" + e.getMessage());
-                }
-            }*/
-
-    private void loadFragment(Fragment dashboardFragment,Bundle bundle) {
+    private void loadFragment(Fragment dashboardFragment, Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         dashboardFragment.setArguments(bundle);
@@ -162,6 +124,7 @@ public class MainActivity extends BaseActivity  implements
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
+
     public void openLeftMenu() {
         mDrawerLayout.openDrawer(leftMenuView);
     }
@@ -187,7 +150,7 @@ public class MainActivity extends BaseActivity  implements
         });
 
         menuData();
-        menulist.setAdapter(new menu_adapter(this,Name,Pic,99) );
+        menulist.setAdapter(new menu_adapter(this, Name, Pic, 99));
         menulist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -196,21 +159,22 @@ public class MainActivity extends BaseActivity  implements
                 menuData();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                switch (position){
+                switch (position) {
                     case 0:
-                        Pic.set( position, R.drawable.homepage_click );
-                        loadFragment(new DashboardFragment(),null);
+                        Pic.set(position, R.drawable.homepage_click);
+                        loadFragment(new DashboardFragment(), null);
                         break;
 
                     case 1:
-                        Pic.set( position, R.drawable.ic_menu_clients );
+                        Pic.set(position, R.drawable.ic_menu_clients);
 
-                        loadFragment(new FragmentAllClients(),null);
+                        loadFragment(new FragmentAllClients(), null);
 
                         break;
                     case 2:
-                        Pic.set( position, R.drawable.ic_menu_report );Pic.set(position, R.drawable.ic_menu_report);
-                        loadFragment(new FragmentReport(),null);
+                        Pic.set(position, R.drawable.ic_menu_report);
+                        Pic.set(position, R.drawable.ic_menu_report);
+                        loadFragment(new FragmentReport(), null);
 
                         break;
                     /*case 3:
@@ -218,58 +182,47 @@ public class MainActivity extends BaseActivity  implements
                         loadFragment(new FragmentEditReport(),null);
                         break;*/
                     case 3:
-                        Pic.set( position, R.drawable.ic_menu_invoicereport );
-                        loadFragment(new FragmentEditReport(),null);
+                        Pic.set(position, R.drawable.ic_menu_invoicereport);
+                        loadFragment(new FragmentEditReport(), null);
                         break;
                     case 4:
-                        Pic.set( position, R.drawable.ic_menu_configurations );
-                        loadFragment(new Configrations(),null);
+                        Pic.set(position, R.drawable.ic_menu_configurations);
+                        loadFragment(new Configrations(), null);
                         break;
                     case 5:
-                        Pic.set( position, R.drawable.ic_menu_settings );
-                        loadFragment(new SettingsFragment(),null);
+                        Pic.set(position, R.drawable.ic_menu_settings);
+                        loadFragment(new SettingsFragment(), null);
                         break;
                     case 6:
-                        Pic.set( position, R.drawable.ic_menu_logout );
+                        Pic.set(position, R.drawable.ic_menu_logout);
                         Logout();
                         break;
 
                 }
-                menulist.setAdapter(new menu_adapter(MainActivity.this,Name,Pic,position) );
+                menulist.setAdapter(new menu_adapter(MainActivity.this, Name, Pic, position));
             }
         });
 
 
-
     }
 
-    public void ChangeMenuOption(int position)
-    {
+    public void ChangeMenuOption(int position) {
         switch (position) {
             case 0:
                 Pic.set(position, R.drawable.ic_menu_clients);
 
-                loadFragment(new FragmentAllClients(),null);
+                loadFragment(new FragmentAllClients(), null);
                 break;
 
             case 1:
                 Pic.set(position, R.drawable.ic_menu_clients);
-                loadFragment(new DashboardFragment(),null);
+                loadFragment(new DashboardFragment(), null);
                 break;
 
             case 2:
                 Pic.set(position, R.drawable.ic_menu_report);
-                loadFragment(new FragmentReport(),null);
-               /* Cursor rs=db.getInvoiceData();
-                if(rs.isAfterLast() == false)
-                    loadFragment(new FragmentReport(),null);
-                else
-                {
-                    Bundle args = new Bundle();
-                    args.putString("new", "true");
-                    args.putString("clicked", "false");
-                    loadFragment(new FragmentEditReport(),args);
-                }*/
+                loadFragment(new FragmentReport(), null);
+
                 break;
 
             case 3:
@@ -291,14 +244,12 @@ public class MainActivity extends BaseActivity  implements
             default:
                 break;
         }
-        menulist.setAdapter(new menu_adapter(MainActivity.this,Name,Pic,position) );
+        menulist.setAdapter(new menu_adapter(MainActivity.this, Name, Pic, position));
 
     }
 
 
-
-    public void menuData()
-    {
+    public void menuData() {
         Name.clear();
         Pic.clear();
 
@@ -306,7 +257,7 @@ public class MainActivity extends BaseActivity  implements
         Name.add("CLIENTS");
         Name.add("INVOICE REPORTS");
         Name.add("ADD INVOICE");
-       /* Name.add("INVOICE REPORT");*/
+        /* Name.add("INVOICE REPORT");*/
         Name.add("CONFIGRATION");
         Name.add("SETTINGS");
         Name.add("LOGOUT");
@@ -315,7 +266,7 @@ public class MainActivity extends BaseActivity  implements
         Pic.add(R.drawable.ia_client);
         Pic.add(R.drawable.ia_invoicereport);
         Pic.add(R.drawable.ia_addinvoice);
-       /* Pic.add(R.drawable.ia_invoicereport);*/
+        /* Pic.add(R.drawable.ia_invoicereport);*/
         Pic.add(R.drawable.ia_configurations);
         Pic.add(R.drawable.ia_settings);
         Pic.add(R.drawable.ia_logout);
@@ -329,7 +280,7 @@ public class MainActivity extends BaseActivity  implements
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_privacy:
-                    Intent Send=new Intent(MainActivity.this,AppPrivacyPolicy.class);
+                    Intent Send = new Intent(MainActivity.this, AppPrivacyPolicy.class);
                     startActivity(Send);
                     finish();
                     return true;
@@ -349,8 +300,7 @@ public class MainActivity extends BaseActivity  implements
         }
     };
 
-    void Logout()
-    {
+    void Logout() {
         new MaterialDialog.Builder(MainActivity.this)
                 .title("Logout")
                 .message("You really want to logout?")
@@ -391,46 +341,44 @@ public class MainActivity extends BaseActivity  implements
                 .show();
     }
 
-    void DataSendToServerForSignOut()
-    {
+    void DataSendToServerForSignOut() {
 
         cdd.ShowProgress();
         initVolleyCallbackForSignOut();
-        mVolleyService = new VolleyService(mResultCallback,MainActivity.this);
-        Map<String, String> data = new HashMap<>();
+        mVolleyService = new VolleyService(mResultCallback, MainActivity.this);
+        // Map<String, String> data = new HashMap<>();
         SharedPref.init(MainActivity.this);
-        String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
-        String client=SharedPref.read(Constants.CLIENT,"");
-        String uid=SharedPref.read(Constants.UID,"");
-        HashMap<String, String>  headers = new HashMap<>();
+        String access_token = SharedPref.read(Constants.ACCESS_TOKEN, "");
+        String client = SharedPref.read(Constants.CLIENT, "");
+        String uid = SharedPref.read(Constants.UID, "");
+        HashMap<String, String> headers = new HashMap<>();
         headers.put("access-token", access_token);
-        headers.put("client",client );
-        headers.put("uid",uid);
-      mVolleyService.SignOut(NetworkURLs.BaseURL + NetworkURLs.SignOut);
+        headers.put("client", client);
+        headers.put("uid", uid);
+        mVolleyService.SignOut(NetworkURLs.BaseURL + NetworkURLs.SignOut);
 
     }
 
-    void initVolleyCallbackForSignOut(){
+    void initVolleyCallbackForSignOut() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     String status = jsonObject.getString("success");
 
 
-                    if(status.equals("true"))
-                    {
+                    if (status.equals("true")) {
 
                         cdd.HideProgress();
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             public void run() {
-                                loadFragment(new  FragmentLogin(),null);
+                                loadFragment(new FragmentLogin(), null);
                             }
                         }, 1000);//1000
-                    }else {
+                    } else {
 
                         cdd.HideProgress();
                         String error = jsonObject.getString("Error");
@@ -439,18 +387,15 @@ public class MainActivity extends BaseActivity  implements
                     }
 
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
 
-
-
             }
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
+            public void notifyError(String requestType, VolleyError error) {
                 cdd.HideProgress();
                 error.printStackTrace();
                 snackbar = Snackbar.make(main_layout, error.toString(), Snackbar.LENGTH_LONG);
@@ -463,27 +408,27 @@ public class MainActivity extends BaseActivity  implements
             }
         };
     }
-    void DataSendToServerForChangePassword()
-    {
 
-        initVolleyCallbackForChangePassword();
-        mVolleyService = new VolleyService(mResultCallback,this);
-        Map<String, String> data = new HashMap<String, String>();
+    /*  void DataSendToServerForChangePassword()
+      {
 
-        data.put("current_password","password123");
-        data.put("password",/*pinView.getText().toString()*/"password789");
-        data.put("password_confirmation",/*pinView.getText().toString()*/"password789");
+          initVolleyCallbackForChangePassword();
+          mVolleyService = new VolleyService(mResultCallback,this);
+          Map<String, String> data = new HashMap<>();
+
+          data.put("current_password","password123");
+          data.put("password",*//*pinView.getText().toString()*//*"password789");
+        data.put("password_confirmation",*//*pinView.getText().toString()*//*"password789");
 
         SharedPref.init(this);
         String access_token=SharedPref.read(Constants.ACCESS_TOKEN,"");
         String client=SharedPref.read(Constants.CLIENT,"");
         String uid=SharedPref.read(Constants.UID,"");
-        HashMap<String, String>  headers = new HashMap<String, String>();
+        HashMap<String, String>  headers = new HashMap<>();
         headers.put("access-token", access_token);
         headers.put("client",client );
         headers.put("uid",uid);
 
-       // mVolleyService.putDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ChangePassword,data,headers );
         mVolleyService.putDataVolley("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.ChangePassword,data );
 
 
@@ -550,20 +495,20 @@ public class MainActivity extends BaseActivity  implements
             }
         };
     }
-
+*/
     @Override
     public void onAllClientFragCallBack(int position) {
 
-      //  Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
-        if(position==1){
+        //  Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
+        if (position == 1) {
             Toast.makeText(this, "a", Toast.LENGTH_SHORT).show();
 
-            loadFragment(new FragmentAllClients(),null);
+            loadFragment(new FragmentAllClients(), null);
 
-        }else {
+        } else {
             Toast.makeText(this, "b", Toast.LENGTH_SHORT).show();
 
-            loadFragment(new FragmentAddClient(),null);
+            loadFragment(new FragmentAddClient(), null);
 
         }
 
@@ -571,18 +516,17 @@ public class MainActivity extends BaseActivity  implements
 
     @Override
     public void onAddClientFragCallBack(int position) {
-        if(position==1){
-            loadFragment(new FragmentAllClients(),null);
+        if (position == 1) {
+            loadFragment(new FragmentAllClients(), null);
         }
     }
 
-    public void LoadAddressFields(View view)
-    {
+    public void LoadAddressFields(View view) {
         final PlacesAutocompleteTextView Et_Client_Address = (view.findViewById(R.id.places_autocomplete));
-        final EditText Et_Client_City = ( view.findViewById(R.id.client_city));
+        final EditText Et_Client_City = (view.findViewById(R.id.client_city));
         final EditText Et_Client_State = (view.findViewById(R.id.client_state));
-        final EditText Et_Client_Country = ( view.findViewById(R.id.client_country));
-        final EditText Et_Client_ZipCode = ( view.findViewById(R.id.client_zip));
+        final EditText Et_Client_Country = (view.findViewById(R.id.client_country));
+        final EditText Et_Client_ZipCode = (view.findViewById(R.id.client_zip));
 
         Et_Client_Address.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
             @Override
@@ -643,33 +587,33 @@ public class MainActivity extends BaseActivity  implements
 
     }
 
-            @Override
-            public void onBackPressed() {
-                Fragment f =getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
-                if(f instanceof FragmentAllClients||f instanceof SettingsFragment) {
-                    loadFragment(new DashboardFragment(),null);
-                }
-                else if(f instanceof CompanyDetails||f instanceof CurrencyPickerFragment||f instanceof FragmentUpdatePassword||f instanceof TaxConfigurations) {
-                    loadFragment(new Configrations(), null);
-                }else if(f instanceof Configrations) {
-                    loadFragment(new DashboardFragment(), null);
-                }else if(f instanceof FragmentReport) {
-                    loadFragment(new DashboardFragment(), null);
-                }else if(f instanceof SendSMSClient) {
-                    loadFragment(new DashboardFragment(), null);
-                }
-               else if(f instanceof FragmentEditReport) {
-                    loadFragment(new FragmentReport(),null);
-                }else {
-                    Intent Send=new Intent(Intent.ACTION_MAIN);
-                    Send.addCategory(Intent.CATEGORY_HOME);
-                    Send.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    Send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(Send);
-                    finish();
-                }
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_frame);
+        if (f instanceof FragmentAllClients || f instanceof SettingsFragment) {
+            loadFragment(new DashboardFragment(), null);
+        } else if (f instanceof TaxesList || f instanceof TaxCodeList) {
+            loadFragment(new TaxConfigurations(), null);
+        } else if (f instanceof CompanyDetails || f instanceof CurrencyPickerFragment || f instanceof FragmentUpdatePassword || f instanceof TaxConfigurations) {
+            loadFragment(new Configrations(), null);
+        } else if (f instanceof Configrations) {
+            loadFragment(new DashboardFragment(), null);
+        } else if (f instanceof FragmentReport) {
+            loadFragment(new DashboardFragment(), null);
+        } else if (f instanceof SendSMSClient) {
+            loadFragment(new DashboardFragment(), null);
+        } else if (f instanceof FragmentEditReport) {
+            loadFragment(new FragmentReport(), null);
+        } else {
+            Intent Send = new Intent(Intent.ACTION_MAIN);
+            Send.addCategory(Intent.CATEGORY_HOME);
+            Send.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Send.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(Send);
+            finish();
+        }
 
-            }
+    }
 
     /*  @Override
             public void onBackPressed() {
@@ -692,4 +636,4 @@ public class MainActivity extends BaseActivity  implements
                     Toast.makeText(this, "else", Toast.LENGTH_SHORT).show();
                 }
             }*/
-        }
+}

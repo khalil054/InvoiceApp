@@ -1,7 +1,6 @@
 package test.invoicegenerator.fragments;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -19,10 +18,6 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,10 +32,8 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.adapters.taxAdapter;
 import test.invoicegenerator.general.GlobalData;
-import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.TaxModel;
 
 public class TaxesList extends BaseFragment {
@@ -55,7 +48,7 @@ public class TaxesList extends BaseFragment {
     taxAdapter taxAdapter;
     SearchView searchView;
     int DeletePosition = 0;
-    ArrayList<TaxModel> taxModels = new ArrayList<TaxModel>();
+    ArrayList<TaxModel> taxModels = new ArrayList<>();
 
     public static TaxesList newInstance() {
         TaxesList fragment = new TaxesList();
@@ -68,9 +61,9 @@ public class TaxesList extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_taxes_list, container, false);
-        searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
-        listView = (ListView) view.findViewById(R.id.clientList);
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        searchView = view.findViewById(R.id.searchView); // inititate a search view
+        listView = view.findViewById(R.id.clientList);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
         unbinder = ButterKnife.bind(this, view);
         GetClientList();
@@ -85,9 +78,9 @@ public class TaxesList extends BaseFragment {
         searchView.clearFocus();
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView = (TextView) searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText = (EditText) searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
 
 
@@ -116,13 +109,11 @@ public class TaxesList extends BaseFragment {
         });
 
 
-
-
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GlobalData.taxModel =  taxModels.get(position);
-                loadFragment(new UpdateTax(),null);
+                GlobalData.taxModel = taxModels.get(position);
+                loadFragment(new UpdateTax(), null);
             }
         });
 
@@ -142,7 +133,7 @@ public class TaxesList extends BaseFragment {
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        String StrAPi=NetworkURLs.BaseURL + NetworkURLs.AddTax;
+        String StrAPi = NetworkURLs.BaseURL + NetworkURLs.AddTax;
         mVolleyService.getDataVolley("GETCALL", StrAPi);
 
     }
@@ -154,7 +145,6 @@ public class TaxesList extends BaseFragment {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
-                    /*    if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
                     if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         JSONArray company_taxes = data.getJSONArray("company_taxes");
@@ -178,15 +168,15 @@ public class TaxesList extends BaseFragment {
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null){
-                    String error_response=new String(error.networkResponse.data);
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    String error_response = new String(error.networkResponse.data);
                     try {
-                        JSONObject response_obj=new JSONObject(error_response);
+                        JSONObject response_obj = new JSONObject(error_response);
 
                         {
 
-                            String message=response_obj.getString("errors");
-                            Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
+                            String message = response_obj.getString("errors");
+                            Toasty.error(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

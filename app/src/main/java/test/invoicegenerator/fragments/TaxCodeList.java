@@ -30,11 +30,9 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.taxAdapter;
 import test.invoicegenerator.adapters.taxcodeAdapter;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.TaxCodeModel;
-import test.invoicegenerator.model.TaxModel;
 
 public class TaxCodeList extends BaseFragment {
 
@@ -50,8 +48,7 @@ public class TaxCodeList extends BaseFragment {
     ArrayList<TaxCodeModel> taxModels = new ArrayList<>();
 
     public static TaxCodeList newInstance() {
-        TaxCodeList fragment = new TaxCodeList();
-        return fragment;
+        return new TaxCodeList();
     }
 
 
@@ -60,11 +57,10 @@ public class TaxCodeList extends BaseFragment {
                              Bundle savedInstanceState) {
 
 
-
         View view = inflater.inflate(R.layout.fragment_taxcodes_list, container, false);
-        searchView =  view.findViewById(R.id.searchView); // inititate a search view
-        listView =  view.findViewById(R.id.clientList);
-        floating_AddClient =  view.findViewById(R.id.floating_add_new_client);
+        searchView = view.findViewById(R.id.searchView); // inititate a search view
+        listView = view.findViewById(R.id.clientList);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
         unbinder = ButterKnife.bind(this, view);
         GetClientList();
@@ -110,13 +106,11 @@ public class TaxCodeList extends BaseFragment {
         });
 
 
-
-
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GlobalData.taxCodeModel =  taxModels.get(position);
-                loadFragment(new UpdateTaxCode(),null);
+                GlobalData.taxCodeModel = taxModels.get(position);
+                loadFragment(new UpdateTaxCode(), null);
             }
         });
 

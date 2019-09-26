@@ -29,14 +29,11 @@ import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
 
-/**
- * Created by apple on 04/10/2018.
- */
 
 public class VolleyService {
 
-    IResult mResultCallback = null;
-    Context mContext;
+    private IResult mResultCallback = null;
+    private Context mContext;
 
     public VolleyService(IResult resultCallback, Context context){
         mResultCallback = resultCallback;

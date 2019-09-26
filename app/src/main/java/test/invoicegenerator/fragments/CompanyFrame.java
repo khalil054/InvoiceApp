@@ -21,7 +21,6 @@ import test.invoicegenerator.R;
 public class CompanyFrame extends Fragment {
 
 
-
     TabLayout tabLayout;
 
     ConstraintLayout main_layout;
@@ -34,45 +33,19 @@ public class CompanyFrame extends Fragment {
     ArrayList<String> tab_name = new ArrayList<>();
     ArrayList<Integer> tab_icon = new ArrayList<>();
 
- /*   public static String StrCompanyName;
-    public static String StrCompanyEmail;
-    public static String StrCompanyPhone;
-    public static String StrCompanyAddress;
-    public static String StrCompanyCity;
-    public static String StrCompanyState;
-    public static String StrCompanyCountry;
-    public static String StrCompanyZipCode;
-    public static String StrCompanyLogo;
-    public static String StrCompanyHeader;
-    public static String StrCompanyStamp;
-    public static String StrCompanySignature;
-    public static String StrUserProfile;
-    public static String StrCountryID;*/
-
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /* Inflating the layout for this fragment **/
-        View rootView = inflater.inflate(R.layout.fragment_companyframe,container, false);
+        View rootView = inflater.inflate(R.layout.fragment_companyframe, container, false);
 
 
-        main_layout =  rootView.findViewById(R.id.main_layout);
+        main_layout = rootView.findViewById(R.id.main_layout);
 
-
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager =  rootView.findViewById(R.id.container);
+        mViewPager = rootView.findViewById(R.id.container);
 
-
-
-
-        tabLayout =rootView.findViewById(R.id.tabs);
+        tabLayout = rootView.findViewById(R.id.tabs);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(0);
@@ -94,16 +67,13 @@ public class CompanyFrame extends Fragment {
         tab_name.add("Digital Signature");
 
 
-
-
-
         // loop through all navigation tabs
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
 
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.tab_item, null);
 
             TextView tab_label = linearLayout.findViewById(R.id.label);
-            ImageView tab_pic =  linearLayout.findViewById(R.id.img);
+            ImageView tab_pic = linearLayout.findViewById(R.id.img);
 
 
             tab_pic.setImageResource(tab_icon.get(i));
@@ -113,9 +83,9 @@ public class CompanyFrame extends Fragment {
         }
 
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
                 currentIndeX = tab.getPosition();
 
             }
@@ -133,9 +103,6 @@ public class CompanyFrame extends Fragment {
         });
 
 
-
-
-
         return rootView;
     }
 
@@ -150,15 +117,14 @@ public class CompanyFrame extends Fragment {
         public Fragment getItem(int position) {
 
             Fragment fragment = null;
-            switch (position)
-            {
+            switch (position) {
                 case 0:
                     fragment = CompanyDetailsUpdate.newInstance();
                     break;
 
                 case 1:
                     fragment = CountryFragment.newInstance();
-                      break;
+                    break;
 
                 case 2:
 
@@ -169,19 +135,19 @@ public class CompanyFrame extends Fragment {
                 case 3:
                     fragment = HeadersFragment.newInstance();
 
-                break;
+                    break;
 
                 case 4:
                     fragment = AddStamp.newInstance();
 
-                break;
+                    break;
                 case 5:
                     fragment = DigitalSignature.newInstance();
 
                     break;
 
-                    default:
-                        break;
+                default:
+                    break;
             }
 
             return fragment;
@@ -200,8 +166,6 @@ public class CompanyFrame extends Fragment {
             return "";
         }
     }
-
-
 
 
 }

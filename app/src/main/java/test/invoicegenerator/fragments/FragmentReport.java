@@ -14,16 +14,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -35,7 +40,7 @@ import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.GetSingleInvoiceDetailModel;
 import test.invoicegenerator.model.JsonInvoiceModel;
 
-public class FragmentReport extends BaseFragment{
+public class FragmentReport extends BaseFragment {
 
     @BindView(R.id.main_layout)
     RelativeLayout main_layout;
@@ -46,13 +51,12 @@ public class FragmentReport extends BaseFragment{
     FloatingActionButton add_invoice;
     @BindView(R.id.invoiceList)
     SwipeMenuListView listView;
-    private ArrayList<JsonInvoiceModel> Invoicelist=new ArrayList<>();
-   // private ArrayList<String> items;
+    private ArrayList<JsonInvoiceModel> Invoicelist = new ArrayList<>();
     int DeletePosition = 0;
     int OpenPosition = 0;
     SearchView searchView;
     ReportAdapter adapter;
-    public static boolean CanUpdateInvoice=false;
+    public static boolean CanUpdateInvoice = false;
     @BindView(R.id.img_dummy)
     ImageView imageView;
 
@@ -60,8 +64,8 @@ public class FragmentReport extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reports, container, false);
-        searchView =view.findViewById(R.id.searchView);
-        ButterKnife.bind(this,view);
+        searchView = view.findViewById(R.id.searchView);
+        ButterKnife.bind(this, view);
         init();
         return view;
     }
@@ -76,15 +80,16 @@ public class FragmentReport extends BaseFragment{
         searchView.clearFocus();
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView =searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText =  searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 adapter.getFilter().filter(newText);
@@ -97,10 +102,10 @@ public class FragmentReport extends BaseFragment{
                 Bundle args = new Bundle();
                 args.putString("new", "true");
                 args.putString("clicked", "false");
-                if(FragmentEditReport.item_values.size()>0){
+                if (FragmentEditReport.item_values.size() > 0) {
                     FragmentEditReport.item_values.clear();
                 }
-                loadFragment(new FragmentEditReport(),args);
+                loadFragment(new FragmentEditReport(), args);
             }
         });
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -125,10 +130,10 @@ public class FragmentReport extends BaseFragment{
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CanUpdateInvoice=true;
+                CanUpdateInvoice = true;
                 OpenPosition = position;
                 GlobalData.invoiceModel = Invoicelist.get(position);
-                FragmentReportDetail.InvoiceId_ToBeFetch=GlobalData.invoiceModel.getId();
+                FragmentReportDetail.InvoiceId_ToBeFetch = GlobalData.invoiceModel.getId();
                 GetSingleInvoiceDetail();
 
 
@@ -140,11 +145,11 @@ public class FragmentReport extends BaseFragment{
                 switch (index) {
                     case 0:
                         DeletePosition = position;
-                       DeleteInvoice(Invoicelist.get(position).getId());
+                        DeleteInvoice(Invoicelist.get(position).getId());
                         break;
                     case 1:
                         OpenPosition = position;
-                        GlobalData.invoiceModel =  Invoicelist.get(position);
+                        GlobalData.invoiceModel = Invoicelist.get(position);
                         break;
                 }
                 return false;
@@ -155,15 +160,15 @@ public class FragmentReport extends BaseFragment{
         listView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
     }
-    public void GetInvoiceList()
-    {
-        if(Invoicelist.size()>0){
+
+    public void GetInvoiceList() {
+        if (Invoicelist.size() > 0) {
             Invoicelist.clear();
         }
         showProgressBar();
         initVolleyCallbackForInvoiceList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        String Str=NetworkURLs.BaseURL+ NetworkURLs.GetInvoiceList;
+        String Str = NetworkURLs.BaseURL + NetworkURLs.GetInvoiceList;
         mVolleyService.getDataVolley("GETCALL", Str);
     }
 
@@ -182,9 +187,9 @@ public class FragmentReport extends BaseFragment{
                             JsonInvoiceModel invoiceModel = new JsonInvoiceModel(InvoiceArray.getJSONObject(i));
                             Invoicelist.add(invoiceModel);
                         }
-                        adapter= new ReportAdapter(getActivity(), Invoicelist);
+                        adapter = new ReportAdapter(getActivity(), Invoicelist);
                         listView.setAdapter(adapter);
-                    }else {
+                    } else {
                         //Toast.makeText(getActivity(), "Status found false", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -195,29 +200,30 @@ public class FragmentReport extends BaseFragment{
 
             @Override
             public void notifyError(String requestType, VolleyError error) {
-               hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                hideProgressBar();
+                if (error.networkResponse != null && error.networkResponse.data != null) {
 
                     String error_response = new String(error.networkResponse.data);
-                  //  Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
 
                     try {
                         JSONObject response_obj = new JSONObject(error_response);
                         {
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
-                         //   Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
-                  //  Toast.makeText(getActivity(), String.valueOf("Error"+error.getMessage()), Toast.LENGTH_SHORT).show();
+                } else {
+                    //  Toast.makeText(getActivity(), String.valueOf("Error"+error.getMessage()), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void notifySuccessResponseHeader(NetworkResponse response) { }
+            public void notifySuccessResponseHeader(NetworkResponse response) {
+            }
 
         };
     }
@@ -225,12 +231,11 @@ public class FragmentReport extends BaseFragment{
     ///////////////////////////Delete Report/////////////////////
 
 
-    public void DeleteInvoice(String id)
-    {
+    public void DeleteInvoice(String id) {
         showProgressBar();
         initVolleyCallbackForDeleteClient();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteInvoice + id + ".json" );
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL + NetworkURLs.DeleteInvoice + id + ".json");
 
     }
 
@@ -240,12 +245,12 @@ public class FragmentReport extends BaseFragment{
             public void notifySuccess(String requestType, String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    boolean st=jsonObject.getBoolean("status");
+                    boolean st = jsonObject.getBoolean("status");
                     if (st) {
                         Invoicelist.remove(DeletePosition);
-                        adapter= new ReportAdapter(getActivity(), Invoicelist);
+                        adapter = new ReportAdapter(getActivity(), Invoicelist);
                         listView.setAdapter(adapter);
-                        snackbar = Snackbar.make(main_layout,"Invoice Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Invoice Deleted Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }
                 } catch (JSONException e) {
@@ -258,7 +263,7 @@ public class FragmentReport extends BaseFragment{
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
                     String error_response = new String(error.networkResponse.data);
                     // dialogHelper.showErroDialog(error_response);
                     //Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
@@ -270,13 +275,13 @@ public class FragmentReport extends BaseFragment{
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
 
-                         //   Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+                            //   Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
 
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     //Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -291,13 +296,12 @@ public class FragmentReport extends BaseFragment{
     ///////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////
 
-    public void GetSingleInvoiceDetail()
-    {
+    public void GetSingleInvoiceDetail() {
 
         showProgressBar();
         initVolleyCallbackForSingleDetail();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        String Str= NetworkURLs.BaseURL+ NetworkURLs.GetSingleInvoice+FragmentReportDetail.InvoiceId_ToBeFetch+".json";
+        String Str = NetworkURLs.BaseURL + NetworkURLs.GetSingleInvoice + FragmentReportDetail.InvoiceId_ToBeFetch + ".json";
         mVolleyService.getDataVolley("GETCALL", Str);
     }
 
@@ -314,52 +318,9 @@ public class FragmentReport extends BaseFragment{
 
                         JSONObject mydata = jsonObject.getJSONObject("data");
                         JSONObject InvoiceModel = mydata.getJSONObject("invoice");
-                        //  singleInvoiceDetailModel=new GetSingleInvoiceDetailModel(InvoiceModel);
-                        GlobalData.singleInvoiceDetailModel=new GetSingleInvoiceDetailModel(InvoiceModel);
-                       // FragmentEditReportUpdate.ImagePath=GlobalData.singleInvoiceDetailModel.getSignature();
+                        GlobalData.singleInvoiceDetailModel = new GetSingleInvoiceDetailModel(InvoiceModel);
 
-                           loadFragment(new FragmentReportDetail(),null);
-
-                       /* Toast.makeText(getActivity(), String.valueOf(NetworkURLs.BaseURLForImages+GlobalData.singleInvoiceDetailModel.getSignature()), Toast.LENGTH_SHORT).show();
-
-                        Picasso.get()
-                                .load(NetworkURLs.BaseURLForImages+GlobalData.singleInvoiceDetailModel.getSignature())
-                                .placeholder(R.color.grey) // Your dummy image...
-                                .into(imageView, new com.squareup.picasso.Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        //    Toast.makeText(getActivity(), "Image Loaded", Toast.LENGTH_SHORT).show();
-                                        try {
-                                            imageView.buildDrawingCache();
-                                            Bitmap bitmap = imageView.getDrawingCache();
-                                            FragmentEditReportUpdate.SignatureBitmap=bitmap;
-                                          //  FragmentEditReportUpdate.StBase64ImageToSave=getEncoded64ImageStringFromBitmap(bitmap);
-
-                                            *//*PDFInvoice.getInstance().create_pdf_file();*//*
-                                            snackbar = Snackbar.make(main_layout,"image converted:"+String.valueOf(FragmentEditReportUpdate.SignatureBitmap), Snackbar.LENGTH_LONG);
-                                            snackbar.show();
-
-                                       //     loadFragment(new FragmentReportDetail(),null);
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-
-                                            snackbar = Snackbar.make(main_layout,e.getMessage(), Snackbar.LENGTH_LONG);
-                                            snackbar.show();
-                                        }
-                                    }
-                                    @Override
-                                    public void onError(Exception e) {
-                                        Toast.makeText(getActivity(), "Image not Loaded", Toast.LENGTH_SHORT).show();
-                                        // Unable to load image, may be due to incorrect URL, no network...
-                                    }
-                                });*/
-
-
-
-
-                    }else {
-                        //Toast.makeText(getActivity(), "Status found false", Toast.LENGTH_SHORT).show();
+                        loadFragment(new FragmentReportDetail(), null);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -371,22 +332,19 @@ public class FragmentReport extends BaseFragment{
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
                     String error_response = new String(error.networkResponse.data);
-                   // Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj = new JSONObject(error_response);
                         {
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
-                         //   Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
-                   // Toast.makeText(getActivity(), String.valueOf("Error not responding" ), Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
@@ -23,11 +23,10 @@
 
 
             <ImageView
-
+                android:contentDescription="@string/app_name"
                 android:id="@+id/user_img"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:imeOptions="actionUnspecified"
                 android:scaleType="centerInside"
@@ -40,28 +39,16 @@
                 android:gravity="center"
                 android:text="Please write your message then you send it on selected clients"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/user_img"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:orientation="vertical">
 
-                <!--<EditText-->
-                    <!--android:id="@+id/name"-->
-                    <!--android:layout_width="match_parent"-->
-
-                    <!--android:imeActionId="6"-->
-                    <!--android:imeActionLabel="@string/action_sign_in_short"-->
-                    <!--android:imeOptions="actionUnspecified"-->
-                    <!--android:maxLines="1"-->
-                    <!--android:padding="15dp"-->
-                    <!--android:singleLine="true"-->
-                    <!--android:theme="@style/MyAppTheme"-->
-                    <!--android:translationY="5dp" />-->
 
 
                 <EditText
@@ -77,25 +64,9 @@
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="Autofill,HardcodedText" />
             </LinearLayout>
-            <!-- <ScrollView
-                 android:id="@+id/login_form"
-                 android:layout_marginTop="10dp"
-                 android:layout_below="@+id/user_img"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent">
-
-                 <LinearLayout
-                     android:id="@+id/email_login_form"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:orientation="vertical">-->
-            <!--<android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/TextLabel"
-                >-->
 
 
             <Button
@@ -104,20 +75,18 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
                 android:background="@drawable/transparent_button"
                 android:text="Next"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
 
             <include
                 android:id="@+id/snakbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:visibility="gone"
                 layout="@layout/snakbar" />
         </LinearLayout>

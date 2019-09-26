@@ -18,7 +18,6 @@ public class MyInvoiceModel {
     private JSONArray InvoicejsonArray;
 
 
-
     public JSONArray getJsonArray() {
         return InvoicejsonArray;
     }
@@ -115,7 +114,7 @@ public class MyInvoiceModel {
         StrClient_id = strClient_id;
     }
 
-    public MyInvoiceModel(String strSignedBy, String strInvoice_number, String strDue_at, String strInvoiced_on, String strSigned_at, String strNotes, String strPayment_status, String strDelivery_status, String strUser_id, String strCompany_idy, String strClient_id,JSONArray jr) {
+    public MyInvoiceModel(String strSignedBy, String strInvoice_number, String strDue_at, String strInvoiced_on, String strSigned_at, String strNotes, String strPayment_status, String strDelivery_status, String strUser_id, String strCompany_idy, String strClient_id, JSONArray jr) {
         StrSignedBy = strSignedBy;
         StrInvoice_number = strInvoice_number;
         StrDue_at = strDue_at;
@@ -127,7 +126,7 @@ public class MyInvoiceModel {
         StrUser_id = strUser_id;
         StrCompany_id = strCompany_idy;
         StrClient_id = strClient_id;
-        InvoicejsonArray=jr;
+        InvoicejsonArray = jr;
 
         setStrSignedBy(StrSignedBy);
         setStrInvoice_number(StrInvoice_number);

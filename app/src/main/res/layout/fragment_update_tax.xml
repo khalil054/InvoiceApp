@@ -41,16 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginEnd="5dp">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/img1"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_home" />
 
@@ -60,8 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/img1"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/img1"
+                android:layout_toEndOf="@+id/img1"
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:ems="10"
@@ -69,7 +68,8 @@
                 android:inputType="textPersonName"
                 android:textColor="@color/white"
                 android:textColorHint="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,UnusedAttribute" />
 
             <View
                 android:id="@+id/view1"
@@ -89,24 +89,24 @@
             android:layout_marginEnd="5dp">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/img2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_mail" />
 
             <EditText
+                tools:ignore="Autofill,HardcodedText,UnusedAttribute"
                 android:id="@+id/tax_agency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/img2"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/img2"
+                android:layout_toEndOf="@+id/img2"
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:ems="10"
@@ -131,17 +131,17 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginEnd="5dp">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/img3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:scaleType="centerInside"
+                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_phone" />
 
             <EditText
@@ -150,8 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/img3"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/img3"
+                tools:ignore="Autofill,HardcodedText,UnusedAttribute"
+                android:layout_toEndOf="@+id/img3"
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:ems="10"
@@ -176,16 +176,16 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginStart="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginEnd="5dp">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:id="@+id/img4"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_location" />
 
@@ -195,16 +195,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/img4"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/img4"
+                android:layout_toEndOf="@+id/img4"
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:ems="10"
                 android:hint="Description"
                 android:inputType="textPersonName"
                 android:textColor="@color/white"
+
                 android:textColorHint="@android:color/darker_gray"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill,HardcodedText,UnusedAttribute" />
 
             <View
                 android:id="@+id/view4"
@@ -262,7 +263,8 @@
             android:text="Add"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/delete_btn"
@@ -272,7 +274,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/transparent_button"
             android:text="Delete"
-            android:textColor="@color/red_500" />
+            android:textColor="@color/red_500"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

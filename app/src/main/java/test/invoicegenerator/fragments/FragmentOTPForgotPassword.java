@@ -27,9 +27,8 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.SharedPref;
 
-public class FragmentOTPForgotPassword extends BaseFragment{
+public class FragmentOTPForgotPassword extends BaseFragment {
     Snackbar snackbar;
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
@@ -39,7 +38,7 @@ public class FragmentOTPForgotPassword extends BaseFragment{
     LottieAnimationView confirmationView;
 
     Pinview pin;
-   Button verify_btn;
+    Button verify_btn;
 
 
     @Override
@@ -47,25 +46,23 @@ public class FragmentOTPForgotPassword extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
 
-        verify_btn=view.findViewById(R.id.verify_btn);
-        pin=view.findViewById(R.id.pinview);
-        confirmationView =  view.findViewById(R.id.confirmationView);
-        LayoutHeader=view.findViewById(R.id.linearLayout);
+        verify_btn = view.findViewById(R.id.verify_btn);
+        pin = view.findViewById(R.id.pinview);
+        confirmationView = view.findViewById(R.id.confirmationView);
+        LayoutHeader = view.findViewById(R.id.linearLayout);
 
-        verify_btn.setOnClickListener( new View.OnClickListener() {
+        verify_btn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
 
-                if(pin.getPinLength()==4)
-                {
+                if (pin.getPinLength() == 4) {
                     DataSendToServerForVerification();
 
-                   // Toast.makeText(getActivity(), String.valueOf(pin.getValue()), Toast.LENGTH_SHORT).show();
 
-                }else {
-                    Toast.makeText(getActivity(), "else"+String.valueOf(pin.getPinLength()), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "else" + String.valueOf(pin.getPinLength()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -74,41 +71,34 @@ public class FragmentOTPForgotPassword extends BaseFragment{
     }
 
 
-    void DataSendToServerForVerification()
-    {
+    void DataSendToServerForVerification() {
         showProgressBar();
 
         initVolleyCallbackForVerification();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
         Map<String, String> data = new HashMap<>();
-        data.put("reset_password_token",pin.getValue());
-        String Str=NetworkURLs.BaseURL + NetworkURLs.VerifiyCode;
-        mVolleyService.postDataVolleyWithoutHeaders("POSTCALL", Str,data );
+        data.put("reset_password_token", pin.getValue());
+        String Str = NetworkURLs.BaseURL + NetworkURLs.VerifiyCode;
+        mVolleyService.postDataVolleyWithoutHeaders("POSTCALL", Str, data);
 
     }
 
-    void initVolleyCallbackForVerification(){
+    void initVolleyCallbackForVerification() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
                     hideProgressBar();
 
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
 
-                    if(status)
-                    {
+                    if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
 
                         String login_id = data.getString("message");
-                        Toasty.success(getActivity(),login_id, Toast.LENGTH_SHORT).show();
-
-                       /* SharedPref.init(getActivity());
-                        SharedPref.write(SharedPref.LoginID, login_id);
-*/
-
+                        Toasty.success(getActivity(), login_id, Toast.LENGTH_SHORT).show();
 
                         confirmationView.setVisibility(View.VISIBLE);
                         confirmationView.playAnimation();
@@ -117,12 +107,7 @@ public class FragmentOTPForgotPassword extends BaseFragment{
                             public void run() {
 
 
-
-                          /*      Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
-                                getActivity().finish();*/
-
-                                loadFragment(new FragmentSetPassword(),null);
+                                loadFragment(new FragmentSetPassword(), null);
 
                             }
                         }, 1000);
@@ -132,7 +117,7 @@ public class FragmentOTPForgotPassword extends BaseFragment{
 
                         String error = jsonObject.getString("Error");
 
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -143,9 +128,9 @@ public class FragmentOTPForgotPassword extends BaseFragment{
 
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
+            public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
 
                     String error_response = new String(error.networkResponse.data);
 
@@ -156,15 +141,15 @@ public class FragmentOTPForgotPassword extends BaseFragment{
                         {
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
-                            showErrorMessage(LayoutHeader,"Error" + message);
+                            showErrorMessage(LayoutHeader, "Error" + message);
 
 
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
-                    showErrorMessage(LayoutHeader,"Error  not responding");
+                } else {
+                    showErrorMessage(LayoutHeader, "Error  not responding");
 
                 }
             }

@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
@@ -42,13 +43,8 @@ import test.invoicegenerator.general.SharedPreferenceHelper;
 import test.invoicegenerator.model.SharedPref;
 
 
-/**
- * Created by User on 1/4/2019.
- */
+public class FragmentLogin extends BaseFragment {
 
-public class FragmentLogin extends BaseFragment{
-
-    /*Snackbar snackbar;*/
     ConstraintLayout main_layout;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
@@ -72,7 +68,7 @@ public class FragmentLogin extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_login, container, false);
 
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         init(view);
         return view;
     }
@@ -101,7 +97,6 @@ public class FragmentLogin extends BaseFragment{
         });
 
 
-
     }
 
     private void attemptLogin() {
@@ -125,13 +120,12 @@ public class FragmentLogin extends BaseFragment{
             focusView = password_txt;
             cancel = true;
         }
-        if(TextUtils.isEmpty(password))
-        {
+        if (TextUtils.isEmpty(password)) {
             password_txt.setError(getString(R.string.error_field_required));
             focusView = password_txt;
             cancel = true;
         }
-        // Check for a valid email address.
+
         if (TextUtils.isEmpty(email)) {
             email_txt.setError(getString(R.string.error_field_required));
             focusView = email_txt;
@@ -149,6 +143,7 @@ public class FragmentLogin extends BaseFragment{
             DataSendToServerForSignIn();
         }
     }
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
@@ -158,101 +153,95 @@ public class FragmentLogin extends BaseFragment{
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
-    void DataSendToServerForSignIn()
-    {
+
+    void DataSendToServerForSignIn() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForSignIn();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("email",email_txt.getText().toString());
-        data.put("password",password_txt.getText().toString());
-        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn,data );
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        Map<String, String> data = new HashMap<>();
+        data.put("email", email_txt.getText().toString());
+        data.put("password", password_txt.getText().toString());
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignIn, data);
     }
 
-    void initVolleyCallbackForSignIn(){
+    void initVolleyCallbackForSignIn() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 rememberCredential();
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
-                   // JSONObject jsonObjecst = jsonObject.getJSONObject("data");
+                    // JSONObject jsonObjecst = jsonObject.getJSONObject("data");
 
                     progressbar.HideProgress();
                     progressbar.ShowConfirmation();
 
-                    if(status)
-                    {
-                       JSONObject data = jsonObject.getJSONObject("data");
+                    if (status) {
+                        JSONObject data = jsonObject.getJSONObject("data");
 
                         String login_id = data.getString("user_id");
                         String company_id = data.getString("company_id");
 
-                            SharedPref.init(getActivity());
-                            SharedPref.write(SharedPref.LoginID, login_id);
-                            SharedPref.write(SharedPref.CompanyID, company_id);
+                        SharedPref.init(getActivity());
+                        SharedPref.write(SharedPref.LoginID, login_id);
+                        SharedPref.write(SharedPref.CompanyID, company_id);
 
 
-
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
 
 
-                                    progressbar.HideConfirmation();
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                progressbar.HideConfirmation();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+                                getActivity().finish();
 
-                                }
-                            }, 1000);
+                            }
+                        }, 1000);
 
                     } else {
 
 
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
 
-
                 } catch (JSONException e) {
-                    Toasty.error(getActivity(),e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toasty.error(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                     progressbar.HideProgress();
                 }
 
 
-
             }
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
+            public void notifyError(String requestType, VolleyError error) {
 
 
                 progressbar.HideProgress();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
                     String error_response = new String(error.networkResponse.data);
-                    // Toast.makeText(getActivity(), String.valueOf("Error" + error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj = new JSONObject(error_response);
                         {
                             JSONObject error_obj = response_obj.getJSONObject("error");
                             String message = error_obj.getString("message");
 
-                               Toast.makeText(getActivity(), String.valueOf("Error" + message), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Error" + message, Toast.LENGTH_SHORT).show();
 
                         }
                     } catch (JSONException e) {
-                        Toast.makeText(getActivity(), String.valueOf("Error" + e.getMessage()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Error" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
-                }else {
-                     Toast.makeText(getActivity(), String.valueOf("Server not responding" ), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Server not responding", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -262,37 +251,32 @@ public class FragmentLogin extends BaseFragment{
             }
 
 
-
         };
     }
-    private void rememberCredential()
-    {
-        SharedPreferenceHelper sharedPreferenceHelper=new SharedPreferenceHelper(getActivity());
 
-        if(rememberCheckBox.isChecked())
-        {
-            sharedPreferenceHelper.setValue("rememberme_chkbox","true");
-            sharedPreferenceHelper.setValue("email",email_txt.getText().toString());
-            sharedPreferenceHelper.setValue("password",password_txt.getText().toString());
+    private void rememberCredential() {
+        SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getActivity());
 
-        }else {
-            sharedPreferenceHelper.setValue("rememberme_chkbox","false");
-            sharedPreferenceHelper.setValue("email","");
-            sharedPreferenceHelper.setValue("password","");
+        if (rememberCheckBox.isChecked()) {
+            sharedPreferenceHelper.setValue("rememberme_chkbox", "true");
+            sharedPreferenceHelper.setValue("email", email_txt.getText().toString());
+            sharedPreferenceHelper.setValue("password", password_txt.getText().toString());
+
+        } else {
+            sharedPreferenceHelper.setValue("rememberme_chkbox", "false");
+            sharedPreferenceHelper.setValue("email", "");
+            sharedPreferenceHelper.setValue("password", "");
         }
     }
+
     @OnClick(R.id.sign_up_text)
-    public void openSignUpPage()
-    {
+    public void openSignUpPage() {
         loadFragment(new FragmentSignUp());
-      //  loadFragment(new FragmentOTP());
-
-
 
     }
+
     @OnClick(R.id.forgot_password_btn)
-    public void openForgotPasswordPage()
-    {
+    public void openForgotPasswordPage() {
         loadFragment(new FragmentForgotPassword());
 
     }
@@ -305,24 +289,21 @@ public class FragmentLogin extends BaseFragment{
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
+
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         setRememberedCredential();
     }
 
     private void setRememberedCredential() {
-        SharedPreferenceHelper sharedPreferenceHelper=new SharedPreferenceHelper(getActivity());
-        String is_remmeber=sharedPreferenceHelper.getValue("rememberme_chkbox");
-        if(is_remmeber.equals("true"))
-        {
+        SharedPreferenceHelper sharedPreferenceHelper = new SharedPreferenceHelper(getActivity());
+        String is_remmeber = sharedPreferenceHelper.getValue("rememberme_chkbox");
+        if (is_remmeber.equals("true")) {
             email_txt.setText(sharedPreferenceHelper.getValue("email"));
             password_txt.setText(sharedPreferenceHelper.getValue("password"));
             rememberCheckBox.setChecked(true);
-        }
-        else
-        {
+        } else {
             email_txt.setText("");
             password_txt.setText("");
             rememberCheckBox.setChecked(false);

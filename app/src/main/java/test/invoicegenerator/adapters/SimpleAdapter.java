@@ -14,10 +14,6 @@ import java.util.List;
 
 import test.invoicegenerator.R;
 
-/**
- * Created by User on 10/31/2018.
- */
-
 public class SimpleAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
@@ -36,10 +32,8 @@ public class SimpleAdapter extends ArrayAdapter<String> {
         if(listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.spinner_item,parent,false);
 
-        //StateModel currentMovie = moviesList.get(position);
 
-
-        TextView name = (TextView) listItem.findViewById(R.id.text);
+        TextView name =listItem.findViewById(R.id.text);
         name.setText(/*currentMovie.getName()*/moviesList.get(position));
 
 

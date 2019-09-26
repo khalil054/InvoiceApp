@@ -1,21 +1,16 @@
 package test.invoicegenerator.adapters;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.AddressModel;
-import test.invoicegenerator.model.ClientModel;
-import test.invoicegenerator.model.ClientWithAddressModel;
 
 public class addressAdapter extends ArrayAdapter<String> {
 
@@ -45,9 +40,9 @@ public class addressAdapter extends ArrayAdapter<String> {
         }
 
         AddressModel addressModel = addressModels.get(position);
-        TextView tvName = (TextView) rootView.findViewById(R.id.tv_client_name_adapter);
-        TextView tvPhone = (TextView) rootView.findViewById(R.id.tv_client_phone);
-        TextView tvAddress = (TextView) rootView.findViewById(R.id.tv_client_address);
+        TextView tvName =rootView.findViewById(R.id.tv_client_name_adapter);
+        TextView tvPhone = rootView.findViewById(R.id.tv_client_phone);
+        TextView tvAddress = rootView.findViewById(R.id.tv_client_address);
 
         tvName.setText(addressModel.getName());
         tvPhone.setText(addressModel.getCity());

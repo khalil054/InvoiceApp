@@ -14,10 +14,6 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.model.HeaderDetail;
 import test.invoicegenerator.model.HeaderDetailSimple;
 
-/**
- * Created by User on 11/9/2018.
- */
-
 public class HeaderAdapter extends BaseAdapter {
 
     private ArrayList<String> mData = new ArrayList();

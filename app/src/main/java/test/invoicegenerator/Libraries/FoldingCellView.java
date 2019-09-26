@@ -6,10 +6,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
-/**
- * Basic element for folding animation that represents one physic part of folding sheet with different views on front and back.
- *
- */
+
 @SuppressWarnings("unused")
 public class FoldingCellView extends RelativeLayout {
 

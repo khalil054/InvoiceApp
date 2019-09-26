@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Country_Model {
-    String StrCountryID;
-    String StrCountryName;
-    boolean ischecked=false;
+    private String StrCountryID;
+    private String StrCountryName;
+    private boolean ischecked=false;
 
     public boolean isIschecked() {
         return ischecked;

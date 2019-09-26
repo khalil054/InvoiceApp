@@ -8,10 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-/**
- * Created by ravi on 21/12/17.
- */
-
 public class BottomNavigationBehavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
 
     public BottomNavigationBehavior() {

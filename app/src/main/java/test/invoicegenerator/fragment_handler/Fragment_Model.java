@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 public class Fragment_Model {
-    String TagName;
-    Fragment fragment;
-    Bundle bundle;
-    String Title;
+    private String TagName;
+    private Fragment fragment;
+    private Bundle bundle;
+    private String Title;
 
     public Fragment_Model(String tagName, Fragment fragment, Bundle bundle, String title)
     {

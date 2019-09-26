@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <LinearLayout
         android:background="@drawable/blur_bg"
@@ -23,7 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Invoice Default Notes"/>
+                android:text="Invoice Default Notes"
+                tools:ignore="HardcodedText" />
             <EditText
                 android:id="@+id/invoice_default_notes"
                 android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Invoice Default Due Days"/>
+                android:text="Invoice Default Due Days"
+                tools:ignore="HardcodedText" />
             <EditText
                 android:id="@+id/invoice_default_days"
                 android:layout_width="match_parent"
@@ -81,7 +82,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Apply Tax On Items"/>
+            android:text="Apply Tax On Items"
+            tools:ignore="HardcodedText" />
         <RadioGroup
             android:orientation="horizontal"
             android:layout_marginTop="7dp"
@@ -97,15 +99,17 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:id="@+id/rd_active"
-                android:text="true" />
+                android:text="true"
+                tools:ignore="HardcodedText" />
 
             <RadioButton
-                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rd_false"
-                android:text="false" />
+                android:text="false"
+                tools:ignore="HardcodedText" />
 
 
         </RadioGroup>

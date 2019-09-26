@@ -1,8 +1,6 @@
 package test.invoicegenerator.model;
 
-/**
- * Created by User on 10/11/2018.
- */
+
 
 public class TaxDetail {
     private String tax_detail_id, agency_name, tax_name, description, account_number, status, country;

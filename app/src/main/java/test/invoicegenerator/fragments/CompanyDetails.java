@@ -2,20 +2,17 @@ package test.invoicegenerator.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.squareup.picasso.Picasso;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,13 +29,13 @@ public class CompanyDetails extends BaseFragment {
 
     IResult mResultCallback = null;
 
-    TextView TvName,TvEmail,TvPhone,TvAddress,TvCity,TvPostalCode,TvSlug,TvCountry,TvState;
+    TextView TvName, TvEmail, TvPhone, TvAddress, TvCity, TvPostalCode, TvSlug, TvCountry, TvState;
 
-    String StrName,StrEmail,StrPhone,StrAddress,StrCity,StrPostalCode,StrSlug,StrCountry,StrState,StrLogoImgae,StrStampImage;
-    String StruserProfile,StrUserSignature;
+    String StrName, StrEmail, StrPhone, StrAddress, StrCity, StrPostalCode, StrSlug, StrCountry, StrState, StrLogoImgae, StrStampImage;
+    String StruserProfile, StrUserSignature;
     Button BtnUpdate;
 
-    ImageView imageViewLogo,imageViewStamp,imageViewUser;
+    ImageView imageViewLogo, imageViewStamp, imageViewUser;
 
     public static CompanyDetails newInstance() {
         CompanyDetails fragment = new CompanyDetails();
@@ -53,29 +50,29 @@ public class CompanyDetails extends BaseFragment {
         return rootView;
 
     }
-    private void init(View v)
-    {
 
-        imageViewLogo=v.findViewById(R.id.logo_image);
-        imageViewStamp=v.findViewById(R.id.stamp_image);
-        imageViewUser=v.findViewById(R.id.profile_image);
-        TvName=v.findViewById(R.id.tv_company_name);
-        TvEmail=v.findViewById(R.id.tv_company_email);
-        TvPhone=v.findViewById(R.id.tv_company_phone);
-        TvCity=v.findViewById(R.id.tv_company_city);
-        TvAddress=v.findViewById(R.id.tv_company_addres);
-        TvPostalCode=v.findViewById(R.id.tv_company_postal_code);
-        TvSlug=v.findViewById(R.id.tv_company_slug);
-        TvCountry=v.findViewById(R.id.tv_company_country);
-        TvState=v.findViewById(R.id.tv_company_state);
-        BtnUpdate=v.findViewById(R.id.btn_update);
+    private void init(View v) {
+
+        imageViewLogo = v.findViewById(R.id.logo_image);
+        imageViewStamp = v.findViewById(R.id.stamp_image);
+        imageViewUser = v.findViewById(R.id.profile_image);
+        TvName = v.findViewById(R.id.tv_company_name);
+        TvEmail = v.findViewById(R.id.tv_company_email);
+        TvPhone = v.findViewById(R.id.tv_company_phone);
+        TvCity = v.findViewById(R.id.tv_company_city);
+        TvAddress = v.findViewById(R.id.tv_company_addres);
+        TvPostalCode = v.findViewById(R.id.tv_company_postal_code);
+        TvSlug = v.findViewById(R.id.tv_company_slug);
+        TvCountry = v.findViewById(R.id.tv_company_country);
+        TvState = v.findViewById(R.id.tv_company_state);
+        BtnUpdate = v.findViewById(R.id.btn_update);
 
         BtnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Send=new Intent(getActivity(), MyCompanyDetail.class);
+                Intent Send = new Intent(getActivity(), MyCompanyDetail.class);
                 getActivity().startActivity(Send);
-               /* loadFragment(new CompanyFrame());*/
+
             }
         });
 
@@ -83,13 +80,12 @@ public class CompanyDetails extends BaseFragment {
 
     }
 
-    public void GetCompanyDetail()
-    {
+    public void GetCompanyDetail() {
 
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL+ NetworkURLs.GetCompanyDetail);
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetCompanyDetail);
 
     }
 
@@ -107,33 +103,33 @@ public class CompanyDetails extends BaseFragment {
                         JSONObject data = jsonObject.getJSONObject("data");
                         JSONObject settings_data = data.getJSONObject("company");
 
-                        StrName=settings_data.getString("name");
-                        StrEmail=settings_data.getString("email");
-                        StrPhone=settings_data.getString("phone");
-                        StrAddress=settings_data.getString("address");
-                        StrPostalCode=settings_data.getString("zip_code");
-                        StrCity=settings_data.getString("city");
-                        StrCountry=settings_data.getString("country");
-                        StrSlug=settings_data.getString("slug");
-                        StrState=settings_data.getString("state");
+                        StrName = settings_data.getString("name");
+                        StrEmail = settings_data.getString("email");
+                        StrPhone = settings_data.getString("phone");
+                        StrAddress = settings_data.getString("address");
+                        StrPostalCode = settings_data.getString("zip_code");
+                        StrCity = settings_data.getString("city");
+                        StrCountry = settings_data.getString("country");
+                        StrSlug = settings_data.getString("slug");
+                        StrState = settings_data.getString("state");
 
-                        StrLogoImgae=settings_data.getString("logo");
-                        StrStampImage=settings_data.getString("stamp");
+                        StrLogoImgae = settings_data.getString("logo");
+                        StrStampImage = settings_data.getString("stamp");
 
                         JSONObject user_data = settings_data.getJSONObject("user");
 
-                        if(user_data.has("image")){
-                            StruserProfile=user_data.getString("image");
+                        if (user_data.has("image")) {
+                            StruserProfile = user_data.getString("image");
 
-                        }else {
-                            StruserProfile="";
+                        } else {
+                            StruserProfile = "";
 
                         }
 
-                        if(user_data.has("signature")){
-                            StrUserSignature=user_data.getString("signature");
-                        }else {
-                            StrUserSignature="";
+                        if (user_data.has("signature")) {
+                            StrUserSignature = user_data.getString("signature");
+                        } else {
+                            StrUserSignature = "";
 
                         }
 
@@ -154,17 +150,17 @@ public class CompanyDetails extends BaseFragment {
                         showUserProfile(StruserProfile);
 
 
-                        GlobalData.StrCompanyName=StrName;
-                        GlobalData.StrCompanyEmail=StrEmail;
-                        GlobalData.StrCompanyAddress=StrAddress;
-                        GlobalData.StrCompanyCity=StrCity;
-                        GlobalData.StrCompanyPhone=StrPhone;
-                        GlobalData.StrCompanyZipCode=StrPostalCode;
-                        GlobalData.StrCompanyCountry=StrCountry;
-                        GlobalData.StrCompanyState=StrState;
-                        GlobalData.StrCompanyLogoUrl=StrLogoImgae;
-                        GlobalData.StrCompanyStampUrl=StrStampImage;
-                        GlobalData.StrUserProfileUrl=StruserProfile;
+                        GlobalData.StrCompanyName = StrName;
+                        GlobalData.StrCompanyEmail = StrEmail;
+                        GlobalData.StrCompanyAddress = StrAddress;
+                        GlobalData.StrCompanyCity = StrCity;
+                        GlobalData.StrCompanyPhone = StrPhone;
+                        GlobalData.StrCompanyZipCode = StrPostalCode;
+                        GlobalData.StrCompanyCountry = StrCountry;
+                        GlobalData.StrCompanyState = StrState;
+                        GlobalData.StrCompanyLogoUrl = StrLogoImgae;
+                        GlobalData.StrCompanyStampUrl = StrStampImage;
+                        GlobalData.StrUserProfileUrl = StruserProfile;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -176,7 +172,7 @@ public class CompanyDetails extends BaseFragment {
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 hideProgressBar();
-                if(error.networkResponse != null && error.networkResponse.data != null) {
+                if (error.networkResponse != null && error.networkResponse.data != null) {
                     String error_response = new String(error.networkResponse.data);
                    /* try {
                         JSONObject response_obj = new JSONObject(error_response);
@@ -191,7 +187,7 @@ public class CompanyDetails extends BaseFragment {
                         Toast.makeText(getActivity(), String.valueOf("Error" + e.getMessage()), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }*/
-                }else {
+                } else {
                     //Toast.makeText(getActivity(), String.valueOf("Server not responding" ), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -203,21 +199,10 @@ public class CompanyDetails extends BaseFragment {
         };
     }
 
-    private void loadFragment(Fragment dashboardFragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(dashboardFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
 
-
-
-
-    public void showImageLogo(String ImgPath){
+    public void showImageLogo(String ImgPath) {
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .load(NetworkURLs.BaseURLForImages + ImgPath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(imageViewLogo, new com.squareup.picasso.Callback() {
                     @Override
@@ -242,7 +227,7 @@ public class CompanyDetails extends BaseFragment {
 
                     @Override
                     public void onError(Exception e) {
-                       // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
 
@@ -251,9 +236,9 @@ public class CompanyDetails extends BaseFragment {
     }
 
 
-    public void showImageStamp(String ImgPath){
+    public void showImageStamp(String ImgPath) {
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .load(NetworkURLs.BaseURLForImages + ImgPath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(imageViewStamp, new com.squareup.picasso.Callback() {
                     @Override
@@ -263,7 +248,7 @@ public class CompanyDetails extends BaseFragment {
 
                     @Override
                     public void onError(Exception e) {
-                       // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
 
@@ -272,9 +257,9 @@ public class CompanyDetails extends BaseFragment {
     }
 
 
-    public void showUserProfile(String ImgPath){
+    public void showUserProfile(String ImgPath) {
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .load(NetworkURLs.BaseURLForImages + ImgPath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(imageViewUser, new com.squareup.picasso.Callback() {
                     @Override
@@ -284,7 +269,7 @@ public class CompanyDetails extends BaseFragment {
 
                     @Override
                     public void onError(Exception e) {
-                     //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
 

@@ -85,7 +85,7 @@
                     android:text="21 3rd Floor,Ross Residentia"
                     android:textColor="#ffffff"
                     android:textSize="8sp"
-                    tools:ignore="RtlCompat,SmallSp" />
+                    tools:ignore="HardcodedText,RtlCompat,SmallSp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

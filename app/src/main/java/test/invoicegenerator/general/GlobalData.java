@@ -15,12 +15,12 @@ public class GlobalData {
     public static JsonInvoiceModel invoiceModel;
     public static TaxModel taxModel;
     public static TaxCodeModel taxCodeModel;
-    public static ArrayList<TaxModel> taxModels = new ArrayList<TaxModel>();
-    public static ArrayList<TaxCodeModel> taxCodeModels = new ArrayList<TaxCodeModel>();
+    public static ArrayList<TaxModel> taxModels = new ArrayList<>();
+    public static ArrayList<TaxCodeModel> taxCodeModels = new ArrayList<>();
     public static GetSingleInvoiceDetailModel singleInvoiceDetailModel;
     public static Item SelectedInvoiceItem;
 
-    public static  String Text_Code_ID="";
+    public static String Text_Code_ID = "";
 
 
     public static String StrCompanyName;
@@ -40,7 +40,7 @@ public class GlobalData {
     public static String StrUserProfile;
     public static String StrUserProfileUrl;
     public static String StrCountryID;
-    public  static  String StrHeaderLogo;
-    public  static  String StrHeaderLogoUrl;
+    public static String StrHeaderLogo;
+    public static String StrHeaderLogoUrl;
 
 }

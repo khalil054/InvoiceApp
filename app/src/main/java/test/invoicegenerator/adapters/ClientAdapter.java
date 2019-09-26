@@ -2,6 +2,7 @@ package test.invoicegenerator.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.ClientModel;
@@ -40,7 +40,7 @@ public class ClientAdapter extends ArrayAdapter<String> implements Filterable {
     }
 
     @Override
-    public View getView(final int position, View view, final ViewGroup parent) {
+    public View getView(final int position, View view, @NonNull final ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View rootView = view;
         if (rootView == null) {
@@ -48,9 +48,9 @@ public class ClientAdapter extends ArrayAdapter<String> implements Filterable {
         }
 
         ClientModel clientModel = clientModels.get(position);
-        TextView tvName = (TextView) rootView.findViewById(R.id.tv_client_name_adapter);
-        TextView tvPhone = (TextView) rootView.findViewById(R.id.tv_client_phone);
-        TextView tvAddress = (TextView) rootView.findViewById(R.id.tv_client_address);
+        TextView tvName = rootView.findViewById(R.id.tv_client_name_adapter);
+        TextView tvPhone = rootView.findViewById(R.id.tv_client_phone);
+        TextView tvAddress =  rootView.findViewById(R.id.tv_client_address);
 
         tvName.setText(clientModel.getName());
         tvPhone.setText(clientModel.getEmail());

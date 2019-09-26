@@ -10,11 +10,11 @@ public class ClientWithAddressModel {
 
     String id;
     String name;
-    String email;
-    String phone;
+    private String email;
+    private String phone;
 
-    ArrayList<AddressModel> addressModels=new ArrayList<AddressModel>();
-    JSONArray addresses;
+    private ArrayList<AddressModel> addressModels = new ArrayList<>();
+    private JSONArray addresses;
 
 
     public ClientWithAddressModel(JSONObject jsonObject) {

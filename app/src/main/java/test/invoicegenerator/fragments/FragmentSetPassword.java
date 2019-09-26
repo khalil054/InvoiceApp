@@ -32,7 +32,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.general.Util;
 
 
-public class FragmentSetPassword extends BaseFragment{
+public class FragmentSetPassword extends BaseFragment {
 
     @BindView(R.id.confirm_password)
     EditText confirm_password;
@@ -52,90 +52,60 @@ public class FragmentSetPassword extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_password, container, false);
 
-        unbinder= ButterKnife.bind(this,view);
-        init(view);
+        unbinder = ButterKnife.bind(this, view);
+        init();
         return view;
     }
 
-    private void init(View view) {
-        cdd=new Progressbar(getActivity());
+    private void init() {
+        cdd = new Progressbar(getActivity());
         done_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(password.getText().toString().equals(""))
-                {
+                if (password.getText().toString().equals("")) {
                     password.setError(getString(R.string.error_field_required));
                     password.requestFocus();
-                }
-                else if(confirm_password.getText().toString().equals(""))
-                {
+                } else if (confirm_password.getText().toString().equals("")) {
                     confirm_password.setError(getString(R.string.error_field_required));
                     confirm_password.requestFocus();
-                }
-                else if(!password.getText().toString().equals(confirm_password.getText().toString()))
-                {
+                } else if (!password.getText().toString().equals(confirm_password.getText().toString())) {
                     confirm_password.setError(getString(R.string.password_mismatch));
                     confirm_password.requestFocus();
-                }
-                else
-                sendDataForSettingPassword();
+                } else
+                    sendDataForSettingPassword();
             }
         });
     }
-    void sendDataForSettingPassword()
-    {
+
+    void sendDataForSettingPassword() {
 
         cdd.ShowProgress();
 
 
         initVolleyCallbackForSettingPassword();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-
-       // Map<String, String> data = new HashMap<String, String>();
-
-      /*  SharedPref.init(getActivity());
-        String access_token=SharedPref.read(Constants.ACCESS_TOKEN_FORGOT_PASSWORD,"");
-        String client=SharedPref.read(Constants.CLIENT_FORGOT_PASSWORD,"");
-        String uid=SharedPref.read(Constants.UID_FORGOT_PASSWORD,"");
-        HashMap<String, String>  headers = new HashMap<String, String>();
-        headers.put("access-token", access_token);
-        headers.put("client",client );
-        headers.put("uid",uid);*/
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
 
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("password",password.getText().toString());
-        data.put("password_confirmation",confirm_password.getText().toString());
+        Map<String, String> data = new HashMap<>();
+        data.put("password", password.getText().toString());
+        data.put("password_confirmation", confirm_password.getText().toString());
 
-       /* JSONObject data=new JSONObject();
 
-        try {
-            data.put("password",password.getText().toString());
-            data.put("password_confirmation",confirm_password.getText().toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-        mVolleyService.putDataVolleyForHeaders("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.password,data);
+        mVolleyService.putDataVolleyForHeaders("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.password, data);
     }
 
     private void initVolleyCallbackForSettingPassword() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    /*JSONObject data_obj=jsonObject.getJSONObject("data");*/
-                    String status=jsonObject.getString("status");
+                    String status = jsonObject.getString("status");
 
 
-                    if(status.equals("true"))
-                    {
-                       // JSONObject data_obj=jsonObject.getJSONObject("data");
-                        Toasty.success(getActivity(),"Your password has been successfully updated.", Toast.LENGTH_SHORT).show();
-
+                    if (status.equals("true")) {
+                        Toasty.success(getActivity(), "Your password has been successfully updated.", Toast.LENGTH_SHORT).show();
 
 
                         Handler handler = new Handler();
@@ -147,14 +117,13 @@ public class FragmentSetPassword extends BaseFragment{
 
                             }
                         }, 1000);//1000
-                    }else {
+                    } else {
 
                         cdd.HideProgress();
-                       // String error = data_obj.getString("Error");
+                        // String error = data_obj.getString("Error");
 
-                        Toasty.error(getActivity(),"Unable To Update Password", Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), "Unable To Update Password", Toast.LENGTH_SHORT).show();
                     }
-
 
 
                 } catch (JSONException e) {
@@ -167,7 +136,7 @@ public class FragmentSetPassword extends BaseFragment{
             }
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
+            public void notifyError(String requestType, VolleyError error) {
                 cdd.HideProgress();
                 error.printStackTrace();
                 Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
@@ -180,6 +149,7 @@ public class FragmentSetPassword extends BaseFragment{
         };
 
     }
+
     private void loadFragment(Fragment dashboardFragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.github.barteksc.pdfviewer.PDFView;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -32,30 +33,33 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.R;
 import test.invoicegenerator.fragments.FragmentEditReportUpdate;
+
 import static test.invoicegenerator.general.Constants.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
 public class PDFInvoice extends Fragment {
-   // private static PDFInvoice instance = null;
+    // private static PDFInvoice instance = null;
     private File pdfFolder;
     Font font;
     private PDFView pdfview;
     private ImageView imageView_Dummy;
-    private String invoice_name,invoice_date,due_date,client_name="";
+    private String invoice_name, invoice_date, due_date, client_name = "";
     private FloatingActionButton share_pdf;
     Bitmap decodedImage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.pdf_report, container, false);
         try {
             init(view);
@@ -67,13 +71,13 @@ public class PDFInvoice extends Fragment {
 
     private void init(View view) throws FileNotFoundException {
         //instance = this;
-     //   Toast.makeText(getActivity(), "loaded pdf fragment", Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(getActivity(), "loaded pdf fragment", Toast.LENGTH_SHORT).show();
 
         font = new Font();
         font.setColor(BaseColor.WHITE);
         pdfview = view.findViewById(R.id.pdfView);
-        share_pdf=view.findViewById(R.id.share_pdf);
-        imageView_Dummy=view.findViewById(R.id.image_dummy);
+        share_pdf = view.findViewById(R.id.share_pdf);
+        imageView_Dummy = view.findViewById(R.id.image_dummy);
         showImage();
 
         initializeInvoice();
@@ -97,29 +101,30 @@ public class PDFInvoice extends Fragment {
         due_date= "2 Feb, 2020";*/
 
 
-        if(isEmptyString(GlobalData.singleInvoiceDetailModel.getClient_id())){
+        if (isEmptyString(GlobalData.singleInvoiceDetailModel.getClient_id())) {
             Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
 
-            client_name="Babar Client Name";
-            invoice_name="Babar Invoice_name Name";
-            invoice_date="2 Feb, 2019";
-            due_date= "2 Feb, 2020";
-        }else {
-            client_name=GlobalData.singleInvoiceDetailModel.getClient_id();
-            invoice_name="Invoice #"+GlobalData.singleInvoiceDetailModel.getInvoice_number();
-            invoice_date=GlobalData.singleInvoiceDetailModel.getCreated_at();
-            due_date= GlobalData.singleInvoiceDetailModel.getDue_at();
+            client_name = "Babar Client Name";
+            invoice_name = "Babar Invoice_name Name";
+            invoice_date = "2 Feb, 2019";
+            due_date = "2 Feb, 2020";
+        } else {
+            client_name = GlobalData.singleInvoiceDetailModel.getClient_id();
+            invoice_name = "Invoice #" + GlobalData.singleInvoiceDetailModel.getInvoice_number();
+            invoice_date = GlobalData.singleInvoiceDetailModel.getCreated_at();
+            due_date = GlobalData.singleInvoiceDetailModel.getDue_at();
         }
 
     }
 
     public void create_pdf_file() throws FileNotFoundException {
-        File myFile=getExternalStorageFile();
+        File myFile = getExternalStorageFile();
 
-        if(Util.checkPermissionWRITE_EXTERNAL_STORAGE(getActivity())) {
+        if (Util.checkPermissionWRITE_EXTERNAL_STORAGE(getActivity())) {
             preparePdfDocument(myFile);
         }
     }
+
     private File getExternalStorageFile() {
         pdfFolder = new File(Environment.getExternalStorageDirectory(), "pdfdemo");
         if (!pdfFolder.exists()) {
@@ -129,6 +134,7 @@ public class PDFInvoice extends Fragment {
         File myFile = new File(pathname);
         return myFile;
     }
+
     private PdfPTable addClientTable(Document document) throws DocumentException {
         PdfPTable table = new PdfPTable(new float[]{1});
         PdfPCell cell = new PdfPCell(new Phrase("Bill To"));
@@ -136,15 +142,16 @@ public class PDFInvoice extends Fragment {
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
         //Date label
-        PdfPCell cell2 = new PdfPCell(new Phrase(""+client_name));
+        PdfPCell cell2 = new PdfPCell(new Phrase("" + client_name));
         cell2.setBorder(Rectangle.NO_BORDER);
         cell2.setPadding(10);
         table.addCell(cell2);
         return table;
     }
+
     private PdfPTable addInvoiceDateDetail() throws DocumentException {
-        PdfPTable table = new PdfPTable(new float[] { 2, 4});
-        PdfPCell cell = new PdfPCell(new Phrase(""+invoice_name));
+        PdfPTable table = new PdfPTable(new float[]{2, 4});
+        PdfPCell cell = new PdfPCell(new Phrase("" + invoice_name));
         cell.setHorizontalAlignment(Element.ALIGN_MIDDLE);
         cell.setColspan(2);
         cell.setPadding(10);
@@ -155,7 +162,7 @@ public class PDFInvoice extends Fragment {
         cell2.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell2);
         //first row  second column
-        PdfPCell row1cell2 = new PdfPCell(new Phrase(""+invoice_date));
+        PdfPCell row1cell2 = new PdfPCell(new Phrase("" + invoice_date));
         row1cell2.setBorder(Rectangle.NO_BORDER);
         table.addCell(row1cell2);
 
@@ -164,16 +171,14 @@ public class PDFInvoice extends Fragment {
         row2cell1.setBorder(Rectangle.NO_BORDER);
         table.addCell(row2cell1);
         //first row  second column
-        PdfPCell row2cell2 = new PdfPCell(new Phrase(""+due_date));
+        PdfPCell row2cell2 = new PdfPCell(new Phrase("" + due_date));
         row2cell2.setBorder(Rectangle.NO_BORDER);
         table.addCell(row2cell2);
 
 
-
-
-
         return table;
     }
+
     private void itemDataTable(Document document) throws DocumentException {
         PdfPTable table = new PdfPTable(new float[]{3, 1, 1, 1});
 
@@ -202,13 +207,13 @@ public class PDFInvoice extends Fragment {
             table.addCell(row2cell1);
         }
 */
-        for (int i=0; i<=FragmentEditReportUpdate.item_values.size()-1 ; i++){
+        for (int i = 0; i <= FragmentEditReportUpdate.item_values.size() - 1; i++) {
             String description = FragmentEditReportUpdate.item_values.get(i).getDescription();
             String amount = FragmentEditReportUpdate.item_values.get(i).getAmount();
-            String quantity =  FragmentEditReportUpdate.item_values.get(i).getQuantity();
-            String unit_cost =  FragmentEditReportUpdate.item_values.get(i).getUnit_cost();
+            String quantity = FragmentEditReportUpdate.item_values.get(i).getQuantity();
+            String unit_cost = FragmentEditReportUpdate.item_values.get(i).getUnit_cost();
 
-          //  Toast.makeText(getActivity(), String.valueOf(description+"\n"+amount+"\n"+quantity+"\n"+unit_cost+"\n"), Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(getActivity(), String.valueOf(description+"\n"+amount+"\n"+quantity+"\n"+unit_cost+"\n"), Toast.LENGTH_SHORT).show();
             PdfPCell cell = new PdfPCell(new Phrase(description));
             cell.setBorder(Rectangle.NO_BORDER);
             table.addCell(cell);
@@ -234,8 +239,9 @@ public class PDFInvoice extends Fragment {
         table.setSpacingBefore(30);
         document.add(table);
     }
+
     private void calculatingSubtotal(Document document) throws DocumentException {
-        PdfPTable table = new PdfPTable(new float[] { 3,1,1, 1});
+        PdfPTable table = new PdfPTable(new float[]{3, 1, 1, 1});
         PdfPCell cell = new PdfPCell(new Phrase("Its comments"));
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
@@ -312,34 +318,35 @@ public class PDFInvoice extends Fragment {
         table.setSpacingBefore(30);
         document.add(table);
     }
-    private void openPdfPage(File file)
-    {
+
+    private void openPdfPage(File file) {
         pdfview.fromFile(file)
                 .defaultPage(1)
                 .enableSwipe(true)
                 .load();
     }
-    private void addHeaderTable(Document document) throws DocumentException {
-        PdfPTable table = new PdfPTable(new float[] { 3,1,1, 1});
 
-        PdfPCell cell = new PdfPCell(new Phrase("Description",font));
+    private void addHeaderTable(Document document) throws DocumentException {
+        PdfPTable table = new PdfPTable(new float[]{3, 1, 1, 1});
+
+        PdfPCell cell = new PdfPCell(new Phrase("Description", font));
         BaseColor black = WebColors.getRGBColor("#000000");
         cell.setBackgroundColor(black);
         cell.setBorder(Rectangle.NO_BORDER);
         table.addCell(cell);
         //Date label
-        PdfPCell cell2 = new PdfPCell(new Phrase("Qty",font));
+        PdfPCell cell2 = new PdfPCell(new Phrase("Qty", font));
         cell2.setBorder(Rectangle.NO_BORDER);
         cell2.setBackgroundColor(black);
         table.addCell(cell2);
         //first row  second column
-        PdfPCell row1cell2 = new PdfPCell(new Phrase("Rate",font));
+        PdfPCell row1cell2 = new PdfPCell(new Phrase("Rate", font));
         row1cell2.setBorder(Rectangle.NO_BORDER);
         row1cell2.setBackgroundColor(black);
         table.addCell(row1cell2);
 
         //Date label
-        PdfPCell row2cell1 = new PdfPCell(new Phrase("Amount",font));
+        PdfPCell row2cell1 = new PdfPCell(new Phrase("Amount", font));
         row2cell1.setBorder(Rectangle.NO_BORDER);
         row2cell1.setBackgroundColor(black);
 
@@ -349,6 +356,7 @@ public class PDFInvoice extends Fragment {
         table.setSpacingBefore(30);
         document.add(table);
     }
+
     private void combineTwoTables(Document document) throws DocumentException {
         PdfPTable table = new PdfPTable(3);
         PdfPCell cell = new PdfPCell();
@@ -363,10 +371,11 @@ public class PDFInvoice extends Fragment {
         cell2.addElement(addInvoiceDateDetail());
         table.addCell(cell);
         table.addCell(cell2);
-        table.setWidths(new float[]{1,1,2});
+        table.setWidths(new float[]{1, 1, 2});
         table.setWidthPercentage(100);
         document.add(table);
     }
+
     private void open_pdf_file(File file) throws IOException, DocumentException {
         openPdfPage(file);
     }
@@ -375,7 +384,7 @@ public class PDFInvoice extends Fragment {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Bitmap icon = BitmapFactory.decodeResource(getActivity().getResources(),
                 R.drawable.pdf_logo);
-        icon.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+        icon.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         Image myImg = Image.getInstance(stream.toByteArray());
         myImg.setAlignment(Image.MIDDLE);
         return myImg;
@@ -383,9 +392,9 @@ public class PDFInvoice extends Fragment {
 
     private Image AddSignatureInReport() throws IOException, DocumentException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-       /* Bitmap icon = ChangeBase64ToImage(FragmentEditReportUpdate.StBase64ImageToSave);*/
+        /* Bitmap icon = ChangeBase64ToImage(FragmentEditReportUpdate.StBase64ImageToSave);*/
 
-        cropCenter(FragmentEditReportUpdate.SignatureBitmap).compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+        cropCenter(FragmentEditReportUpdate.SignatureBitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream);
         Image myImg = Image.getInstance(stream.toByteArray());
         myImg.setScaleToFitHeight(true);
         myImg.setAlignment(Image.ALIGN_TOP);
@@ -395,11 +404,10 @@ public class PDFInvoice extends Fragment {
 
     public static Bitmap cropCenter(Bitmap bmp) {
         int dimension = Math.min(bmp.getWidth(), bmp.getHeight());
-        return ThumbnailUtils.extractThumbnail(bmp, dimension, dimension-170);
+        return ThumbnailUtils.extractThumbnail(bmp, dimension, dimension - 170);
     }
 
-    private void preparePdfDocument(File myFile)
-    {
+    private void preparePdfDocument(File myFile) {
         Document document = new Document(PageSize.A4);
         if (myFile.exists())
             myFile.delete();
@@ -419,11 +427,11 @@ public class PDFInvoice extends Fragment {
             PdfWriter.getInstance(document, new FileOutputStream(myFile));
             document.open();
             addLogoTable(document);
-            addBorderTable(document,50,20);
+            addBorderTable(document, 50, 20);
             combineTwoTables(document);
             addHeaderTable(document);
             itemDataTable(document);
-            addBorderTable(document,20,20);
+            addBorderTable(document, 20, 20);
             calculatingSubtotal(document);
             addSignatureTable(document);
             document.setMargins(0, 0, 0, 0);
@@ -434,7 +442,7 @@ public class PDFInvoice extends Fragment {
         }
     }
 
-    private void addBorderTable(Document document,int before,int after) throws DocumentException {
+    private void addBorderTable(Document document, int before, int after) throws DocumentException {
         PdfPTable table = new PdfPTable(1);
         table.setSpacingBefore(before);
         table.setSpacingAfter(after);
@@ -465,9 +473,10 @@ public class PDFInvoice extends Fragment {
         cell3.setBorder(Rectangle.NO_BORDER);
         cell3.addElement(AddImageInReport());
         table.addCell(cell3);
-        table.setWidths(new float[]{2,0,2});
+        table.setWidths(new float[]{2, 0, 2});
         document.add(table);
     }
+
     public void addSignatureTable(Document document) throws DocumentException, IOException {
         PdfPTable table = new PdfPTable(3);
 
@@ -487,7 +496,7 @@ public class PDFInvoice extends Fragment {
         cell3.addElement(AddSignatureInReport());
         table.addCell(cell3);*/
 
-        table.setWidths(new float[]{2,0,2});
+        table.setWidths(new float[]{2, 0, 2});
         document.add(table);
     }
 
@@ -498,9 +507,9 @@ public class PDFInvoice extends Fragment {
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    File myFile=getExternalStorageFile();
+                    File myFile = getExternalStorageFile();
                     preparePdfDocument(myFile);
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "GET_ACCOUNTS Denied",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -510,8 +519,8 @@ public class PDFInvoice extends Fragment {
                         grantResults);
         }
     }
-    private void sharePdfInvoice(File file)
-    {
+
+    private void sharePdfInvoice(File file) {
         if (file.exists()) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);
@@ -529,20 +538,20 @@ public class PDFInvoice extends Fragment {
     }
     /*Convert Base64 To Image*/
 
-    public Bitmap ChangeBase64ToImage(String str){
+    public Bitmap ChangeBase64ToImage(String str) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] imageBytes = baos.toByteArray();
         imageBytes = Base64.decode(str, Base64.DEFAULT);
         decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-      //  image.setImageBitmap(decodedImage);
+        //  image.setImageBitmap(decodedImage);
         return decodedImage;
     }
 
 
-    public void showImage(){
+    public void showImage() {
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+FragmentEditReportUpdate.ImagePath)
+                .load(NetworkURLs.BaseURLForImages + FragmentEditReportUpdate.ImagePath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(imageView_Dummy, new com.squareup.picasso.Callback() {
                     @Override

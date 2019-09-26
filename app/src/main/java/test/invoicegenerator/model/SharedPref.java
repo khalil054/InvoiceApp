@@ -4,24 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-/**
- * Created by apple on 13/10/2018.
- */
 
-public class SharedPref
-{
+public class SharedPref {
     private static SharedPreferences mSharedPref;
     public static final String LoginID = "loginId";
     public static final String CompanyID = "companyId";
 
-    private SharedPref()
-    {
+    private SharedPref() {
 
     }
 
-    public static void init(Context context)
-    {
-        if(mSharedPref == null)
+    public static void init(Context context) {
+        if (mSharedPref == null)
             mSharedPref = context.getSharedPreferences(context.getPackageName(), Activity.MODE_PRIVATE);
     }
 

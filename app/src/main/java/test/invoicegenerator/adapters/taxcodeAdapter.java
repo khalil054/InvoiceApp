@@ -14,14 +14,13 @@ import java.util.ArrayList;
 
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.TaxCodeModel;
-import test.invoicegenerator.model.TaxModel;
 
 public class taxcodeAdapter extends ArrayAdapter<String> implements Filterable {
 
-    ArrayList<TaxCodeModel> taxModels;
+    private ArrayList<TaxCodeModel> taxModels;
     private Activity context;
     private taxcodeAdapter.ItemFilter mFilter = new taxcodeAdapter.ItemFilter();
-    ArrayList<TaxCodeModel> list = new ArrayList<TaxCodeModel>();
+    ArrayList<TaxCodeModel> list;
 
 
     public taxcodeAdapter( Activity context, ArrayList<TaxCodeModel> taxModels)
@@ -47,8 +46,8 @@ public class taxcodeAdapter extends ArrayAdapter<String> implements Filterable {
         }
 
         TaxCodeModel taxModel = taxModels.get(position);
-        TextView tvName = (TextView) rootView.findViewById(R.id.name_txt);
-        TextView tvPhone = (TextView) rootView.findViewById(R.id.percentage_txt);
+        TextView tvName =rootView.findViewById(R.id.name_txt);
+        TextView tvPhone =  rootView.findViewById(R.id.percentage_txt);
 
         tvName.setText(taxModel.getCode());
         tvPhone.setText(String.valueOf(taxModel.getDes()));
@@ -77,7 +76,7 @@ public class taxcodeAdapter extends ArrayAdapter<String> implements Filterable {
 
 
             int count = list.size();
-            final ArrayList<TaxCodeModel> nlist = new ArrayList<TaxCodeModel>(count);
+            final ArrayList<TaxCodeModel> nlist = new ArrayList<>(count);
 
             String filterableString;
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/parentCoordinatorLayout"
@@ -31,7 +30,7 @@
             android:background="@color/light_blue"
             android:layout_gravity="center_horizontal">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/edit_photo_btn"
                 android:layout_width="100dp"
                 android:layout_height="120dp"
@@ -121,10 +120,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/company_name"
                     android:imeActionId="6"
-                    android:paddingLeft="3dp"
+                    android:paddingStart="3dp"
                     android:editable="false"
-                    android:drawableRight="@android:drawable/ic_menu_edit"
-                    android:drawableLeft="@drawable/company"
+                    android:drawableEnd="@android:drawable/ic_menu_edit"
+                    android:drawableStart="@drawable/company"
                     android:textColor="@color/black"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -152,11 +151,11 @@
                     android:maxLines="1"
                     android:editable="false"
                     android:translationY="5dp"
-                    android:drawableLeft="@drawable/email"
+                    android:drawableStart="@drawable/email"
                     android:padding="8dp"
                     android:textColor="@color/black"
                     android:theme="@style/MyAppTheme"
-                    android:paddingLeft="3dp"
+                    android:paddingStart="3dp"
                     android:textColorHint="@color/zinc"
                     android:background="@color/white"
                     android:singleLine="true" />
@@ -181,8 +180,8 @@
                     android:maxLength="15"
                     android:digits="0123456789"
                     android:maxLines="1"
-                    android:paddingLeft="3dp"
-                    android:drawableLeft="@drawable/phone"
+                    android:paddingStart="3dp"
+                    android:drawableStart="@drawable/phone"
                     android:textColor="@color/black"
                     android:theme="@style/MyAppTheme"
                     android:translationY="5dp"
@@ -225,7 +224,6 @@
                 android:id="@+id/snakbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:visibility="gone"
                 layout="@layout/snakbar" />
         </LinearLayout>

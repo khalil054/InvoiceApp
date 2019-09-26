@@ -1,8 +1,5 @@
 package test.invoicegenerator.model;
 
-/**
- * Created by User on 9/13/2018.
- */
 
 public class User {
     private String name,email,company_name,password,user_id;

@@ -19,11 +19,10 @@ import test.invoicegenerator.model.JsonInvoiceModel;
 
 public class ReportAdapter extends BaseAdapter implements Filterable {
     private final Context context;
-    ArrayList<JsonInvoiceModel> reportModelArrayList = new ArrayList<JsonInvoiceModel>();
-    ArrayList<JsonInvoiceModel> list = new ArrayList<>();
+    ArrayList<JsonInvoiceModel> reportModelArrayList;
+    ArrayList<JsonInvoiceModel> list ;
     private ItemFilter mFilter = new ItemFilter();
-    int index = 0;
-    String Day = "";
+
 
     public ReportAdapter(Context context, ArrayList<JsonInvoiceModel> reportModelArrayList) {
         // super(context, -1, values);

@@ -9,12 +9,15 @@ import android.content.SharedPreferences;
 
 public class SharedPreferenceHelper {
     private SharedPreferences sharedPreferences;
+
     public SharedPreferenceHelper(Context context) {
         sharedPreferences = context.getSharedPreferences("InvoiceGenerator", Context.MODE_PRIVATE);
     }
+
     public void setValue(String key, String value) {
         sharedPreferences.edit().putString(key, value).commit();
     }
+
     public String getValue(String key) {
         return sharedPreferences.getString(key, "");
     }

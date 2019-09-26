@@ -6,9 +6,6 @@ import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 
-/**
- * Main piece of fold animation. Rotates view in 3d space around one of view borders.
- */
 @SuppressWarnings("unused")
 public class FoldAnimation extends Animation {
 

@@ -97,8 +97,6 @@ dependencies {
     //dexter permissions
     implementation "com.karumi:dexter:5.0.0"
     implementation 'com.seatgeek:placesautocomplete:0.3-SNAPSHOT'
-
-        // Crop Image
-    implementation 'com.steelkiwi:cropiwa:1.0.3'
+    implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
 }
 apply plugin: 'com.google.gms.google-services'

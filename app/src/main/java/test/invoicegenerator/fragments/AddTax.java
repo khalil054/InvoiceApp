@@ -15,9 +15,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,17 +25,14 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
-import test.invoicegenerator.Activities.MainActivity;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.Constants;
-import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
-public class AddTax  extends BaseFragment{
+public class AddTax extends BaseFragment {
 
     @BindView(R.id.switch_idActive)
     android.support.v7.widget.SwitchCompat aSwitch_Admin;
@@ -62,27 +57,26 @@ public class AddTax  extends BaseFragment{
     VolleyService mVolleyService;
 
     private FragmentAddClient.OnItemSelectedListener listener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_tax,container,false);
+        View view = inflater.inflate(R.layout.fragment_add_tax, container, false);
 
         progressbar = new Progressbar(getActivity());
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
 
 
-
-
-        Btn_AddTax.setOnClickListener( new View.OnClickListener() {
+        Btn_AddTax.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String TaxName=Et_Tax_Name.getText().toString();
-                String TaxAgency=Et_Tax_Agency.getText().toString();
-                String TaxPercentage=Et_Tax_Percentage.getText().toString();
-                String TaxDescription=Et_Tax_Description.getText().toString();
+                String TaxName = Et_Tax_Name.getText().toString();
+                String TaxAgency = Et_Tax_Agency.getText().toString();
+                String TaxPercentage = Et_Tax_Percentage.getText().toString();
+                String TaxDescription = Et_Tax_Description.getText().toString();
 
-                validateAndSaveData(TaxName,TaxAgency,TaxPercentage,TaxDescription);
+                validateAndSaveData(TaxName, TaxAgency, TaxPercentage, TaxDescription);
 
             }
         });
@@ -91,29 +85,20 @@ public class AddTax  extends BaseFragment{
     }
 
     private void validateAndSaveData(String TaxName, String TaxAgency, String TaxPercentage, String TaxDescription) {
-        if(TaxName.equals(""))
-        {
+        if (TaxName.equals("")) {
             Et_Tax_Agency.setError(getString(R.string.error_field_required));
             Et_Tax_Agency.requestFocus();
         }
-        if(TaxAgency.equals(""))
-        {
+        if (TaxAgency.equals("")) {
             Et_Tax_Name.setError(getString(R.string.error_field_required));
             Et_Tax_Name.requestFocus();
-        }
-
-        else if(TaxPercentage.equals(""))
-        {
+        } else if (TaxPercentage.equals("")) {
             Et_Tax_Percentage.setError(getString(R.string.error_field_required));
             Et_Tax_Percentage.requestFocus();
-        }
-        else if(TaxDescription.equals(""))
-        {
+        } else if (TaxDescription.equals("")) {
             Et_Tax_Description.setError(getString(R.string.error_field_required));
             Et_Tax_Description.requestFocus();
-        }
-        else
-        {
+        } else {
 
             DataSendToServerForAddTax();
 
@@ -122,47 +107,45 @@ public class AddTax  extends BaseFragment{
 
     }
 
-    void DataSendToServerForAddTax()
-    {
+    void DataSendToServerForAddTax() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForAddTax();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
         SharedPref.init(getActivity());
-        String company_id = SharedPref.read(SharedPref.CompanyID,"");
-        boolean is_active=aSwitch_Admin.isChecked();
-        String Str_active="false";
-        if(is_active){
-            Str_active="true";
-        }else {
-            Str_active="false";
+        String company_id = SharedPref.read(SharedPref.CompanyID, "");
+        boolean is_active = aSwitch_Admin.isChecked();
+        String Str_active = "false";
+        if (is_active) {
+            Str_active = "true";
+        } else {
+            Str_active = "false";
         }
 
 
         Toast.makeText(getActivity(), Str_active, Toast.LENGTH_SHORT).show();
         Map<String, String> data = new HashMap<String, String>();
-        data.put("company_tax[name]",Et_Tax_Name.getText().toString());
-        data.put("company_tax[agency_name]",Et_Tax_Agency.getText().toString());
-        data.put("company_tax[description]",Et_Tax_Description.getText().toString());
-        data.put("company_tax[percent]",Et_Tax_Percentage.getText().toString());
-        data.put("company_tax[active]",Str_active);
-        data.put("company_tax[company_id]",company_id);
-        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddTax,data );
+        data.put("company_tax[name]", Et_Tax_Name.getText().toString());
+        data.put("company_tax[agency_name]", Et_Tax_Agency.getText().toString());
+        data.put("company_tax[description]", Et_Tax_Description.getText().toString());
+        data.put("company_tax[percent]", Et_Tax_Percentage.getText().toString());
+        data.put("company_tax[active]", Str_active);
+        data.put("company_tax[company_id]", company_id);
+        mVolleyService.postDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddTax, data);
 
     }
 
-    void initVolleyCallbackForAddTax(){
+    void initVolleyCallbackForAddTax() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     boolean status = jsonObject.getBoolean("status");
-                    if(status)
-                    {
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -171,16 +154,16 @@ public class AddTax  extends BaseFragment{
                             public void run() {
 
                                 progressbar.HideConfirmation();
-                                loadFragment(new TaxConfigurations(),null);
+                                loadFragment(new TaxConfigurations(), null);
 
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(main_layout,"Client Added Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Client Added Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     } else {
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -203,16 +186,11 @@ public class AddTax  extends BaseFragment{
         };
     }
 
-    public boolean isValidString(String Str){
-
-        return !Str.isEmpty() && !Str.equalsIgnoreCase("null");
-    }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentAddClient.OnItemSelectedListener){      // context instanceof YourActivity
+        if (context instanceof FragmentAddClient.OnItemSelectedListener) {      // context instanceof YourActivity
             this.listener = (FragmentAddClient.OnItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()

@@ -11,13 +11,11 @@ import test.invoicegenerator.R;
 public class AddNote extends Fragment {
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /** Inflating the layout for this fragment **/
-        View rootView = inflater.inflate(R.layout.fragment_add_note, container, false);
+        /* Inflating the layout for this fragment **/
 
-        return rootView;
+        return inflater.inflate(R.layout.fragment_add_note, container, false);
 
     }
 

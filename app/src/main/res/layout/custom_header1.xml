@@ -18,8 +18,9 @@
         android:layout_height="100dp"
         android:visibility="gone"
         android:background="@color/black"
-        android:layout_marginLeft="3dp"/>
+        android:layout_marginStart="3dp"/>
     <ImageView
+        android:contentDescription="@string/app_name"
         android:layout_width="0.5dp"
         android:layout_weight="1"
         android:visibility="invisible"
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_weight="3"
-            android:gravity="left"
+            android:gravity="start"
             android:layout_gravity="center_vertical"
             >
 

@@ -6,16 +6,18 @@
     android:layout_margin="20dp">
 
     <TextView
+        tools:ignore="HardcodedText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Firebase Image Upload Tutorial"
         android:id="@+id/textview"
         android:textStyle="bold"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:gravity="center"
         android:layout_marginTop="20dp"/>
 
     <ImageView
+        android:contentDescription="@string/app_name"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
         android:id="@+id/ShowImageView"
@@ -23,6 +25,7 @@
         android:layout_marginTop="20dp"/>
 
     <Button
+        tools:ignore="HardcodedText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ButtonChooseImage"
@@ -36,6 +39,7 @@
         android:id="@+id/ImageNameEditText"
         android:layout_below="@+id/ButtonChooseImage"
         android:layout_marginTop="20dp"
+        tools:ignore="HardcodedText"
         android:hint="Enter Image Name Here"
         android:gravity="center"/>
 
@@ -45,6 +49,7 @@
         android:id="@+id/ButtonUploadImage"
         android:layout_below="@+id/ImageNameEditText"
         android:layout_marginTop="20dp"
+        tools:ignore="HardcodedText"
         android:text="Upload image to Firebase Storage"/>
 
     <Button
@@ -53,6 +58,7 @@
         android:layout_marginTop="10dp"
         android:id="@+id/DisplayImagesButton"
         android:layout_below="@+id/ButtonUploadImage"
-        android:text="Show All Uploaded Images"/>
+        android:text="Show All Uploaded Images"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>

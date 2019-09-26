@@ -1,5 +1,6 @@
 package test.invoicegenerator.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -48,7 +49,6 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
     EditText client_zip;
     @BindView(R.id.main_layout)
     ConstraintLayout main_layout;
-
     public PlacesAutocompleteTextView Et_Client_Address;
     Snackbar snackbar;
     IResult mResultCallback = null;
@@ -60,17 +60,16 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_update_address, container, false);
         unbinder = ButterKnife.bind(this, view);
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
-        ((MainActivity)getActivity()).LoadAddressFields(view);
+        ((MainActivity) getActivity()).LoadAddressFields(view);
         init();
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     private void init() {
 
         Btn_Update.setText("Add");
     }
-
-
 
 
     @Override
@@ -83,101 +82,79 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
-            case R.id.update_button:
+        int id = view.getId();
+        if (id == R.id.update_button) {
+            String Address = Et_Client_Address.getText().toString();
+            String city = client_city.getText().toString();
+            String state = client_state.getText().toString();
+            String country = client_country.getText().toString();
+            String zip = client_zip.getText().toString();
 
-                String Address = Et_Client_Address.getText().toString();
-                String city = client_city.getText().toString();
-                String state = client_state.getText().toString();
-                String country = client_country.getText().toString();
-                String zip = client_zip.getText().toString();
-
-                validateAndSaveData(Address,city,state,country,zip);
-
-                break;
+            validateAndSaveData(Address, city, state, country, zip);
         }
     }
 
     private void validateAndSaveData(String Address, String city, String state, String country, String zip) {
-        if(Address.equals(""))
-        {
+        if (Address.equals("")) {
             Et_Client_Address.setError(getString(R.string.error_field_required));
             Et_Client_Address.requestFocus();
         }
-        if(city.equals(""))
-        {
+        if (city.equals("")) {
             client_city.setError(getString(R.string.error_field_required));
             client_city.requestFocus();
-        }
-        else if(state.equals(""))
-        {
+        } else if (state.equals("")) {
             client_state.setError(getString(R.string.error_invalid_name));
             client_state.requestFocus();
-        }
-
-        else if(country.equals(""))
-        {
+        } else if (country.equals("")) {
             client_country.setError(getString(R.string.error_invalid_email));
             client_country.requestFocus();
-        }
-        else if(zip.equals(""))
-        {
+        } else if (zip.equals("")) {
             client_zip.setError(getString(R.string.error_invalid_email));
             client_zip.requestFocus();
-        }
-        else
-        {
+        } else {
             DataSendToServerForUpdate();
         }
 
 
     }
 
-    void DataSendToServerForUpdate()
-    {
+    void DataSendToServerForUpdate() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForUpdate();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-        JSONObject Data=new JSONObject();
-        JSONObject jsonObject1=new JSONObject();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        JSONObject Data = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
 
 
         try {
+            jsonObject1.put("name", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_1", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_2", "");
+            jsonObject1.put("city", client_city.getText().toString());
+            jsonObject1.put("state", client_state.getText().toString());
+            jsonObject1.put("zip_code", client_zip.getText().toString());
+            jsonObject1.put("country_name", client_country.getText().toString());
 
-
-            jsonObject1.put("name",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_1",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_2","");
-            jsonObject1.put("city",client_city.getText().toString());
-            jsonObject1.put("state",client_state.getText().toString());
-            jsonObject1.put("zip_code",client_zip.getText().toString());
-            jsonObject1.put("country_name",client_country.getText().toString());
-
-            Data.put("address",jsonObject1);
+            Data.put("address", jsonObject1);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + GlobalData.clientId + NetworkURLs.AddeAddress +".json",Data );
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + GlobalData.clientId + NetworkURLs.AddeAddress + ".json", Data);
     }
 
-    void initVolleyCallbackForUpdate(){
+    void initVolleyCallbackForUpdate() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    Boolean status = jsonObject1.getBoolean("status");
-
-
-                    if(status)
-                    {
+                    boolean status = jsonObject1.getBoolean("status");
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -186,32 +163,22 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
                             public void run() {
 
                                 progressbar.HideConfirmation();
-                                loadFragment(new FragmentUpdateClient(),null);
+                                loadFragment(new FragmentUpdateClient(), null);
 
                             }
                         }, 2000);
 
-                        snackbar = Snackbar.make(main_layout,"Address Add Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Address Add Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
 
                     } else {
-
-
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
-
-
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                     progressbar.HideProgress();
                 }
-
-
-
-
-
             }
 
             @Override
@@ -237,11 +204,5 @@ public class AddAddress extends BaseFragment implements View.OnClickListener {
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
-
-
-
-
-
-
 }
 

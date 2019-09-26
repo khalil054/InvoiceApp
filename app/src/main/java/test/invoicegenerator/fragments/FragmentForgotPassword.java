@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,11 +33,8 @@ import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.general.Util;
 
-/**
- * Created by User on 1/4/2019.
- */
 
-public class FragmentForgotPassword extends BaseFragment{
+public class FragmentForgotPassword extends BaseFragment {
 
     @BindView(R.id.email)
     EditText email_txt;
@@ -54,15 +53,15 @@ public class FragmentForgotPassword extends BaseFragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot_password, container, false);
 
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         init(view);
         return view;
     }
 
     private void init(View view) {
 
-        cdd=new Progressbar(getActivity());
-        TvBack=view.findViewById(R.id.login_text);
+        cdd = new Progressbar(getActivity());
+        TvBack = view.findViewById(R.id.login_text);
 
         TvBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,121 +72,112 @@ public class FragmentForgotPassword extends BaseFragment{
     }
 
     @OnClick(R.id.get_password_btn)
-    public void onClickGetPassword()
-    {
-        if(email_txt.getText().toString().equals(""))
-        {
+    public void onClickGetPassword() {
+        if (email_txt.getText().toString().equals("")) {
             email_txt.setError(getString(R.string.error_field_required));
-            return ;
-        }
-        if(!isEmailValid(email_txt.getText().toString()))
-        {
-            email_txt.setError(getString(R.string.error_invalid_email));
             return;
         }
-        else
-        {
+        if (!isEmailValid(email_txt.getText().toString())) {
+            email_txt.setError(getString(R.string.error_invalid_email));
+            return;
+        } else {
             sendDataForgotPasswordData();
         }
     }
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
-    void sendDataForgotPasswordData()
-    {
+
+    void sendDataForgotPasswordData() {
 
         showProgressBar();
         initVolleyCallbackForgotPassword();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
         Map<String, String> data = new HashMap<String, String>();
-        data.put("email",email_txt.getText().toString());
+        data.put("email", email_txt.getText().toString());
 
-        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword,data );
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.ForgotPassword, data);
 
     }
 
     private void initVolleyCallbackForgotPassword() {
 
-            mResultCallback = new IResult() {
-                @Override
-                public void notifySuccess(String requestType,String response) {
-                    try {
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType, String response) {
+                try {
 
-                        JSONObject jsonObject = new JSONObject(response);
-                        JSONObject data_obj = jsonObject.getJSONObject("data");
-                        String status=jsonObject.getString("status");
-
-
-                        if(status.equals("true"))
-                        {
-
-                            Toasty.success(getActivity(),"Verifivation code sent on email", Toast.LENGTH_SHORT).show();
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject data_obj = jsonObject.getJSONObject("data");
+                    String status = jsonObject.getString("status");
 
 
+                    if (status.equals("true")) {
 
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                   loadFragment(new FragmentOTPForgotPassword());
-
-                                    // finish();
-
-                                }
-                            }, 1000);//1000
-                        }else {
-
-                            String error = jsonObject.getString("Error");
-
-                            Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
-                            //snackbar = Snackbar.make(main_layout, error, Snackbar.LENGTH_LONG);
-                           // snackbar.show();
-                        }
+                        Toasty.success(getActivity(), "Verifivation code sent on email", Toast.LENGTH_SHORT).show();
 
 
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                loadFragment(new FragmentOTPForgotPassword());
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                                // finish();
+
+                            }
+                        }, 1000);//1000
+                    } else {
+
+                        String error = jsonObject.getString("Error");
+
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
+                        //snackbar = Snackbar.make(main_layout, error, Snackbar.LENGTH_LONG);
+                        // snackbar.show();
                     }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
                 hideProgressBar();
 
-                }
+            }
 
-                @Override
-                public void notifyError(String requestType,VolleyError error) {
+            @Override
+            public void notifyError(String requestType, VolleyError error) {
 
-                    hideProgressBar();
-                    error.printStackTrace();
+                hideProgressBar();
+                error.printStackTrace();
 
-                    if(error.networkResponse != null && error.networkResponse.data != null){
-                        VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
-                        String error_response=new String(error.networkResponse.data);
-                        try {
-                            JSONObject response_obj=new JSONObject(error_response);
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    String error_response = new String(error.networkResponse.data);
+                    try {
+                        JSONObject response_obj = new JSONObject(error_response);
 
-                            {
-                              //  JSONObject error_obj=response_obj.getJSONObject("error");
-                                String message=response_obj.getString("errors");
-                                Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        {
+                            //  JSONObject error_obj=response_obj.getJSONObject("error");
+                            String message = response_obj.getString("errors");
+                            Toasty.error(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    else
-                        Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
-                }
 
-                @Override
-                public void notifySuccessResponseHeader(NetworkResponse response) {
+                } else
+                    Toasty.error(getActivity(), Util.getMessage(error), Toast.LENGTH_SHORT).show();
+            }
 
-                }
+            @Override
+            public void notifySuccessResponseHeader(NetworkResponse response) {
 
-            };
+            }
+
+        };
 
     }
 

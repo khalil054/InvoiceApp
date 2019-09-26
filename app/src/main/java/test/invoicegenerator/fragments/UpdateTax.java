@@ -1,5 +1,6 @@
 package test.invoicegenerator.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,11 +31,10 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.addressAdapter;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.SharedPref;
 
-public class UpdateTax extends BaseFragment{
+public class UpdateTax extends BaseFragment {
     @BindView(R.id.switch_idActive)
     android.support.v7.widget.SwitchCompat aSwitch_Admin;
     @BindView(R.id.add_tax_button)
@@ -59,37 +59,37 @@ public class UpdateTax extends BaseFragment{
     VolleyService mVolleyService;
 
     private FragmentAddClient.OnItemSelectedListener listener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_update_tax,container,false);
+        View view = inflater.inflate(R.layout.fragment_update_tax, container, false);
 
         progressbar = new Progressbar(getActivity());
-        unbinder= ButterKnife.bind(this,view);
-
+        unbinder = ButterKnife.bind(this, view);
 
 
         LoadData();
 
-        Btn_DeleteTax.setOnClickListener( new View.OnClickListener() {
+        Btn_DeleteTax.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-               DeleteTax();
+                DeleteTax();
 
             }
         });
 
-        Btn_AddTax.setOnClickListener( new View.OnClickListener() {
+        Btn_AddTax.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String TaxName=Et_Tax_Name.getText().toString();
-                String TaxAgency=Et_Tax_Agency.getText().toString();
-                String TaxPercentage=Et_Tax_Percentage.getText().toString();
-                String TaxDescription=Et_Tax_Description.getText().toString();
+                String TaxName = Et_Tax_Name.getText().toString();
+                String TaxAgency = Et_Tax_Agency.getText().toString();
+                String TaxPercentage = Et_Tax_Percentage.getText().toString();
+                String TaxDescription = Et_Tax_Description.getText().toString();
 
-                validateAndSaveData(TaxName,TaxAgency,TaxPercentage,TaxDescription);
+                validateAndSaveData(TaxName, TaxAgency, TaxPercentage, TaxDescription);
 
             }
         });
@@ -98,84 +98,73 @@ public class UpdateTax extends BaseFragment{
     }
 
     private void validateAndSaveData(String TaxName, String TaxAgency, String TaxPercentage, String TaxDescription) {
-        if(TaxName.equals(""))
-        {
+        if (TaxName.equals("")) {
             Et_Tax_Agency.setError(getString(R.string.error_field_required));
             Et_Tax_Agency.requestFocus();
         }
-        if(TaxAgency.equals(""))
-        {
+        if (TaxAgency.equals("")) {
             Et_Tax_Name.setError(getString(R.string.error_field_required));
             Et_Tax_Name.requestFocus();
-        }
-
-        else if(TaxPercentage.equals(""))
-        {
+        } else if (TaxPercentage.equals("")) {
             Et_Tax_Percentage.setError(getString(R.string.error_field_required));
             Et_Tax_Percentage.requestFocus();
-        }
-        else if(TaxDescription.equals(""))
-        {
+        } else if (TaxDescription.equals("")) {
             Et_Tax_Description.setError(getString(R.string.error_field_required));
             Et_Tax_Description.requestFocus();
-        }
-        else
-        {
+        } else {
 
             DataSendToServerForAddTax();
 
         }
 
 
-
     }
 
-    public void LoadData()
-    {
+    @SuppressLint("SetTextI18n")
+    public void LoadData() {
         Btn_AddTax.setText("Update");
         Et_Tax_Name.setText(GlobalData.taxModel.getName());
         Et_Tax_Agency.setText(GlobalData.taxModel.getAgency_name());
         Et_Tax_Percentage.setText(String.valueOf(GlobalData.taxModel.getPercent()));
         Et_Tax_Description.setText(GlobalData.taxModel.getDescription());
 
-        if(GlobalData.taxModel.getActive()){
+        if (GlobalData.taxModel.getActive()) {
             aSwitch_Admin.setChecked(true);
-        }else {
+        } else {
             aSwitch_Admin.setChecked(false);
         }
     }
-    void DataSendToServerForAddTax()
-    {
+
+    void DataSendToServerForAddTax() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForAddTax();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
         SharedPref.init(getActivity());
-        String company_id = SharedPref.read(SharedPref.CompanyID,"");
+        String company_id = SharedPref.read(SharedPref.CompanyID, "");
 
-        Map<String, String> data = new HashMap<String, String>();
-        data.put("company_tax[name]",Et_Tax_Name.getText().toString());
-        data.put("company_tax[agency_name]",Et_Tax_Agency.getText().toString());
-        data.put("company_tax[description]",Et_Tax_Description.getText().toString());
-        data.put("company_tax[percent]",Et_Tax_Percentage.getText().toString());
-        data.put("company_tax[active]","true");
-        data.put("company_tax[company_id]",company_id);
-        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateTax+GlobalData.taxModel.getId()+".json",data );
+        Map<String, String> data = new HashMap<>();
+        data.put("company_tax[name]", Et_Tax_Name.getText().toString());
+        data.put("company_tax[agency_name]", Et_Tax_Agency.getText().toString());
+        data.put("company_tax[description]", Et_Tax_Description.getText().toString());
+        data.put("company_tax[percent]", Et_Tax_Percentage.getText().toString());
+        data.put("company_tax[active]", "true");
+        data.put("company_tax[company_id]", company_id);
+        mVolleyService.putDataVolleyForHeaders("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateTax + GlobalData.taxModel.getId() + ".json", data);
 
     }
 
-    void initVolleyCallbackForAddTax(){
+    void initVolleyCallbackForAddTax() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     boolean status = jsonObject.getBoolean("status");
-                    if(status)
-                    {
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -184,16 +173,16 @@ public class UpdateTax extends BaseFragment{
                             public void run() {
 
                                 progressbar.HideConfirmation();
-                                loadFragment(new TaxConfigurations(),null);
+                                loadFragment(new TaxConfigurations(), null);
 
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(main_layout,"Tax Updated Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Tax Updated Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     } else {
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -216,20 +205,14 @@ public class UpdateTax extends BaseFragment{
         };
     }
 
-    public boolean isValidString(String Str){
-
-        return !Str.isEmpty() && !Str.equalsIgnoreCase("null");
-    }
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentAddClient.OnItemSelectedListener){      // context instanceof YourActivity
+        if (context instanceof FragmentAddClient.OnItemSelectedListener) {      // context instanceof YourActivity
             this.listener = (FragmentAddClient.OnItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
+                    + " must implement UpdateTax.OnItemSelectedListener");
         }
     }
 
@@ -240,13 +223,12 @@ public class UpdateTax extends BaseFragment{
     }
 
 
-    public void DeleteTax()
-    {
+    public void DeleteTax() {
 
         showProgressBar();
         initVolleyCallbackForDeleteTax();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteTax + GlobalData.taxModel.getId() +".json" );
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL + NetworkURLs.DeleteTax + GlobalData.taxModel.getId() + ".json");
 
     }
 
@@ -259,9 +241,9 @@ public class UpdateTax extends BaseFragment{
                     if (jsonObject.getString("status").equalsIgnoreCase("true")) {
 
                         progressbar.HideConfirmation();
-                        loadFragment(new TaxConfigurations(),null);
+                        loadFragment(new TaxConfigurations(), null);
 
-                        snackbar = Snackbar.make(main_layout,"Tax Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Tax Deleted Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }
                 } catch (JSONException e) {

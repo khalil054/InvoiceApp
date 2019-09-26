@@ -16,13 +16,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,7 +39,7 @@ import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
 
-public class FragmentSignUp extends BaseFragment implements View.OnClickListener{
+public class FragmentSignUp extends BaseFragment implements View.OnClickListener {
 
 
     ConstraintLayout main_layout;
@@ -61,16 +65,14 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
     TextView login_text;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_sign_up,container,false);
-        unbinder= ButterKnife.bind(this,view);
-        confirmationView =  view.findViewById(R.id.confirmationView);
-        LayoutHeader=view.findViewById(R.id.layout_main);
-        Button mEmailSignInButton =  view.findViewById(R.id.sign_up_button);
+        View view = inflater.inflate(R.layout.activity_sign_up, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        confirmationView = view.findViewById(R.id.confirmationView);
+        LayoutHeader = view.findViewById(R.id.layout_main);
+        Button mEmailSignInButton = view.findViewById(R.id.sign_up_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,24 +106,19 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
         }
 
         // Check for a valid email address.
-        else if(TextUtils.isEmpty(name.getText().toString()))
-        {
+        else if (TextUtils.isEmpty(name.getText().toString())) {
             name.setError(getString(R.string.error_field_required));
             focusView = name;
             cancel = true;
-        }
-        else if(!Util.isFullname(name.getText().toString()))
-        {
+        } else if (!Util.isFullname(name.getText().toString())) {
             name.setError(getString(R.string.error_invalid_name));
             focusView = name;
             cancel = true;
-        }
-        else if (TextUtils.isEmpty(company_name.getText().toString())) {
+        } else if (TextUtils.isEmpty(company_name.getText().toString())) {
             company_name.setError(getString(R.string.error_field_required));
             focusView = company_name;
             cancel = true;
-        }
-        else if (TextUtils.isEmpty(Email)) {
+        } else if (TextUtils.isEmpty(Email)) {
             email.setError(getString(R.string.error_field_required));
             focusView = email;
             cancel = true;
@@ -129,15 +126,11 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
             email.setError(getString(R.string.error_invalid_email));
             focusView = email;
             cancel = true;
-        }
-
-        else if (!isPasswordValid(Password)) {
+        } else if (!isPasswordValid(Password)) {
             password.setError(getString(R.string.error_invalid_password));
             focusView = password;
             cancel = true;
-        }
-        else if(TextUtils.isEmpty(Password))
-        {
+        } else if (TextUtils.isEmpty(Password)) {
             password.setError(getString(R.string.error_field_required));
             focusView = password;
             cancel = true;
@@ -162,43 +155,39 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
     }
 
-    void DataSendToServerForSignUp()
-    {
+    void DataSendToServerForSignUp() {
 
         showProgressBar();
 
 
         initVolleyCallbackForSignUp();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
         Map<String, String> data = new HashMap<>();
-        data.put("password",password.getText().toString());
-        data.put("email",email.getText().toString());
-        data.put("name",name.getText().toString());
-        data.put("company_attributes[name]",company_name.getText().toString());
-        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignUp,data );
+        data.put("password", password.getText().toString());
+        data.put("email", email.getText().toString());
+        data.put("name", name.getText().toString());
+        data.put("company_attributes[name]", company_name.getText().toString());
+        mVolleyService.postDataVolley("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.SignUp, data);
     }
 
-    void initVolleyCallbackForSignUp(){
+    void initVolleyCallbackForSignUp() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
 
-                    if(status)
-                    {
-                        JSONObject data=jsonObject.getJSONObject("data");
+                    if (status) {
+                        JSONObject data = jsonObject.getJSONObject("data");
 
 
-                        SharedPref.init(getActivity().getApplicationContext());
+                        SharedPref.init(getActivity());
                         String login_id = data.getString("id");
                         SharedPref.write(SharedPref.LoginID, login_id);
 
-
-                        //hideProgressBar();
                         confirmationView.setVisibility(View.VISIBLE);
                         confirmationView.playAnimation();
 
@@ -212,11 +201,11 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                         }, 1000);//delay in milliseconds
 
 
-                    }else {
+                    } else {
 
                         String error = jsonObject.getString("Error");
 
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -226,14 +215,13 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                 hideProgressBar();
 
 
-
             }
 
             @Override
-            public void notifyError(String requestType,VolleyError error) {
+            public void notifyError(String requestType, VolleyError error) {
                 {
-                   hideProgressBar();
-                    if(error.networkResponse != null && error.networkResponse.data != null) {
+                    hideProgressBar();
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
 
                         String error_response = new String(error.networkResponse.data);
 
@@ -244,20 +232,21 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
                             {
                                 JSONObject error_obj = response_obj.getJSONObject("error");
                                 String message = error_obj.getString("message");
-                                showErrorMessage(LayoutHeader,"Error" + message);
+                                showErrorMessage(LayoutHeader, "Error" + message);
 
 
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }else {
-                        showErrorMessage(LayoutHeader,"Error  not responding");
+                    } else {
+                        showErrorMessage(LayoutHeader, "Error  not responding");
 
                     }
 
                 }
             }
+
             @Override
             public void notifySuccessResponseHeader(NetworkResponse response) {
 
@@ -273,12 +262,9 @@ public class FragmentSignUp extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
-            case R.id.login_text:
-                loadFragment(new FragmentLogin());
-                break;
+        int id = view.getId();
+        if (id == R.id.login_text) {
+            loadFragment(new FragmentLogin());
         }
     }
 

@@ -7,9 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,22 +58,19 @@ public class UserProfilePic extends BaseFragment {
     @BindView(R.id.add_logo_text)
     TextView add_logo_text;
 
-    private Uri FilePathUri;
-    private Bitmap logo_bitmap;
     String encodedImageData;
 
 
     public static UserProfilePic newInstance() {
-        UserProfilePic fragment = new UserProfilePic();
-        return fragment;
+        return new UserProfilePic();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /* Inflating the layout for this fragment **/
         View rootView = inflater.inflate(R.layout.fragment_user_profile, container, false);
-        ButterKnife.bind(this,rootView);
-        constraintLayout=rootView.findViewById(R.id.layout_header);
+        ButterKnife.bind(this, rootView);
+        constraintLayout = rootView.findViewById(R.id.layout_header);
         init();
         return rootView;
 
@@ -100,13 +94,13 @@ public class UserProfilePic extends BaseFragment {
 
                 logo_image.buildDrawingCache();
                 Bitmap bmap = logo_image.getDrawingCache();
-                 encodedImageData =getEncoded64ImageStringFromBitmap(bmap);
-                GlobalData.StrUserProfile=encodedImageData;
+                encodedImageData = getEncoded64ImageStringFromBitmap(bmap);
+                GlobalData.StrUserProfile = encodedImageData;
 
 
-                if(GlobalData.StrUserProfile.isEmpty()){
-                    showErrorMessage(constraintLayout,"Select Your Profile Picture");
-                }else {
+                if (GlobalData.StrUserProfile.isEmpty()) {
+                    showErrorMessage(constraintLayout, "Select Your Profile Picture");
+                } else {
 
                     DataSendToServerForAddCompany();
 
@@ -117,15 +111,15 @@ public class UserProfilePic extends BaseFragment {
             }
         });
     }
-    private void selectLogoPic()
-    {
+
+    private void selectLogoPic() {
         Intent intent = new Intent();
 
-        // Setting intent type as image to select image from phone storage.
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -133,20 +127,19 @@ public class UserProfilePic extends BaseFragment {
 
         if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            FilePathUri = data.getData();
+            Uri filePathUri = data.getData();
 
 
             try {
 
                 // Getting selected image into Bitmap.
-                logo_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), FilePathUri);
+                Bitmap logo_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePathUri);
 
                 // Setting up bitmap selected image into ImageView.
                 logo_image.setImageBitmap(logo_bitmap);
                 logo_image.buildDrawingCache();
 
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
 
                 e.printStackTrace();
             }
@@ -165,6 +158,7 @@ public class UserProfilePic extends BaseFragment {
         imageButton.setVisibility(View.GONE);
         add_logo_text.setVisibility(View.GONE);
     }
+
     private void performCrop(Uri picUri) {
         try {
             Intent cropIntent = new Intent("com.android.camera.action.CROP");
@@ -207,39 +201,36 @@ public class UserProfilePic extends BaseFragment {
     ////////////////////////////upload data to server
 
 
-    void initVolleyCallbackForUpdate(){
+    void initVolleyCallbackForUpdate() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONObject data=jsonObject.getJSONObject("data");
+                    JSONObject data = jsonObject.getJSONObject("data");
                     String status = data.getString("status");
 
 
-                    if(status.equals("true"))
-                    {
+                    if (status.equals("true")) {
                         Toast.makeText(getActivity(), "Updated Successfully", Toast.LENGTH_SHORT).show();
-                        Intent Send=new Intent(getActivity(), MainActivity.class);
+                        Intent Send = new Intent(getActivity(), MainActivity.class);
                         getActivity().startActivity(Send);
                         getActivity().finish();
                         /*loadFragment(new CompanyDetails());*/
 
-                    }else {
+                    } else {
 
 
                         String error = jsonObject.getString("Error");
 
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
-
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
 
                 hideProgressBar();
@@ -250,26 +241,21 @@ public class UserProfilePic extends BaseFragment {
                 hideProgressBar();
                 error.printStackTrace();
 
-                if(error.networkResponse != null && error.networkResponse.data != null){
-                  //  VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
-                    String error_response=new String(error.networkResponse.data);
+                if (error.networkResponse != null && error.networkResponse.data != null) {
+                    //  VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
+                    String error_response = new String(error.networkResponse.data);
                     try {
-                        JSONObject response_obj=new JSONObject(error_response);
-                        String status=response_obj.getString("status");
-                        if(status.equals("false"))
-                        {
-                            JSONObject error_obj=response_obj.getJSONObject("error");
-                            String message=error_obj.getString("message");
-                            Toasty.error(getActivity(),message, Toast.LENGTH_SHORT).show();
+                        JSONObject response_obj = new JSONObject(error_response);
+                        String status = response_obj.getString("status");
+                        if (status.equals("false")) {
+                            JSONObject error_obj = response_obj.getJSONObject("error");
+                            String message = error_obj.getString("message");
+                            Toasty.error(getActivity(), message, Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-                //  return error;
-                // snackbar = Snackbar.make(main_layout, error.toString(), Snackbar.LENGTH_LONG);
-                //snackbar.show();
             }
 
             @Override
@@ -281,37 +267,35 @@ public class UserProfilePic extends BaseFragment {
     }
 
 
-
-    void DataSendToServerForAddCompany()
-    {
+    void DataSendToServerForAddCompany() {
         showProgressBar();
 
 
         initVolleyCallbackForUpdate();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
-        JSONObject data=new JSONObject();
-        JSONObject User=new JSONObject();
-        JSONObject FinalObj=new JSONObject();
+        JSONObject data = new JSONObject();
+        JSONObject User = new JSONObject();
+        JSONObject FinalObj = new JSONObject();
 
         try {
-            data.put("email",GlobalData.StrCompanyEmail);
+            data.put("email", GlobalData.StrCompanyEmail);
 
             data.put("address", GlobalData.StrCompanyAddress);
-            data.put("city",GlobalData.StrCompanyCity);
-            data.put("state",GlobalData.StrCompanyState);
-            data.put("zip_code",GlobalData.StrCompanyZipCode);
-            data.put("country_id",GlobalData.StrCountryID);
-            data.put("user_id", SharedPref.read(SharedPref.LoginID,"0"));
-            data.put("phone",GlobalData.StrCompanyPhone);
-            data.put("logo","data:image/png;base64,"+GlobalData.StrCompanyLogo);
+            data.put("city", GlobalData.StrCompanyCity);
+            data.put("state", GlobalData.StrCompanyState);
+            data.put("zip_code", GlobalData.StrCompanyZipCode);
+            data.put("country_id", GlobalData.StrCountryID);
+            data.put("user_id", SharedPref.read(SharedPref.LoginID, "0"));
+            data.put("phone", GlobalData.StrCompanyPhone);
+            data.put("logo", "data:image/png;base64," + GlobalData.StrCompanyLogo);
             // data.put("company[cover_image]",zip_code.getText().toString());
-            data.put("stamp","data:image/png;base64,"+GlobalData.StrCompanyStamp);
+            data.put("stamp", "data:image/png;base64," + GlobalData.StrCompanyStamp);
 
-            User.put("signature","data:image/png;base64,"+GlobalData.StrUserSignature);
-            User.put("image","data:image/png;base64,"+GlobalData.StrUserProfile);
-            data.put("user",User);
-            FinalObj.put("company",data);
+            User.put("signature", "data:image/png;base64," + GlobalData.StrUserSignature);
+            User.put("image", "data:image/png;base64," + GlobalData.StrUserProfile);
+            data.put("user", User);
+            FinalObj.put("company", data);
 
 
         } catch (JSONException e) {
@@ -328,23 +312,16 @@ public class UserProfilePic extends BaseFragment {
         }*/
 
 
-        String Str= NetworkURLs.BaseURL + NetworkURLs.UpdateCompanuDetail;
-        mVolleyService.putDataVolleyForHeadersWithJson("PUTCALL",Str ,FinalObj );
+        String Str = NetworkURLs.BaseURL + NetworkURLs.UpdateCompanuDetail;
+        mVolleyService.putDataVolleyForHeadersWithJson("PUTCALL", Str, FinalObj);
 
 
     }
-    private void loadFragment(Fragment dashboardFragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, dashboardFragment);
-        fragmentTransaction.addToBackStack(dashboardFragment.toString());
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
-    }
 
-    public void showImageStamp(String ImgPath){
+
+    public void showImageStamp(String ImgPath) {
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .load(NetworkURLs.BaseURLForImages + ImgPath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(logo_image, new com.squareup.picasso.Callback() {
                     @Override
@@ -354,7 +331,7 @@ public class UserProfilePic extends BaseFragment {
 
                     @Override
                     public void onError(Exception e) {
-                     //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
 

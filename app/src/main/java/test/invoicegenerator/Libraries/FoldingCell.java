@@ -22,9 +22,7 @@ import java.util.List;
 
 import test.invoicegenerator.R;
 
-/**
- * Very first implementation of Folding Cell by Ramotion for Android platform
- */
+
 public class FoldingCell extends RelativeLayout {
 
     // state variables
@@ -55,7 +53,7 @@ public class FoldingCell extends RelativeLayout {
         super(context, attrs, defStyleAttr);
 
         TypedArray styledAttrs = context.obtainStyledAttributes(attrs, R.styleable.FoldingCell);
-        if (styledAttrs!=null){
+        if (styledAttrs != null) {
             final int count = styledAttrs.getIndexCount();
             for (int i = 0; i < count; ++i) {
                 int attr = styledAttrs.getIndex(i);

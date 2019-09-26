@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 import test.invoicegenerator.NetworksCall.IResult;
@@ -37,32 +38,31 @@ public class FragmentReportDetail extends BaseFragment {
     ArrayList<String> tab_name = new ArrayList<>();
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         /* Inflating the layout for this fragment */
-        View rootView = inflater.inflate(R.layout.fragment_companyframe,container, false);
+        View rootView = inflater.inflate(R.layout.fragment_companyframe, container, false);
 
-        main_layout =  rootView.findViewById(R.id.main_layout);
+        main_layout = rootView.findViewById(R.id.main_layout);
 
         init(rootView);
 
         return rootView;
     }
 
-    private void init(View rootView ) {
+    private void init(View rootView) {
 
-           BottomNavigationView navigation =  getActivity().findViewById(R.id.navigation);
-           navigation.setVisibility(View.GONE);
-           assig_data_to_viewpager(rootView);
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
+        navigation.setVisibility(View.GONE);
+        assig_data_to_viewpager(rootView);
 
     }
 
-    void assig_data_to_viewpager(View view){
+    void assig_data_to_viewpager(View view) {
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager(),null);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager(), null);
         // Set up the ViewPager with the sections adapter.
-        mViewPager =  view.findViewById(R.id.container);
+        mViewPager = view.findViewById(R.id.container);
 
         mViewPager.setOffscreenPageLimit(0);
 
@@ -78,23 +78,6 @@ public class FragmentReportDetail extends BaseFragment {
 
         tab_name.add("Preview");
 
-        /* mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Toast.makeText(getActivity(), "Selcted Fragment Position is:"+position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });*/
-
 
         // loop through all navigation tabs
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
@@ -103,7 +86,7 @@ public class FragmentReportDetail extends BaseFragment {
 
             TextView tab_label = linearLayout.findViewById(R.id.label);
 
-            ImageView tab_pic =  linearLayout.findViewById(R.id.img);
+            ImageView tab_pic = linearLayout.findViewById(R.id.img);
             // tab_pic.setImageResource(tab_icon.get(i));
             tab_label.setText(tab_name.get(i));
 
@@ -111,9 +94,9 @@ public class FragmentReportDetail extends BaseFragment {
         }
 
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
                 currentIndeX = tab.getPosition();
             }
 
@@ -126,7 +109,8 @@ public class FragmentReportDetail extends BaseFragment {
             }
         });
     }
-    public  class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         private Bundle fragmentBundle;
 
@@ -140,14 +124,13 @@ public class FragmentReportDetail extends BaseFragment {
         public Fragment getItem(int position) {
 
             Fragment fragment = null;
-            switch (position)
-            {
+            switch (position) {
                 case 0:
-                    fragment=new FragmentEditReportUpdate();
+                    fragment = new FragmentEditReportUpdate();
                     fragment.setArguments(fragmentBundle);
                     break;
                 case 1:
-                   fragment=new PDFInvoice();
+                    fragment = new PDFInvoice();
                     //fragment.setArguments(fragmentBundle);
                     break;
                 default:

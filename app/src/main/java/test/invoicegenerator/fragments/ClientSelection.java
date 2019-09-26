@@ -14,12 +14,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -29,7 +33,7 @@ import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.model.ClientModel;
 
-public class ClientSelection extends BaseFragment{
+public class ClientSelection extends BaseFragment {
     ListView listView;
     FloatingActionButton floating_AddClient;
     ClientAdapter clientAdapter;
@@ -39,18 +43,18 @@ public class ClientSelection extends BaseFragment{
     Snackbar snackbar;
     IResult mResultCallback = null;
     VolleyService mVolleyService;
-    ArrayList<ClientModel> clientModels=new ArrayList<>();
+    ArrayList<ClientModel> clientModels = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_client_selection,container,false);
+        View view = inflater.inflate(R.layout.fragment_client_selection, container, false);
         listView = view.findViewById(R.id.clientList);
         searchView = view.findViewById(R.id.searchView); // inititate a search view
-        floating_AddClient =view.findViewById(R.id.floating_add_new_client);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         GetClientList();
         return view;
     }
@@ -81,12 +85,12 @@ public class ClientSelection extends BaseFragment{
             }
         });
 
-        BottomNavigationView navigation =  getActivity().findViewById(R.id.navigation);
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
         navigation.setVisibility(View.GONE);
 
         floating_AddClient.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                loadFragment(new FragmentAddClient(),null);
+                loadFragment(new FragmentAddClient(), null);
             }
         });
 
@@ -103,12 +107,11 @@ public class ClientSelection extends BaseFragment{
     }
 
 
-    public void GetClientList()
-    {
+    public void GetClientList() {
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetClientList);
     }
 
     void initVolleyCallbackForClientList() {
@@ -118,7 +121,7 @@ public class ClientSelection extends BaseFragment{
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
-                 /*   if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
+                    /*   if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
                     if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         JSONArray clients = data.getJSONArray("clients");
@@ -127,7 +130,7 @@ public class ClientSelection extends BaseFragment{
                             ClientModel clientModel = new ClientModel(clients.getJSONObject(i));
                             clientModels.add(clientModel);
                         }
-                        clientAdapter = new ClientAdapter(getActivity(),clientModels);
+                        clientAdapter = new ClientAdapter(getActivity(), clientModels);
                         listView.setAdapter(clientAdapter);
                     }
                 } catch (JSONException e) {

@@ -1,4 +1,5 @@
-<ScrollView android:layout_width="match_parent"
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_alignParentStart="true"
@@ -11,7 +12,7 @@
     <LinearLayout
         android:id="@+id/layout_dash"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
 
@@ -32,6 +33,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -46,7 +48,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Add Invoice"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
             <LinearLayout
@@ -60,6 +63,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -74,7 +78,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Clients"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -100,6 +105,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -114,7 +120,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Reports"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -129,6 +136,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -143,7 +151,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Send SMS"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -166,6 +175,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -180,7 +190,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Configuration"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
 
@@ -195,6 +206,7 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:contentDescription="@string/app_name"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
@@ -209,7 +221,8 @@
                     android:layout_marginTop="5dp"
                     android:clickable="false"
                     android:text="Settings"
-                    android:textColor="#092950" />
+                    android:textColor="#092950"
+                    tools:ignore="HardcodedText" />
 
             </LinearLayout>
         </RelativeLayout>

@@ -23,7 +23,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
 
             <ImageView
                 android:id="@+id/p_logo_saved_location"
@@ -31,7 +32,6 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:background="@drawable/ic_taxes"
                 android:clickable="false"
                 android:contentDescription="@string/app_name"
@@ -43,8 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
 
@@ -59,7 +58,7 @@
                     android:text="Khalil"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
-                    tools:ignore="RtlCompat" />
+                    tools:ignore="HardcodedText,RtlCompat" />
 
                 <TextView
                     android:id="@+id/percentage_txt"
@@ -72,7 +71,7 @@
                     android:text="21 3rd Floor,Ross Residentia"
                     android:textColor="#ffffff"
                     android:textSize="8sp"
-                    tools:ignore="RtlCompat,SmallSp" />
+                    tools:ignore="HardcodedText,RtlCompat,SmallSp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

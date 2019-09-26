@@ -1,22 +1,6 @@
 package test.invoicegenerator.databaseutilities;
 
-/**
- * Created by User on 1/15/2019.
- */
-
-/**
- * Created by User on 1/14/2019.
- */
-
 public class Item {
-
-  /*  @PrimaryKey
-    private String id;*/
-
-   /* @SerializedName("description")
-    private String description;*/
-
-
     private String description;
     private String unit_cost;
     private String quantity;

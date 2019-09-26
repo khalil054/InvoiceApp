@@ -2,9 +2,6 @@ package test.invoicegenerator.Libraries;
 
 import android.view.animation.Animation;
 
-/**
- * Just sugar for code clean
- */
 public abstract class AnimationEndListener implements Animation.AnimationListener {
 
     @Override

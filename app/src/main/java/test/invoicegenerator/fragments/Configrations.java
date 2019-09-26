@@ -45,7 +45,8 @@ public class Configrations extends BaseFragment {
         layot_currency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFragment(new CurrencyPickerFragment());
+                /*loadFragment(new CurrencyPickerFragment());*/
+                loadFragment(new HeadersFragment());
             }
         });
 

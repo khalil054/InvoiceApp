@@ -14,16 +14,20 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
@@ -35,7 +39,7 @@ import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.ClientModel;
 
 
-public class FragmentAllClients extends BaseFragment{
+public class FragmentAllClients extends BaseFragment {
 
     SwipeMenuListView listView;
     FloatingActionButton floating_AddClient;
@@ -47,19 +51,19 @@ public class FragmentAllClients extends BaseFragment{
     ClientAdapter clientAdapter;
     SearchView searchView;
     int DeletePosition = 0;
-    ArrayList<ClientModel> clientModels=new ArrayList<>();
+    ArrayList<ClientModel> clientModels = new ArrayList<>();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_all_clients,container,false);
-        searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
-        listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
-        floating_AddClient = (FloatingActionButton) view.findViewById(R.id.floating_add_new_client);
+        View view = inflater.inflate(R.layout.fragment_all_clients, container, false);
+        searchView = view.findViewById(R.id.searchView); // inititate a search view
+        listView = view.findViewById(R.id.clientList);
+        floating_AddClient = view.findViewById(R.id.floating_add_new_client);
         init();
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
         GetClientList();
         return view;
     }
@@ -72,9 +76,9 @@ public class FragmentAllClients extends BaseFragment{
         searchView.clearFocus();
         int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null,
                 null);
-        TextView textView = (TextView) searchView.findViewById(id);
+        TextView textView = searchView.findViewById(id);
         textView.setTextColor(Color.WHITE);
-        EditText editText = (EditText) searchView.findViewById(id);
+        EditText editText = searchView.findViewById(id);
         editText.setHintTextColor(Color.GRAY);
 
 
@@ -93,12 +97,12 @@ public class FragmentAllClients extends BaseFragment{
             }
         });
 
-        BottomNavigationView navigation =  getActivity().findViewById(R.id.navigation);
+        BottomNavigationView navigation = getActivity().findViewById(R.id.navigation);
         navigation.setVisibility(View.GONE);
 
         floating_AddClient.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                loadFragment(new FragmentAddClient(),null);
+                loadFragment(new FragmentAddClient(), null);
             }
         });
 
@@ -126,8 +130,8 @@ public class FragmentAllClients extends BaseFragment{
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GlobalData.clientId =  clientModels.get(position).getId();
-                loadFragment(new FragmentUpdateClient(),null);
+                GlobalData.clientId = clientModels.get(position).getId();
+                loadFragment(new FragmentUpdateClient(), null);
             }
         });
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -143,7 +147,6 @@ public class FragmentAllClients extends BaseFragment{
 //                        loadFragment(new FragmentUpdateClient(),null);
                         break;
                 }
-                // false : close the menu; true : not close the menu
                 return false;
             }
         });
@@ -159,15 +162,14 @@ public class FragmentAllClients extends BaseFragment{
     }
 
 
-    public void GetClientList()
-    {
-        if(clientModels.size()>0){
+    public void GetClientList() {
+        if (clientModels.size() > 0) {
             clientModels.clear();
         }
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetClientList);
 
     }
 
@@ -178,7 +180,7 @@ public class FragmentAllClients extends BaseFragment{
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean status = jsonObject.getBoolean("status");
-                /*    if (jsonObject.getString("status").equalsIgnoreCase("true")) {*/
+
                     if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         JSONArray clients = data.getJSONArray("clients");
@@ -188,7 +190,7 @@ public class FragmentAllClients extends BaseFragment{
                             clientModels.add(clientModel);
                         }
 
-                        clientAdapter = new ClientAdapter(getActivity(),clientModels);
+                        clientAdapter = new ClientAdapter(getActivity(), clientModels);
                         listView.setAdapter(clientAdapter);
                     }
                 } catch (JSONException e) {
@@ -211,13 +213,12 @@ public class FragmentAllClients extends BaseFragment{
     }
 
 
-    public void DeleteClient(String id)
-    {
+    public void DeleteClient(String id) {
 
         showProgressBar();
         initVolleyCallbackForDeleteClient();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL+ NetworkURLs.DeleteClient + id + ".json" );
+        mVolleyService.DeleteDataVolley(NetworkURLs.BaseURL + NetworkURLs.DeleteClient + id + ".json");
     }
 
     void initVolleyCallbackForDeleteClient() {
@@ -229,10 +230,10 @@ public class FragmentAllClients extends BaseFragment{
                     if (jsonObject.getString("status").equalsIgnoreCase("true")) {
 
                         clientModels.remove(DeletePosition);
-                        clientAdapter = new ClientAdapter(getActivity(),clientModels);
+                        clientAdapter = new ClientAdapter(getActivity(), clientModels);
                         listView.setAdapter(clientAdapter);
 
-                        snackbar = Snackbar.make(main_layout,"Client Deleted Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Client Deleted Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     }
                 } catch (JSONException e) {

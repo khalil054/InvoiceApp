@@ -3,7 +3,6 @@ package test.invoicegenerator.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -48,22 +47,19 @@ public class PlaceLogo extends BaseFragment {
     @BindView(R.id.add_logo_text)
     TextView add_logo_text;
 
-    private Uri FilePathUri;
-    private Bitmap logo_bitmap;
     String encodedImageData;
 
 
     public static PlaceLogo newInstance() {
-        PlaceLogo fragment = new PlaceLogo();
-        return fragment;
+        return new PlaceLogo();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /** Inflating the layout for this fragment **/
+        /* Inflating the layout for this fragment **/
         View rootView = inflater.inflate(R.layout.fragment_place_logo, container, false);
-        ButterKnife.bind(this,rootView);
-        constraintLayoutl=rootView.findViewById(R.id.layout_headerr);
+        ButterKnife.bind(this, rootView);
+        constraintLayoutl = rootView.findViewById(R.id.layout_headerr);
         init();
         return rootView;
 
@@ -86,22 +82,22 @@ public class PlaceLogo extends BaseFragment {
 
                 logo_image.buildDrawingCache();
                 Bitmap bmap = logo_image.getDrawingCache();
-                 encodedImageData =getEncoded64ImageStringFromBitmap(bmap);
-                GlobalData.StrCompanyLogo=encodedImageData;
+                encodedImageData = getEncoded64ImageStringFromBitmap(bmap);
+                GlobalData.StrCompanyLogo = encodedImageData;
 
-                if(GlobalData.StrCompanyLogo.isEmpty()){
-                    showErrorMessage(constraintLayoutl,"Select Logo Of Company");
-                }else {
-                    showErrorMessage(constraintLayoutl,"Switch Tab To Fill Other Informations,Thanks");
+                if (GlobalData.StrCompanyLogo.isEmpty()) {
+                    showErrorMessage(constraintLayoutl, "Select Logo Of Company");
+                } else {
+                    showErrorMessage(constraintLayoutl, "Switch Tab To Fill Other Informations,Thanks");
                 }
 
-               // Toast.makeText(getActivity(), "Click"+encodedImageData, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity(), "Click"+encodedImageData, Toast.LENGTH_SHORT).show();
 
             }
         });
     }
-    private void selectLogoPic()
-    {
+
+    private void selectLogoPic() {
         Intent intent = new Intent();
 
         // Setting intent type as image to select image from phone storage.
@@ -109,6 +105,7 @@ public class PlaceLogo extends BaseFragment {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -116,20 +113,19 @@ public class PlaceLogo extends BaseFragment {
 
         if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
-            FilePathUri = data.getData();
+            Uri filePathUri = data.getData();
 
 
             try {
 
                 // Getting selected image into Bitmap.
-                logo_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), FilePathUri);
+                Bitmap logo_bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePathUri);
 
                 // Setting up bitmap selected image into ImageView.
                 logo_image.setImageBitmap(logo_bitmap);
                 logo_image.buildDrawingCache();
 
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
 
                 e.printStackTrace();
             }
@@ -145,35 +141,10 @@ public class PlaceLogo extends BaseFragment {
                 logo_image.setImageBitmap(selectedBitmap);
             }
         }
-      //  imageButton.setVisibility(View.GONE);
+        //  imageButton.setVisibility(View.GONE);
         add_logo_text.setVisibility(View.GONE);
     }
-    private void performCrop(Uri picUri) {
-        try {
-            Intent cropIntent = new Intent("com.android.camera.action.CROP");
-            // indicate image type and Uri
-            cropIntent.setDataAndType(picUri, "image/*");
-            // set crop properties here
-            cropIntent.putExtra("crop", true);
-            // indicate aspect of desired crop
-            cropIntent.putExtra("aspectX", 1);
-            cropIntent.putExtra("aspectY", 1);
-            // indicate output X and Y
-            cropIntent.putExtra("outputX", 128);
-            cropIntent.putExtra("outputY", 128);
-            // retrieve data on return
-            cropIntent.putExtra("return-data", true);
-            // start the activity - we handle returning in onActivityResult
-            startActivityForResult(cropIntent, PIC_CROP);
-        }
-        // respond to users whose devices do not support the crop action
-        catch (ActivityNotFoundException anfe) {
-            // display an error message
-            String errorMessage = "Whoops - your device doesn't support the crop action!";
-            Toast toast = Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
+
 
     public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -185,11 +156,10 @@ public class PlaceLogo extends BaseFragment {
         return imgString;
     }
 
-    public void showImageStamp(String ImgPath){
+    public void showImageStamp(String ImgPath) {
 
-        Toast.makeText(getActivity(), NetworkURLs.BaseURLForImages+ImgPath, Toast.LENGTH_SHORT).show();
         Picasso.get()
-                .load(NetworkURLs.BaseURLForImages+ImgPath)
+                .load(NetworkURLs.BaseURLForImages + ImgPath)
                 .placeholder(R.color.grey) // Your dummy image...
                 .into(logo_image, new com.squareup.picasso.Callback() {
                     @Override
@@ -199,7 +169,7 @@ public class PlaceLogo extends BaseFragment {
 
                     @Override
                     public void onError(Exception e) {
-                      //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         // Unable to load image, may be due to incorrect URL, no network...
                     }
 

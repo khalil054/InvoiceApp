@@ -8,8 +8,8 @@ public class ClientModel {
 
     String id;
     String name;
-    String email;
-    String phone;
+    private String email;
+    private String phone;
 
 
     public ClientModel(JSONObject jsonObject) {
@@ -20,7 +20,6 @@ public class ClientModel {
             name = jsonObject.getString("name");
             email = jsonObject.getString("email");
             phone = jsonObject.getString("phone");
-
 
 
             setId(id);
@@ -34,7 +33,6 @@ public class ClientModel {
         }
 
     }
-
 
 
     public String getId() {

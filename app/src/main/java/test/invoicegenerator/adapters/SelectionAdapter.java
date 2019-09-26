@@ -16,10 +16,10 @@ import test.invoicegenerator.model.ClientSelectModel;
 
 public class SelectionAdapter extends ArrayAdapter<String> implements Filterable {
 
-    ArrayList<ClientSelectModel> clientModels;
+    private ArrayList<ClientSelectModel> clientModels;
     private Activity context;
     private SelectionAdapter.ItemFilter mFilter = new SelectionAdapter.ItemFilter();
-    ArrayList<ClientSelectModel> list = new ArrayList<ClientSelectModel>();
+    ArrayList<ClientSelectModel> list;
 
 
     public SelectionAdapter( Activity context, ArrayList<ClientSelectModel> clientModels)
@@ -45,10 +45,10 @@ public class SelectionAdapter extends ArrayAdapter<String> implements Filterable
         }
 
         ClientSelectModel clientModel = clientModels.get(position);
-        TextView tvName = (TextView) rootView.findViewById(R.id.tv_client_name_adapter);
-        TextView tvPhone = (TextView) rootView.findViewById(R.id.tv_client_phone);
-        TextView tvAddress = (TextView) rootView.findViewById(R.id.tv_client_address);
-        ImageButton selection_btn = (ImageButton) rootView.findViewById(R.id.selection_btn);
+        TextView tvName = rootView.findViewById(R.id.tv_client_name_adapter);
+        TextView tvPhone = rootView.findViewById(R.id.tv_client_phone);
+        TextView tvAddress =rootView.findViewById(R.id.tv_client_address);
+        ImageButton selection_btn = rootView.findViewById(R.id.selection_btn);
         selection_btn.setClickable(false);
 
         tvName.setText(clientModel.getName());

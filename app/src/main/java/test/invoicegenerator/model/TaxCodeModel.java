@@ -1,6 +1,5 @@
 package test.invoicegenerator.model;
 
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,10 +10,10 @@ import java.util.ArrayList;
 public class TaxCodeModel {
 
     String id;
-    String code;
-    String des;
-    JSONArray company_taxes;
-    ArrayList<TaxModel> taxModels = new ArrayList<TaxModel>();
+    private String code;
+    private String des;
+    private JSONArray company_taxes;
+    private ArrayList<TaxModel> taxModels = new ArrayList<>();
 
     public TaxCodeModel(JSONObject jsonObject) {
 
@@ -25,8 +24,7 @@ public class TaxCodeModel {
             des = jsonObject.getString("description");
             company_taxes = jsonObject.getJSONArray("company_taxes");
 
-            for (int i = 0; i<= company_taxes.length(); i++)
-            {
+            for (int i = 0; i <= company_taxes.length(); i++) {
                 TaxModel taxModel = new TaxModel(company_taxes.getJSONObject(i));
                 taxModels.add(taxModel);
             }

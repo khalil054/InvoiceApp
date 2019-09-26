@@ -20,6 +20,7 @@ import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
@@ -32,7 +33,7 @@ import test.invoicegenerator.general.Util;
 import test.invoicegenerator.Activities.MainActivity;
 
 
-public class FragmentAddClient extends BaseFragment{
+public class FragmentAddClient extends BaseFragment {
 
     @BindView(R.id.add_client_button)
     Button Btn_AddClient;
@@ -61,31 +62,32 @@ public class FragmentAddClient extends BaseFragment{
     VolleyService mVolleyService;
 
     private OnItemSelectedListener listener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_client,container,false);
+        View view = inflater.inflate(R.layout.fragment_add_client, container, false);
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
         progressbar = new Progressbar(getActivity());
-        unbinder= ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this, view);
 
 
-        ((MainActivity)getActivity()).LoadAddressFields(view);
+        ((MainActivity) getActivity()).LoadAddressFields(view);
 
-        Btn_AddClient.setOnClickListener( new View.OnClickListener() {
+        Btn_AddClient.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String StrName=Et_Client_Name.getText().toString();
-                String StrEmail=Et_Client_Email.getText().toString();
-                String StrPhone=Et_Client_Phone.getText().toString();
-                String StrAddress=Et_Client_Address.getText().toString();
-                String StrCity=Et_Client_City.getText().toString();
-                String StrState=Et_Client_State.getText().toString();
-                String StrCountry=Et_Client_Country.getText().toString();
-                String StrPostalCode=Et_Client_ZipCode.getText().toString();
+                String StrName = Et_Client_Name.getText().toString();
+                String StrEmail = Et_Client_Email.getText().toString();
+                String StrPhone = Et_Client_Phone.getText().toString();
+                String StrAddress = Et_Client_Address.getText().toString();
+                String StrCity = Et_Client_City.getText().toString();
+                String StrState = Et_Client_State.getText().toString();
+                String StrCountry = Et_Client_Country.getText().toString();
+                String StrPostalCode = Et_Client_ZipCode.getText().toString();
 
-                validateAndSaveData(StrName,StrEmail,StrPhone,StrAddress,StrCity,StrState,StrCountry,StrPostalCode);
+                validateAndSaveData(StrName, StrEmail, StrPhone, StrAddress, StrCity, StrState, StrCountry, StrPostalCode);
 
             }
         });
@@ -93,55 +95,37 @@ public class FragmentAddClient extends BaseFragment{
         return view;
     }
 
-    private void validateAndSaveData(String StrName,String StrEmail,String StrPhone,String StrAddress,String StrCity,
-                                     String StrState,String StrCountry,String StrPostalCode) {
-        if(StrEmail.equals(""))
-        {
+    private void validateAndSaveData(String StrName, String StrEmail, String StrPhone, String StrAddress, String StrCity,
+                                     String StrState, String StrCountry, String StrPostalCode) {
+        if (StrEmail.equals("")) {
             Et_Client_Email.setError(getString(R.string.error_field_required));
             Et_Client_Email.requestFocus();
         }
-        if(StrName.equals(""))
-        {
+        if (StrName.equals("")) {
             Et_Client_Name.setError(getString(R.string.error_field_required));
             Et_Client_Name.requestFocus();
-        }
-        else if(!Util.isFullname(StrName))
-        {
+        } else if (!Util.isFullname(StrName)) {
             Et_Client_Name.setError(getString(R.string.error_invalid_name));
             Et_Client_Name.requestFocus();
-        }
-
-        else if(!Util.isEmailValid(StrEmail))
-        {
+        } else if (!Util.isEmailValid(StrEmail)) {
             Et_Client_Email.setError(getString(R.string.error_invalid_email));
             Et_Client_Email.requestFocus();
-        }
-        else if(StrAddress.equals(""))
-        {
+        } else if (StrAddress.equals("")) {
             Et_Client_Address.setError(getString(R.string.error_field_required));
             Et_Client_Address.requestFocus();
-        }
-        else if(StrCity.equals(""))
-        {
+        } else if (StrCity.equals("")) {
             Et_Client_City.setError(getString(R.string.error_field_required));
             Et_Client_City.requestFocus();
-        }
-        else if(StrState.equals(""))
-        {
+        } else if (StrState.equals("")) {
             Et_Client_State.setError(getString(R.string.error_field_required));
             Et_Client_State.requestFocus();
-        }
-        else if(StrCountry.equals("")) {
+        } else if (StrCountry.equals("")) {
             Et_Client_Country.setError(getString(R.string.error_field_required));
             Et_Client_Country.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(StrPostalCode))
-        {
+        } else if (!Util.isZipCodeValid(StrPostalCode)) {
             Et_Client_ZipCode.setError(getString(R.string.error_invalid_zip_code));
             Et_Client_ZipCode.requestFocus();
-        }
-        else
-        {
+        } else {
 
             DataSendToServerForAddClient();
 
@@ -150,58 +134,56 @@ public class FragmentAddClient extends BaseFragment{
 
     }
 
-    void DataSendToServerForAddClient()
-    {
+    void DataSendToServerForAddClient() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForAddClient();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
-        JSONObject Data=new JSONObject();
-        JSONObject jsonObject=new JSONObject();
-        JSONObject jsonObject1=new JSONObject();
-        JSONArray jsonArray=new JSONArray();
+        JSONObject Data = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
 
         try {
-            jsonObject.put("name",Et_Client_Name.getText().toString());
-            jsonObject.put("email",Et_Client_Email.getText().toString());
-            jsonObject.put("phone",Et_Client_Phone.getText().toString());
+            jsonObject.put("name", Et_Client_Name.getText().toString());
+            jsonObject.put("email", Et_Client_Email.getText().toString());
+            jsonObject.put("phone", Et_Client_Phone.getText().toString());
 
-            jsonObject1.put("name",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_1",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_2","");
-            jsonObject1.put("city",Et_Client_City.getText().toString());
-            jsonObject1.put("state",Et_Client_State.getText().toString());
-            jsonObject1.put("zip_code",Et_Client_ZipCode.getText().toString());
-            jsonObject1.put("default",true);
-            jsonObject1.put("country_name",Et_Client_Country.getText().toString());
+            jsonObject1.put("name", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_1", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_2", "");
+            jsonObject1.put("city", Et_Client_City.getText().toString());
+            jsonObject1.put("state", Et_Client_State.getText().toString());
+            jsonObject1.put("zip_code", Et_Client_ZipCode.getText().toString());
+            jsonObject1.put("default", true);
+            jsonObject1.put("country_name", Et_Client_Country.getText().toString());
 
 
             jsonArray.put(jsonObject1);
 
-            jsonObject.put("addresses_attributes",jsonArray);
+            jsonObject.put("addresses_attributes", jsonArray);
 
 
-            Data.put("client",jsonObject);
+            Data.put("client", jsonObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient,Data );
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddClient, Data);
     }
 
-    void initVolleyCallbackForAddClient(){
+    void initVolleyCallbackForAddClient() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     boolean status = jsonObject1.getBoolean("status");
-                    if(status)
-                    {
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -210,16 +192,16 @@ public class FragmentAddClient extends BaseFragment{
                             public void run() {
 
                                 progressbar.HideConfirmation();
-                                loadFragment(new FragmentAllClients(),null);
+                                loadFragment(new FragmentAllClients(), null);
 
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(main_layout,"Client Added Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Client Added Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     } else {
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -242,7 +224,7 @@ public class FragmentAddClient extends BaseFragment{
         };
     }
 
-    public boolean isValidString(String Str){
+    public boolean isValidString(String Str) {
 
         return !Str.isEmpty() && !Str.equalsIgnoreCase("null");
     }
@@ -251,11 +233,11 @@ public class FragmentAddClient extends BaseFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
+        if (context instanceof OnItemSelectedListener) {      // context instanceof YourActivity
             this.listener = (OnItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
-                    + " must implement SavedCoupansLocationFragment.OnItemSelectedListener");
+                    + " must implement FragmentAddClient.OnItemSelectedListener");
         }
     }
 

@@ -15,15 +15,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.yalantis.ucrop.UCrop;
+
 import java.io.File;
 import java.util.List;
+
 import test.invoicegenerator.R;
+
 import static android.support.v4.content.FileProvider.getUriForFile;
 
 public class ImagePickerActivity extends AppCompatActivity {
@@ -83,18 +87,7 @@ public class ImagePickerActivity extends AppCompatActivity {
 
         // add a list
         String[] animals = {context.getString(R.string.lbl_take_camera_picture), context.getString(R.string.lbl_choose_from_gallery)};
-//        builder.setItems(animals, (dialog, which) -> {
-//            switch (which) {
-//                case 0:
-//                    listener.onTakeCameraSelected();
-//                    break;
-//                case 1:
-//                    listener.onChooseGallerySelected();
-//                    break;
-//            }
-//        });
 
-        // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }

@@ -1,14 +1,11 @@
 package test.invoicegenerator.model;
 
-/**
- * Created by User on 10/18/2018.
- */
 
 public class ImageUploadInfo {
 
-    public String imageName;
+    private String imageName;
 
-    public String imageURL;
+    private String imageURL;
 
     public ImageUploadInfo() {
 
@@ -17,7 +14,7 @@ public class ImageUploadInfo {
     public ImageUploadInfo(String name, String url) {
 
         this.imageName = name;
-        this.imageURL= url;
+        this.imageURL = url;
     }
 
     public String getImageName() {

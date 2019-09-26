@@ -7,29 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.R;
-import test.invoicegenerator.general.GlobalData;
-import test.invoicegenerator.helper.MyImageLoader;
 import test.invoicegenerator.model.HeaderDetail;
 
 
 public class HeaderAdapterJSON extends BaseAdapter {
-    private MyImageLoader myImageLoader;
     private ArrayList<HeaderDetail> mData = new ArrayList();
     private LayoutInflater mInflater;
     private Context context;
-    //private HeaderDetailSimple header;
-    private int index;
 
     public HeaderAdapterJSON(Context con, ArrayList<HeaderDetail> data) {
         context=con;
         mData=data;
-        myImageLoader=new MyImageLoader( this.context);
+        /*myImageLoader=new MyImageLoader( this.context);*/
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -101,24 +95,13 @@ public class HeaderAdapterJSON extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-       /* holder.textView.setText(GlobalData.StrCompanyName);
-        holder.addressView.setText(GlobalData.StrCompanyName);
-        holder.email.setText(GlobalData.StrCompanyEmail);
-        holder.phone.setText(GlobalData.StrCompanyPhone);
 
-        if(!mData.get(position).getStrCompanyLogo().isEmpty()){
-            myImageLoader.loadImage(NetworkURLs.BaseURLForImages.trim()+mData.get(position).getStrCompanyLogo().trim(),holder.imageView);
-        }
-*/
         return convertView;
     }
     public static class ViewHolder {
 
         public ImageView imageView;
-       /* public TextView textView;
-        public TextView addressView;
-        public TextView phone;
-        public TextView email;*/
+
     }
     public static int getColorWithAlpha(int color, float ratio) {
         int newColor = 0;

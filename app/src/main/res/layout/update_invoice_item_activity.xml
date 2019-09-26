@@ -38,7 +38,8 @@
             android:layout_marginEnd="20dp"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="Update"/>
+            android:text="Update"
+            tools:ignore="HardcodedText" />
         <TextView
             android:visibility="gone"
             android:layout_gravity="end"
@@ -50,13 +51,15 @@
             android:layout_marginEnd="20dp"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:text="Remove"/>
+            android:text="Remove"
+            tools:ignore="HardcodedText" />
     </android.support.v7.widget.Toolbar>
     <EditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/description_hint"/>
+        android:hint="@string/description_hint"
+        tools:ignore="Autofill,TextFields" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -71,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="number"
-            android:digits="0123456789.-"/>
+            android:digits="0123456789.-"
+            tools:ignore="Autofill,LabelFor" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,13 +84,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tex Cod ID"/>
+            android:text="Tex Cod ID"
+            tools:ignore="HardcodedText" />
         <TextView
             android:id="@+id/tax_code_field"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Enter Text Code ID"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -101,7 +107,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            tools:ignore="Autofill,LabelFor" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -149,7 +156,8 @@
             android:layout_height="wrap_content"
             android:digits="0123456789.-"
             android:inputType="number"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            tools:ignore="Autofill,LabelFor" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -158,7 +166,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="remove"/>
+            android:text="remove"
+            tools:ignore="HardcodedText" />
         <CheckBox
             android:id="@+id/remove_invoice_item"
             android:layout_width="0dp"
@@ -172,6 +181,7 @@
         android:id="@+id/additional_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/additional_detail"/>
+        android:hint="@string/additional_detail"
+        tools:ignore="Autofill,TextFields" />
 </LinearLayout>
 </ScrollView>

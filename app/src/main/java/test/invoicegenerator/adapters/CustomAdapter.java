@@ -1,9 +1,10 @@
 package test.invoicegenerator.adapters;
 
-/**
+/*
  * Created by User on 9/14/2018.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,17 +47,13 @@ public class CustomAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.row_layout, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.label);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.row_layout, parent, false);
+        TextView textView = rowView.findViewById(R.id.label);
+        ImageView imageView =rowView.findViewById(R.id.icon);
         textView.setText(values.get(position).getName());
         // change the icon for Windows and iPhone
         String s = "";
-        if (s.startsWith("iPhone")) {
-           // imageView.setImageResource(R.drawable.no);
-        } else {
-           // imageView.setImageResource(R.drawable.ok);
-        }
+
 
         return rowView;
     }

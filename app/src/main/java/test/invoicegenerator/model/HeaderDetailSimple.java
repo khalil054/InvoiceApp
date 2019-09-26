@@ -1,26 +1,17 @@
 package test.invoicegenerator.model;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-/**
- * Created by User on 11/12/2018.
- */
 
 public class HeaderDetailSimple {
 
 
-    /*,company_name*/
     private String CompanyName, Company_Email, Company_Phone_no;
-    public HeaderDetailSimple(String n,String mail,String phone,String c_name)
-    {
-      /*  this.name=n;*/
-        this.Company_Email=mail;
-        this.Company_Phone_no=phone;
-        CompanyName=c_name;
+
+    public HeaderDetailSimple(String n, String mail, String phone, String c_name) {
+        /*  this.name=n;*/
+        this.Company_Email = mail;
+        this.Company_Phone_no = phone;
+        CompanyName = c_name;
     }
-
-
 
 
     public String getCompanyName() {

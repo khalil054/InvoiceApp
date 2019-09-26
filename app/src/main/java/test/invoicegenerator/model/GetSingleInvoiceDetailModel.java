@@ -7,7 +7,7 @@ import org.json.JSONObject;
 public class GetSingleInvoiceDetailModel {
     private String id;
     private String signed_by;
-    private  String invoice_number;
+    private String invoice_number;
     private String due_at;
     private String invoiced_on;
     private String signed_at;
@@ -30,7 +30,6 @@ public class GetSingleInvoiceDetailModel {
     public void setClient_name(String client_name) {
         Client_name = client_name;
     }
-
 
 
     public String getId() {
@@ -178,11 +177,11 @@ public class GetSingleInvoiceDetailModel {
             updated_at = jsonObject.getString("updated_at");
             user_id = jsonObject.getString("user_id");
             company_id = jsonObject.getString("company_id");
-            InvoiceItemsArray=jsonObject.getJSONArray("invoice_items");
-            JSONObject jsonObject1=jsonObject.getJSONObject("client");
+            InvoiceItemsArray = jsonObject.getJSONArray("invoice_items");
+            JSONObject jsonObject1 = jsonObject.getJSONObject("client");
             client_id = jsonObject1.getString("id");
-            Client_name= jsonObject1.getString("name");
-            JSONObject jsonObject_signature=jsonObject.getJSONObject("signature");
+            Client_name = jsonObject1.getString("name");
+            JSONObject jsonObject_signature = jsonObject.getJSONObject("signature");
             signature = jsonObject_signature.getString("url");
             setId(id);
             setSigned_by(signed_by);

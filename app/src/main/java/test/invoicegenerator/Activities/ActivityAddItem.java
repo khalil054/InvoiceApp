@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
@@ -29,9 +30,6 @@ import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.general.Util;
 import test.invoicegenerator.model.SharedPref;
 
-/**
- * Created by User on 1/14/2019.
- */
 
 public class ActivityAddItem extends AppCompatActivity {
 
@@ -47,7 +45,6 @@ public class ActivityAddItem extends AppCompatActivity {
 
     @BindView(R.id.tax_code_field)
     TextView tax_code_field;
-
 
 
     @BindView(R.id.quantity_field)
@@ -68,7 +65,7 @@ public class ActivityAddItem extends AppCompatActivity {
     @BindView(R.id.tax_rate_layout)
     LinearLayout tax_rate_layout;
 
-   // DBHelper db;
+    // DBHelper db;
     String item_id;
 
     @Override
@@ -77,12 +74,12 @@ public class ActivityAddItem extends AppCompatActivity {
         setContentView(R.layout.add_item_activity);
         ButterKnife.bind(this);//
         init();
-        //setActionBar();
-        // loadFragment(new FragmentLogin());
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Toolbar tb =  findViewById(R.id.toolbar);
+        Toolbar tb = findViewById(R.id.toolbar);
         tb.inflateMenu(R.menu.client_menu);
         tb.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -94,30 +91,25 @@ public class ActivityAddItem extends AppCompatActivity {
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                validateAndSaveData();
-                break;
-
-            default:
-                break;
+        if (item.getItemId() == R.id.action_save) {
+            validateAndSaveData();
         }
 
         return true;
     }
+
     private void init() {
         SharedPref.init(ActivityAddItem.this);
 
-        FragmentEditReport.is_new="false";
-        if(FragmentEditReport.IsNewInvoice){
+        FragmentEditReport.is_new = "false";
+        if (FragmentEditReport.IsNewInvoice) {
             setValuesOfFields();
-        }else {
-           // setValuesOfFieldsUpdate();
         }
 
-        Toolbar toolbar =  findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
+        Toolbar toolbar = findViewById(R.id.toolbar); // Attaching the layout to the toolbar object
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -135,14 +127,14 @@ public class ActivityAddItem extends AppCompatActivity {
             public void onClick(View v) {
 
 
-               validateAndSaveData();
+                validateAndSaveData();
             }
         });
 
         tax_code_field.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent Send=new Intent(ActivityAddItem.this,SelectTextCodeFromList.class);
+                Intent Send = new Intent(ActivityAddItem.this, SelectTextCodeFromList.class);
                 startActivity(Send);
             }
         });
@@ -160,7 +152,7 @@ public class ActivityAddItem extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(Util.isZipCodeValid(unit_cost_field.getText().toString()) && Util.isZipCodeValid(quantity_field.getText().toString())) {
+                if (Util.isZipCodeValid(unit_cost_field.getText().toString()) && Util.isZipCodeValid(quantity_field.getText().toString())) {
                     if (!unit_cost_field.getText().toString().equals("") && !quantity_field.getText().toString().equals(""))
                         amount_field.setText(Integer.parseInt(unit_cost_field.getText().toString()) * Integer.parseInt(quantity_field.getText().toString()) + "");
                     else if (quantity_field.getText().toString().equals(""))
@@ -179,21 +171,11 @@ public class ActivityAddItem extends AppCompatActivity {
 
     }
 
-  /*  private void setValuesOfFieldsUpdate() {
-
-        item_id= FragmentEditReportUpdate.item_values.get(0).getId();
-        description.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
-        unit_cost_field.setText(bundle.getString("unit_cost"));
-        quantity_field.setText(bundle.getString("quntity"));
-        amount_field.setText(bundle.getString("amount"));
-        additional_field.setText(FragmentEditReportUpdate.item_values.get(0).getDescription());
-    }*/
 
     private void setValuesOfFields() {
-        Bundle bundle=getIntent().getExtras();
 
-
-        item_id=bundle.getString("id");
+        Bundle bundle = getIntent().getExtras();
+        item_id = bundle.getString("id");
         description.setText(bundle.getString("des"));
         unit_cost_field.setText(bundle.getString("unit_cost"));
         quantity_field.setText(bundle.getString("quntity"));
@@ -209,7 +191,7 @@ public class ActivityAddItem extends AppCompatActivity {
         taxable_field.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(taxable_field.isChecked())
+                if (taxable_field.isChecked())
                     tax_rate_layout.setVisibility(View.VISIBLE);
                 else
                     tax_rate_layout.setVisibility(View.GONE);
@@ -219,26 +201,26 @@ public class ActivityAddItem extends AppCompatActivity {
 
     private void validateAndSaveData() {
 
-        String CompanyID= String.valueOf(SharedPref.read(SharedPref.CompanyID,""));
-        if(TextUtils.isEmpty(description.getText().toString())){
+        String CompanyID = SharedPref.read(SharedPref.CompanyID, "");
+        if (TextUtils.isEmpty(description.getText().toString())) {
             description.setError(getString(R.string.invalid_quantity));
             description.requestFocus();
-        }else if(TextUtils.isEmpty(quantity_field.getText().toString())){
+        } else if (TextUtils.isEmpty(quantity_field.getText().toString())) {
             quantity_field.setError(getString(R.string.invalid_quantity));
             quantity_field.requestFocus();
-        }else if(TextUtils.isEmpty(unit_cost_field.getText().toString())){
+        } else if (TextUtils.isEmpty(unit_cost_field.getText().toString())) {
             unit_cost_field.setError(getString(R.string.invalid_cost));
             unit_cost_field.requestFocus();
-        }else if(TextUtils.isEmpty(amount_field.getText().toString())){
+        } else if (TextUtils.isEmpty(amount_field.getText().toString())) {
             amount_field.setError(getString(R.string.invalid_quantity));
             amount_field.requestFocus();
-        }else if(TextUtils.isEmpty(tax_code_field.getText().toString())){
+        } else if (TextUtils.isEmpty(tax_code_field.getText().toString())) {
              /* amount_field.setError(getString(R.string.invalid_quantity));
               amount_field.requestFocus();*/
-            Toast.makeText(this, "Invalid Text Code:"+CompanyID, Toast.LENGTH_SHORT).show();
-        }else {
+            Toast.makeText(this, "Invalid Text Code:" + CompanyID, Toast.LENGTH_SHORT).show();
+        } else {
 
-          //  Toast.makeText(this, "Tax ID:"+ GlobalData.Text_Code_ID, Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "Tax ID:"+ GlobalData.Text_Code_ID, Toast.LENGTH_SHORT).show();
 
             JSONObject InvoiceItem = new JSONObject();
 
@@ -247,42 +229,41 @@ public class ActivityAddItem extends AppCompatActivity {
                 InvoiceItem.put("description", description.getText().toString());
                 InvoiceItem.put("qty", quantity_field.getText().toString());
                 InvoiceItem.put("price", unit_cost_field.getText().toString());
-                InvoiceItem.put("subtotal",amount_field.getText().toString());
+                InvoiceItem.put("subtotal", amount_field.getText().toString());
                 InvoiceItem.put("subtotal_with_tax_applied", "0.0");
-                InvoiceItem.put("tax_code_id",GlobalData.Text_Code_ID);
-                InvoiceItem.put("company_id", SharedPref.read(SharedPref.CompanyID,""));
-
+                InvoiceItem.put("tax_code_id", GlobalData.Text_Code_ID);
+                InvoiceItem.put("company_id", SharedPref.read(SharedPref.CompanyID, ""));
 
 
                 Item value_item = new Item();
-               String nam = description.getText().toString();
+                String nam = description.getText().toString();
                 String amount = amount_field.getText().toString();
 
-                if(!amount.equals(""))
+                if (!amount.equals(""))
                     FragmentEditReport.subtotal_value = FragmentEditReport.subtotal_value + Integer.parseInt(amount);
-              //  FragmentEditReport.items.add(nam);
+
                 value_item.setDescription(description.getText().toString());
                 value_item.setAmount(amount_field.getText().toString());
-                value_item.setQuantity( quantity_field.getText().toString());
+                value_item.setQuantity(quantity_field.getText().toString());
                 value_item.setUnit_cost(unit_cost_field.getText().toString());
-                if(taxable_field.isChecked()){
+                if (taxable_field.isChecked()) {
                     value_item.setTaxable("true");
-                }else {
+                } else {
                     value_item.setTaxable("false");
                 }
 
                 value_item.setAdditional(additional_field.getText().toString());
 
-                if(FragmentEditReport.IsNewInvoice){
+                if (FragmentEditReport.IsNewInvoice) {
                     FragmentEditReport.item_values.add(value_item);
 
                     FragmentEditReport.InvoicesArray.put(InvoiceItem);
-                }else {
+                } else {
                     FragmentEditReportUpdate.item_values.add(value_item);
 
                     FragmentEditReportUpdate.InvoicesArray.put(InvoiceItem);
                 }
-                GlobalData.Text_Code_ID="";
+                GlobalData.Text_Code_ID = "";
                 tax_code_field.setText("");
                 finish();
 
@@ -297,13 +278,13 @@ public class ActivityAddItem extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       // Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
         tax_code_field.setText(GlobalData.Text_Code_ID);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-     //   Toast.makeText(this, "restart", Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(this, "restart", Toast.LENGTH_SHORT).show();
     }
 }

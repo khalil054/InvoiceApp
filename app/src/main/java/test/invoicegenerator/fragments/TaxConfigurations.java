@@ -21,7 +21,6 @@ import test.invoicegenerator.R;
 public class TaxConfigurations extends Fragment {
 
 
-
     TabLayout tabLayout;
 
     ConstraintLayout main_layout;
@@ -31,34 +30,25 @@ public class TaxConfigurations extends Fragment {
     private ViewPager mViewPager;
     private TaxConfigurations.SectionsPagerAdapter mSectionsPagerAdapter;
 
-    ArrayList<String> tab_name = new ArrayList<String>();
-    ArrayList<Integer> tab_icon = new ArrayList<Integer>();
+    ArrayList<String> tab_name = new ArrayList<>();
+    ArrayList<Integer> tab_icon = new ArrayList<>();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /** Inflating the layout for this fragment **/
-        View rootView = inflater.inflate(R.layout.fragment_companyframe,container, false);
+        /* Inflating the layout for this fragment **/
+        View rootView = inflater.inflate(R.layout.fragment_companyframe, container, false);
 
 
         main_layout = rootView.findViewById(R.id.main_layout);
 
-
-
-
-
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) rootView.findViewById(R.id.container);
+        mViewPager = rootView.findViewById(R.id.container);
 
 
-
-
-        tabLayout = (TabLayout ) rootView.findViewById(R.id.tabs);
+        tabLayout = rootView.findViewById(R.id.tabs);
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(0);
@@ -73,14 +63,12 @@ public class TaxConfigurations extends Fragment {
         tab_name.add("Calculate Tax");
 
 
-
-
         // loop through all navigation tabs
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
 
             LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.tab_item, null);
 
-            TextView tab_label =  linearLayout.findViewById(R.id.label);
+            TextView tab_label = linearLayout.findViewById(R.id.label);
             ImageView tab_pic = linearLayout.findViewById(R.id.img);
 
 
@@ -91,9 +79,9 @@ public class TaxConfigurations extends Fragment {
         }
 
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab){
+            public void onTabSelected(TabLayout.Tab tab) {
                 currentIndeX = tab.getPosition();
 
             }
@@ -111,9 +99,6 @@ public class TaxConfigurations extends Fragment {
         });
 
 
-
-
-
         return rootView;
     }
 
@@ -128,8 +113,7 @@ public class TaxConfigurations extends Fragment {
         public Fragment getItem(int position) {
 
             Fragment fragment = null;
-            switch (position)
-            {
+            switch (position) {
                 case 0:
                     fragment = TaxesList.newInstance();
                     break;
@@ -162,8 +146,6 @@ public class TaxConfigurations extends Fragment {
             return "";
         }
     }
-
-
 
 
 }

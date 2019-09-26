@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,9 +15,6 @@ import java.util.List;
 import test.invoicegenerator.R;
 import test.invoicegenerator.model.Country;
 
-/**
- * Created by User on 10/30/2018.
- */
 
 public class CountryAdapter extends ArrayAdapter<Country>  {
 
@@ -41,7 +37,7 @@ public class CountryAdapter extends ArrayAdapter<Country>  {
         Country currentMovie = moviesList.get(position);
 
 
-        TextView name = (TextView) listItem.findViewById(R.id.text);
+        TextView name = listItem.findViewById(R.id.text);
         name.setText(currentMovie.getName());
 
 

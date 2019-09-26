@@ -2,22 +2,19 @@ package test.invoicegenerator.model;
 
 import java.io.Serializable;
 
-/**
- * Created by User on 10/17/2018.
- */
+public class Country implements Serializable {
+    private String name, id, sortname;
 
-public class Country implements Serializable{
-    private String name,id,sortname;
-
-    public Country(String Name, String sortName,String Id) {
+    public Country(String Name, String sortName, String Id) {
         this.name = Name;
         this.sortname = sortName;
         this.id = Id;
     }
-public Country()
-{
 
-}
+    public Country() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -45,7 +42,7 @@ public Country()
     @Override
     public String toString() {
         return "Country [name=" + name + ", sortname=" + sortname
-                + ", id=" +id+"]";
+                + ", id=" + id + "]";
     }
 
 }

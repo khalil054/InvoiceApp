@@ -4,9 +4,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-/**
- * Simple POJO model for example
- */
+
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Item {
 

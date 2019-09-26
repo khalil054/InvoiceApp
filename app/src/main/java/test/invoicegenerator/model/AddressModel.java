@@ -6,14 +6,14 @@ import org.json.JSONObject;
 public class AddressModel {
 
 
-        String id;
-        String name;
-        String line_1;
-        String city;
-        String state;
-        String zip_code;
-        Boolean Defult;
-        String country_name;
+    String id;
+    String name;
+    private String line_1;
+    private String city;
+    private String state;
+    private String zip_code;
+    private Boolean Defult;
+    private String country_name;
 
 
     public AddressModel(JSONObject jsonObject) {
@@ -26,7 +26,7 @@ public class AddressModel {
             city = jsonObject.getString("city");
             state = jsonObject.getString("state");
             zip_code = jsonObject.getString("zip_code");
-           // Defult = jsonObject.getBoolean("defult");
+            // Defult = jsonObject.getBoolean("defult");
             country_name = jsonObject.getString("country_name");
 
 

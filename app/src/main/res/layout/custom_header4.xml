@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:visibility="gone"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_gravity="center_vertical"
         >
 

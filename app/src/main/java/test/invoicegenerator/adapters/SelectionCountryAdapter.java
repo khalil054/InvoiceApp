@@ -8,22 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.ClientSelectModel;
 import test.invoicegenerator.model.Country_Model;
 
 public class SelectionCountryAdapter extends ArrayAdapter<String> implements Filterable {
 
-    ArrayList<Country_Model> CountryModels;
+    private ArrayList<Country_Model> CountryModels;
     private Activity context;
     private SelectionCountryAdapter.ItemFilter mFilter = new SelectionCountryAdapter.ItemFilter();
-    ArrayList<Country_Model> list = new ArrayList<Country_Model>();
+    ArrayList<Country_Model> list;
 
 
     public SelectionCountryAdapter(Activity context, ArrayList<Country_Model> countryModels)

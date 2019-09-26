@@ -1,6 +1,6 @@
 package test.invoicegenerator.adapters;
 
-/**
+/*
  * Created by User on 1/29/2019.
  */
 
@@ -21,7 +21,6 @@ import test.invoicegenerator.databaseutilities.Item;
 
 public class ItemAdapter extends BaseAdapter {
 
-    ViewGroup.LayoutParams layoutparams;
     private final Context context;
     ArrayList<Item> reportModelArrayList = new ArrayList<Item>();
     int index = 0;
@@ -48,7 +47,7 @@ public class ItemAdapter extends BaseAdapter {
         return i;
     }
 
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "ViewHolder", "SetTextI18n"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -73,10 +72,10 @@ public class ItemAdapter extends BaseAdapter {
 
             //  ReportModel reportModel2 = reportModelArrayList.get(position);
             rowView = inflater.inflate(R.layout.item_detail, parent, false);
-            TextView desc_txt = (TextView) rowView.findViewById(R.id.description);
-            TextView quantity = (TextView) rowView.findViewById(R.id.quantity);
-            TextView unit_cost = (TextView) rowView.findViewById(R.id.unit_cost);
-            TextView amount = (TextView) rowView.findViewById(R.id.amount);
+            TextView desc_txt = rowView.findViewById(R.id.description);
+            TextView quantity =  rowView.findViewById(R.id.quantity);
+            TextView unit_cost =  rowView.findViewById(R.id.unit_cost);
+            TextView amount =  rowView.findViewById(R.id.amount);
 
             desc_txt.setText(reportModel1.getDescription());
             // no_txt.setText(reportModel1.);

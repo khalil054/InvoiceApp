@@ -1,5 +1,6 @@
 package test.invoicegenerator.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,7 +60,7 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
         unbinder = ButterKnife.bind(this, view);
         progressbar = new Progressbar(getActivity());
         Et_Client_Address = view.findViewById(R.id.places_autocomplete);
-        ((MainActivity)getActivity()).LoadAddressFields(view);
+        ((MainActivity) getActivity()).LoadAddressFields(view);
 
         init();
 
@@ -66,14 +68,14 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     private void init() {
 
         Btn_Update.setText("Update");
         loadData();
     }
 
-    public void loadData()
-    {
+    public void loadData() {
         Et_Client_Address.setText(GlobalData.addressModel.getName());
         client_city.setText(GlobalData.addressModel.getCity());
         client_state.setText(GlobalData.addressModel.getState());
@@ -92,9 +94,8 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        switch(id)
-        {
+        int id = view.getId();
+        switch (id) {
             case R.id.update_button:
 
                 String Address = Et_Client_Address.getText().toString();
@@ -103,91 +104,78 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
                 String country = client_country.getText().toString();
                 String zip = client_zip.getText().toString();
 
-                validateAndSaveData(Address,city,state,country,zip);
+                validateAndSaveData(Address, city, state, country, zip);
 
                 break;
         }
     }
 
     private void validateAndSaveData(String Address, String city, String state, String country, String zip) {
-        if(Address.equals(""))
-        {
+        if (Address.equals("")) {
             Et_Client_Address.setError(getString(R.string.error_field_required));
             Et_Client_Address.requestFocus();
         }
-        if(city.equals(""))
-        {
+        if (city.equals("")) {
             client_city.setError(getString(R.string.error_field_required));
             client_city.requestFocus();
-        }
-        else if(state.equals(""))
-        {
+        } else if (state.equals("")) {
             client_state.setError(getString(R.string.error_invalid_name));
             client_state.requestFocus();
-        }
-
-        else if(country.equals(""))
-        {
+        } else if (country.equals("")) {
             client_country.setError(getString(R.string.error_invalid_email));
             client_country.requestFocus();
-        }
-        else if(zip.equals(""))
-        {
+        } else if (zip.equals("")) {
             client_zip.setError(getString(R.string.error_invalid_email));
             client_zip.requestFocus();
-        }
-        else
-        {
+        } else {
             DataSendToServerForUpdate();
         }
 
 
     }
 
-    void DataSendToServerForUpdate()
-    {
+    void DataSendToServerForUpdate() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForUpdate();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
-        JSONObject Data=new JSONObject();
-        JSONObject jsonObject1=new JSONObject();
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
+        JSONObject Data = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
 
 
         try {
 
 
-            jsonObject1.put("name",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_1",Et_Client_Address.getText().toString());
-            jsonObject1.put("line_2","");
-            jsonObject1.put("city",client_city.getText().toString());
-            jsonObject1.put("state",client_state.getText().toString());
-            jsonObject1.put("zip_code",client_zip.getText().toString());
-            jsonObject1.put("default",true);
-            jsonObject1.put("country_name",client_country.getText().toString());
+            jsonObject1.put("name", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_1", Et_Client_Address.getText().toString());
+            jsonObject1.put("line_2", "");
+            jsonObject1.put("city", client_city.getText().toString());
+            jsonObject1.put("state", client_state.getText().toString());
+            jsonObject1.put("zip_code", client_zip.getText().toString());
+            jsonObject1.put("default", true);
+            jsonObject1.put("country_name", client_country.getText().toString());
 
-            Data.put("address",jsonObject1);
+            Data.put("address", jsonObject1);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        mVolleyService.putDataVolleyForHeadersWithJson("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + GlobalData.clientId + NetworkURLs.UpdateAddress + GlobalData.addressModel.getId()+".json",Data );
+        mVolleyService.putDataVolleyForHeadersWithJson("PUTCALL", NetworkURLs.BaseURL + NetworkURLs.UpdateClient + GlobalData.clientId + NetworkURLs.UpdateAddress + GlobalData.addressModel.getId() + ".json", Data);
     }
 
-    void initVolleyCallbackForUpdate(){
+    void initVolleyCallbackForUpdate() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                    Boolean status = jsonObject1.getBoolean("status");
+                    boolean status = jsonObject1.getBoolean("status");
 
 
-                    if(status)
-                    {
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -200,23 +188,21 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(main_layout,"Address Update Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Address Update Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
 
                     } else {
 
 
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
-
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     progressbar.HideProgress();
                 }
-
 
 
             }
@@ -234,13 +220,6 @@ public class UpdateAddress extends BaseFragment implements View.OnClickListener 
 
         };
     }
-
-
-
-
-
-
-
 
 }
 

@@ -1,17 +1,10 @@
 package test.invoicegenerator.Activities;
 
-import android.graphics.Color;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -22,14 +15,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
 import test.invoicegenerator.adapters.taxcodeAdapter;
-import test.invoicegenerator.fragments.AddTaxCode;
-import test.invoicegenerator.fragments.UpdateTaxCode;
 import test.invoicegenerator.general.GlobalData;
 import test.invoicegenerator.model.TaxCodeModel;
 
@@ -37,11 +27,10 @@ public class SelectTextCodeFromList extends BaseActivity {
 
     ListView listView;
     RelativeLayout main_layout;
-    Snackbar snackbar;
+    /*  Snackbar snackbar;*/
     IResult mResultCallback = null;
     VolleyService mVolleyService;
     taxcodeAdapter taxAdapter;
-   /* SearchView searchView;*/
     ArrayList<TaxCodeModel> taxModels = new ArrayList<>();
 
     @Override
@@ -53,10 +42,11 @@ public class SelectTextCodeFromList extends BaseActivity {
         init();
 
     }
+
     private void init() {
 
         GetClientList();
-        main_layout=findViewById(R.id.main_layout);
+        main_layout = findViewById(R.id.main_layout);
         listView = findViewById(R.id.clientList);
 
 
@@ -88,17 +78,14 @@ public class SelectTextCodeFromList extends BaseActivity {
         });*/
 
 
-
-
-
         listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GlobalData.taxCodeModel =  taxModels.get(position);
+                GlobalData.taxCodeModel = taxModels.get(position);
 
-                GlobalData.Text_Code_ID=taxModels.get(position).getId();
+                GlobalData.Text_Code_ID = taxModels.get(position).getId();
                 finish();
-              //  loadFragment(new UpdateTaxCode(),null);
+                //  loadFragment(new UpdateTaxCode(),null);
             }
         });
 

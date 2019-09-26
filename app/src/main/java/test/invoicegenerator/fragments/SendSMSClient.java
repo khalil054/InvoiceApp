@@ -1,6 +1,7 @@
 package test.invoicegenerator.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,9 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -35,8 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,10 +42,7 @@ import test.invoicegenerator.NetworksCall.IResult;
 import test.invoicegenerator.NetworksCall.NetworkURLs;
 import test.invoicegenerator.NetworksCall.VolleyService;
 import test.invoicegenerator.R;
-import test.invoicegenerator.adapters.ClientAdapter;
 import test.invoicegenerator.adapters.SelectionAdapter;
-import test.invoicegenerator.general.GlobalData;
-import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.ClientSelectModel;
 
 public class SendSMSClient extends BaseFragment {
@@ -70,11 +63,10 @@ public class SendSMSClient extends BaseFragment {
     String Message = "";
     RingProgressBar mRingProgressBar;
 
-    ArrayList<ClientSelectModel> clientModels = new ArrayList<ClientSelectModel>();
-    ArrayList<String> selectedNomber = new ArrayList<String>();
-    int first_number=0;
-    int last_number=0;
+    ArrayList<ClientSelectModel> clientModels = new ArrayList<>();
+    ArrayList<String> selectedNomber = new ArrayList<>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,7 +74,7 @@ public class SendSMSClient extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_sendsms_client_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         listView = (SwipeMenuListView) view.findViewById(R.id.clientList);
-        select_all_btn =  view.findViewById(R.id.select_all_btn);
+        select_all_btn = view.findViewById(R.id.select_all_btn);
         select_all_btn.hide();
         select_all_btn.setClickable(false);
         send_btn = getActivity().findViewById(R.id.back_btn);
@@ -90,10 +82,12 @@ public class SendSMSClient extends BaseFragment {
         send_btn.setText("Send");
         send_btn.setVisibility(View.INVISIBLE);
         send_btn.setClickable(false);
-        mRingProgressBar =  view.findViewById(R.id.progress_bar);
+        mRingProgressBar = view.findViewById(R.id.progress_bar);
 
         Bundle bundle = this.getArguments();
-        Message = bundle.getString("msg_txt", "Testing from Invoice");
+        if (bundle != null) {
+            Message = bundle.getString("msg_txt", "Testing from Invoice");
+        }
 
         init();
 
@@ -102,7 +96,7 @@ public class SendSMSClient extends BaseFragment {
         return view;
     }
 
-    public Boolean requestpermisson(){
+    public Boolean requestpermisson() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -113,7 +107,7 @@ public class SendSMSClient extends BaseFragment {
                         new String[]{Manifest.permission.SEND_SMS},
                         1);
             }
-        }else{         //already has permission granted
+        } else {         //already has permission granted
 
             return true;
 
@@ -126,12 +120,10 @@ public class SendSMSClient extends BaseFragment {
 
 
         // Set the progress bar's progress
-        mRingProgressBar.setOnProgressListener(new RingProgressBar.OnProgressListener()
-        {
+        mRingProgressBar.setOnProgressListener(new RingProgressBar.OnProgressListener() {
 
             @Override
-            public void progressToComplete()
-            {
+            public void progressToComplete() {
 
 
             }
@@ -156,19 +148,18 @@ public class SendSMSClient extends BaseFragment {
                 clientModels.get(position).setSelect(true);
                 showProgressBar();
                 selectionAdapter.notifyDataSetChanged();
-               // select_all_btn.setImageResource(R.drawable.ic_unselect_list);
-                sendSMS( clientModels.get(position).getPhone(), Message);
+                // select_all_btn.setImageResource(R.drawable.ic_unselect_list);
+                sendSMS(clientModels.get(position).getPhone(), Message);
             }
         });
         select_all_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                if(allSelect)
-                {
+                if (allSelect) {
                     allSelect = false;
                     select_all_btn.setImageResource(R.drawable.ic_select_list);
                     changeSelection(false);
-                }else {
+                } else {
 
                     allSelect = true;
                     select_all_btn.setImageResource(R.drawable.ic_unselect_list);
@@ -197,47 +188,12 @@ public class SendSMSClient extends BaseFragment {
                 if (requestpermisson()) {
 
 
-                    /*mRingProgressBar.setVisibility(View.VISIBLE);
-                    mRingProgressBar.setProgress(1);*/
-                    Handler handler1 = new Handler();
+                    sendSMS(selectedNomber.get(0), Message, 0);
 
-                    sendSMS(selectedNomber.get(0), Message,0);
+                    for (int a = 1; a <= selectedNomber.size() - 1; a++) {
 
-                    for (int a = 1; a<= selectedNomber.size()-1 ;a++) {
-                        final int finalA = a;
-
-                        sendSMS(selectedNomber.get(finalA), Message);
-
-                       /* handler1.postDelayed(new Runnable() {
-
-                            @Override
-                            public void run() {
-
-                                sendSMS(selectedNomber.get(finalA), Message,finalA);
-                                mRingProgressBar.setProgress(finalA );
-
-                                if(finalA == selectedNomber.size()-1)
-                                {
-                                    mRingProgressBar.setVisibility(View.GONE);
-                                    progressbar.ShowConfirmation();
-                                    Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
-                                        public void run() {
-
-                                            progressbar.HideConfirmation();
-                                            loadFragment(new WriteSMS(),null);
-
-                                        }
-                                    }, 1000);
-                                }
-                            }
-                        }, 10000 * a);*/
+                        sendSMS(selectedNomber.get(a), Message);
                     }
-
-
-
-
-
                 }
             }
         });
@@ -253,29 +209,26 @@ public class SendSMSClient extends BaseFragment {
                     Toast.LENGTH_LONG).show();
 
         } catch (Exception ex) {
-            Toast.makeText(getActivity(),ex.getMessage().toString(),
+            Toast.makeText(getActivity(), ex.getMessage(),
                     Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
     }
 
-    public void changeSelection(Boolean status)
-    {
-        for(int i = 0; i<= clientModels.size()-1; i++)
-        {
+    public void changeSelection(Boolean status) {
+        for (int i = 0; i <= clientModels.size() - 1; i++) {
             clientModels.get(i).setSelect(status);
         }
         selectionAdapter.notifyDataSetChanged();
 
     }
 
-    public void GetClientList()
-    {
+    public void GetClientList() {
 
         showProgressBar();
         initVolleyCallbackForClientList();
         mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL+ NetworkURLs.GetClientList);
+        mVolleyService.getDataVolley("GETCALL", NetworkURLs.BaseURL + NetworkURLs.GetClientList);
 
     }
 
@@ -296,7 +249,7 @@ public class SendSMSClient extends BaseFragment {
                             clientModel.setSelect(false);
                         }
 
-                        selectionAdapter = new SelectionAdapter(getActivity(),clientModels);
+                        selectionAdapter = new SelectionAdapter(getActivity(), clientModels);
                         listView.setAdapter(selectionAdapter);
                     }
                 } catch (JSONException e) {
@@ -320,8 +273,7 @@ public class SendSMSClient extends BaseFragment {
 
 /////////////////////////
 
-    private void sendSMS(String phoneNumber, String message)
-    {
+    private void sendSMS(String phoneNumber, String message) {
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
 
@@ -332,12 +284,11 @@ public class SendSMSClient extends BaseFragment {
                 new Intent(DELIVERED), 0);
 
         //---when the SMS has been sent---
-        getActivity().registerReceiver(new BroadcastReceiver(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 hideProgressBar();
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getActivity(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();
@@ -360,15 +311,14 @@ public class SendSMSClient extends BaseFragment {
                         break;
                 }
             }
-        },new IntentFilter(SENT));
+        }, new IntentFilter(SENT));
 
         //---when the SMS has been delivered---
-        getActivity().registerReceiver(new BroadcastReceiver(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 hideProgressBar();
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getActivity(), "SMS delivered",
                                 Toast.LENGTH_SHORT).show();

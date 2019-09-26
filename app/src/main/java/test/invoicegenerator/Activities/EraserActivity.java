@@ -29,13 +29,9 @@ public class EraserActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mainframe);
-       // ln1 = (LinearLayout) findViewById(R.id.ln1);
         drawImg = new DrawView(this);
         ln1.addView(drawImg);
-
     }
-
-
 
     public class DrawView extends View implements View.OnTouchListener {
 
@@ -103,11 +99,9 @@ public class EraserActivity extends Activity {
             circlePath.addCircle(x, y, 30, Path.Direction.CW);
 
             int ac=event.getAction();
-            switch(ac){
-                case MotionEvent.ACTION_UP:
-                    Toast.makeText(EraserActivity.this, String.valueOf(x), Toast.LENGTH_SHORT).show();
-                    circlePath.reset();
-                    break;
+            if (ac == MotionEvent.ACTION_UP) {
+                Toast.makeText(EraserActivity.this, String.valueOf(x), Toast.LENGTH_SHORT).show();
+                circlePath.reset();
             }
             invalidate();
             return true;

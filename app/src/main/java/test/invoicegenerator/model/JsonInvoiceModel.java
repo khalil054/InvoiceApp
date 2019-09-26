@@ -1,25 +1,24 @@
 package test.invoicegenerator.model;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonInvoiceModel {
     String id;
-    String signed_by;
-    String invoice_number;
-    String due_at;
-    String invoiced_on;
-    String signed_at;
-    String signature;
-    String notes;
-    String payment_status;
-    String delivery_status;
-    String created_at;
-    String updated_at;
-    String user_id;
-    String company_id;
-    String client_id;
+    private String signed_by;
+    private String invoice_number;
+    private String due_at;
+    private String invoiced_on;
+    private String signed_at;
+    private String signature;
+    private String notes;
+    private String payment_status;
+    private String delivery_status;
+    private String created_at;
+    private String updated_at;
+    private String user_id;
+    private String company_id;
+    private String client_id;
 
     public String getId() {
         return id;
@@ -143,43 +142,43 @@ public class JsonInvoiceModel {
 
     public JsonInvoiceModel(JSONObject jsonObject) {
 
-            try {
-               
-                id = jsonObject.getString("id");
-                signed_by = jsonObject.getString("signed_by");
-                invoice_number = jsonObject.getString("invoice_number");
-                due_at = jsonObject.getString("due_at");
-                invoiced_on = jsonObject.getString("invoiced_on");
-                signed_at = jsonObject.getString("signed_at");
-                signature = jsonObject.getString("signature");
-                notes = jsonObject.getString("notes");
-                payment_status = jsonObject.getString("payment_status");
-                delivery_status = jsonObject.getString("delivery_status");
-                created_at = jsonObject.getString("created_at");
-                updated_at = jsonObject.getString("updated_at");
-                user_id = jsonObject.getString("user_id");
-                company_id = jsonObject.getString("company_id");
-                client_id = jsonObject.getString("client_id");
+        try {
 
-                setId(id);
-               setSigned_by(signed_by);
-               setInvoice_number(invoice_number);
-               setDue_at(due_at);
-               setInvoiced_on(invoiced_on);
-               setSigned_at(signed_at);
-               setSignature(signature);
-               setNotes(notes);
-               setPayment_status(payment_status);
-               setDelivery_status(delivery_status);
-               setCreated_at(created_at);
-               setUpdated_at(updated_at);
-               setUser_id(user_id);
-               setCompany_id(company_id);
-               setClient_id(client_id);
+            id = jsonObject.getString("id");
+            signed_by = jsonObject.getString("signed_by");
+            invoice_number = jsonObject.getString("invoice_number");
+            due_at = jsonObject.getString("due_at");
+            invoiced_on = jsonObject.getString("invoiced_on");
+            signed_at = jsonObject.getString("signed_at");
+            signature = jsonObject.getString("signature");
+            notes = jsonObject.getString("notes");
+            payment_status = jsonObject.getString("payment_status");
+            delivery_status = jsonObject.getString("delivery_status");
+            created_at = jsonObject.getString("created_at");
+            updated_at = jsonObject.getString("updated_at");
+            user_id = jsonObject.getString("user_id");
+            company_id = jsonObject.getString("company_id");
+            client_id = jsonObject.getString("client_id");
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            setId(id);
+            setSigned_by(signed_by);
+            setInvoice_number(invoice_number);
+            setDue_at(due_at);
+            setInvoiced_on(invoiced_on);
+            setSigned_at(signed_at);
+            setSignature(signature);
+            setNotes(notes);
+            setPayment_status(payment_status);
+            setDelivery_status(delivery_status);
+            setCreated_at(created_at);
+            setUpdated_at(updated_at);
+            setUser_id(user_id);
+            setCompany_id(company_id);
+            setClient_id(client_id);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }

@@ -1,34 +1,32 @@
 
 package test.invoicegenerator.model;
 
-/**
- * Created by User on 10/10/2018.
- */
 
 public class CompanyContactDetail {
-    private String name, email, phone_no,address,city,country,state,zip_code,logo,header,stamp,signature,notes,currency;
-    public CompanyContactDetail(String n,String mail,String phone,String address,String city,String country ,String state,String zip,
-                                String logo,String header,String stamp,String signature,String note,String currency)
-    {
-        this.name=n;
-        this.email=mail;
-        this.phone_no=phone;
-        this.address=address;
-        this.city=city;
-        this.country=country;
-        this.state=state;
-        this.zip_code=zip;
-        this.logo=logo;
-        this.header=header;
-        this.stamp=stamp;
-        this.signature=signature;
-        this.notes=note;
-        this.currency=currency;
+    private String name, email, phone_no, address, city, country, state, zip_code, logo, header, stamp, signature, notes, currency;
+
+    public CompanyContactDetail(String n, String mail, String phone, String address, String city, String country, String state, String zip,
+                                String logo, String header, String stamp, String signature, String note, String currency) {
+        this.name = n;
+        this.email = mail;
+        this.phone_no = phone;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.state = state;
+        this.zip_code = zip;
+        this.logo = logo;
+        this.header = header;
+        this.stamp = stamp;
+        this.signature = signature;
+        this.notes = note;
+        this.currency = currency;
     }
-    public CompanyContactDetail()
-    {
+
+    public CompanyContactDetail() {
 
     }
+
     public String getName() {
         return name;
     }
@@ -155,6 +153,8 @@ package test.invoicegenerator.model;
 
 */
 /**
+ * Created by User on 10/10/2018.
+ * <p>
  * Created by User on 10/10/2018.
  *//*
 

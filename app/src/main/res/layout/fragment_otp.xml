@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +30,8 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             tools:layout_editor_absoluteX="163dp"
-            tools:layout_editor_absoluteY="157dp" />
+            tools:layout_editor_absoluteY="157dp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textView3"
@@ -39,7 +41,8 @@
             android:gravity="center"
             android:text="Please type the verification code sent to your mail"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <com.goodiebag.pinview.Pinview
             android:id="@+id/pinview"
@@ -73,7 +76,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="HardcodedText" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/confirmationView"

@@ -13,9 +13,6 @@ import butterknife.Unbinder;
 import test.invoicegenerator.Libraries.Progressbar;
 import test.invoicegenerator.R;
 
-/**
- * Created by bk on 08/08/16.
- */
 
 public class BaseActivity extends AppCompatActivity {
     //TODO move app level permission checks and users alerts to base class
@@ -34,23 +31,24 @@ public class BaseActivity extends AppCompatActivity {
 
     public Dialog adminChangeDialog;
 
-   ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
- //  @BindView(R.id.toolbar)
+    //  @BindView(R.id.toolbar)
     Toolbar tool_bar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_base);
-        tool_bar=findViewById(R.id.toolbar);
-        cdd=new Progressbar(BaseActivity.this);
+        tool_bar = findViewById(R.id.toolbar);
+        cdd = new Progressbar(BaseActivity.this);
         cdd.setCancelable(false);
     }
 
     public void dismissProgress() {
         cdd.HideProgress();
     }
+
     //show progress dialog within the app
     public void showProgressDialog() {
         cdd.show();

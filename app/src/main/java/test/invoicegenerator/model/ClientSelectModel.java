@@ -7,9 +7,9 @@ public class ClientSelectModel {
 
     String id;
     String name;
-    String email;
-    String phone;
-    Boolean Select;
+    private String email;
+    private String phone;
+    private Boolean Select;
 
 
     public ClientSelectModel(JSONObject jsonObject) {
@@ -20,7 +20,6 @@ public class ClientSelectModel {
             name = jsonObject.getString("name");
             email = jsonObject.getString("email");
             phone = jsonObject.getString("phone");
-
 
 
             setId(id);

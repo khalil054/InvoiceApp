@@ -7,11 +7,10 @@ public class TaxModel {
 
     String id;
     String name;
-    String description;
-    Double percent;
-    Boolean active;
-    String agency_name;
-
+    private String description;
+    private Double percent;
+    private Boolean active;
+    private String agency_name;
 
 
     public TaxModel(JSONObject jsonObject) {

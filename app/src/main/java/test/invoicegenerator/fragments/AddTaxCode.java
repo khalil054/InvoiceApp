@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -37,7 +38,7 @@ import test.invoicegenerator.adapters.taxAdapter;
 import test.invoicegenerator.model.SharedPref;
 import test.invoicegenerator.model.TaxModel;
 
-public class AddTaxCode extends BaseFragment{
+public class AddTaxCode extends BaseFragment {
 
     @BindView(R.id.add_tax_button)
     Button Btn_AddTax;
@@ -54,7 +55,7 @@ public class AddTaxCode extends BaseFragment{
     IResult mResultCallback = null;
     VolleyService mVolleyService;
 
-   /* String SelectedIds = "[";*/
+    /* String SelectedIds = "[";*/
     ArrayList<TaxModel> taxModels = new ArrayList<>();
     ArrayList<MultiSelectModel> taxlist = new ArrayList<>();
     ArrayList<Integer> taxSelectedlist = new ArrayList<>();
@@ -64,79 +65,77 @@ public class AddTaxCode extends BaseFragment{
     LinearLayout linearLayoutSelect;
 
     private FragmentAddClient.OnItemSelectedListener listener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_taxcode,container,false);
+        View view = inflater.inflate(R.layout.fragment_add_taxcode, container, false);
 
         progressbar = new Progressbar(getActivity());
-        unbinder= ButterKnife.bind(this,view);
-           linearLayoutSelect=view.findViewById(R.id.layout_selct_code);
+        unbinder = ButterKnife.bind(this, view);
+        linearLayoutSelect = view.findViewById(R.id.layout_selct_code);
         final TagGroup mTagGroup = view.findViewById(R.id.tag_group);
         mTagGroup.setTags(new String[]{"Select Combination of Taxes"});
 
         linearLayoutSelect.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
-                   MultiSelectDialog multiSelectDialog = new MultiSelectDialog()
-                           .title("Select Combination To Make Tax Code") //setting title for dialog
-                           .titleSize(25)
-                           .positiveText("Done")
-                           .negativeText("Cancel")
-                           .setMaxSelectionLimit(taxlist.size())
-                           .preSelectIDsList(taxSelectedlist)
-                           .setMinSelectionLimit(1) //you can set minimum checkbox selection limit (Optional)
-                           .multiSelectList(taxlist) // the multi select model list with ids and name
-                           .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
-                               @Override
-                               public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
-                                   //will return list of selected IDS
-                                   String[] title = new String[selectedNames.size()];
-                                   Ids = new String[selectedIds.size()];
-                                   for (int i = 0; i < selectedNames.size(); i++) {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Click", Toast.LENGTH_SHORT).show();
+                MultiSelectDialog multiSelectDialog = new MultiSelectDialog()
+                        .title("Select Combination To Make Tax Code") //setting title for dialog
+                        .titleSize(25)
+                        .positiveText("Done")
+                        .negativeText("Cancel")
+                        .setMaxSelectionLimit(taxlist.size())
+                        .preSelectIDsList(taxSelectedlist)
+                        .setMinSelectionLimit(1) //you can set minimum checkbox selection limit (Optional)
+                        .multiSelectList(taxlist) // the multi select model list with ids and name
+                        .onSubmit(new MultiSelectDialog.SubmitCallbackListener() {
+                            @Override
+                            public void onSelected(ArrayList<Integer> selectedIds, ArrayList<String> selectedNames, String dataString) {
+                                //will return list of selected IDS
+                                String[] title = new String[selectedNames.size()];
+                                Ids = new String[selectedIds.size()];
+                                for (int i = 0; i < selectedNames.size(); i++) {
 
-                                       taxSelectedlist.add(selectedIds.get(i));
-                                       title[i] = selectedNames.get(i);
-                                       Ids[i] = String.valueOf(selectedIds.get(i));
-
-
-                                   }
+                                    taxSelectedlist.add(selectedIds.get(i));
+                                    title[i] = selectedNames.get(i);
+                                    Ids[i] = String.valueOf(selectedIds.get(i));
 
 
-                                   mTagGroup.setTags(title);
+                                }
 
 
-
-                               }
-
-                               @Override
-                               public void onCancel() {
-
-                               }
+                                mTagGroup.setTags(title);
 
 
+                            }
 
-                           });
+                            @Override
+                            public void onCancel() {
+
+                            }
 
 
-                   multiSelectDialog.show(getFragmentManager(), "multiSelectDialog");
-               }
-           });
+                        });
+
+
+                multiSelectDialog.show(getFragmentManager(), "multiSelectDialog");
+            }
+        });
 
         GetTaxList();
 
 
-
-        Btn_AddTax.setOnClickListener( new View.OnClickListener() {
+        Btn_AddTax.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String TaxName=Et_Tax_Name.getText().toString();
-                String TaxDes=Et_Tax_Description.getText().toString();
+                String TaxName = Et_Tax_Name.getText().toString();
+                String TaxDes = Et_Tax_Description.getText().toString();
 
 
-                validateAndSaveData(TaxName,TaxDes);
+                validateAndSaveData(TaxName, TaxDes);
 
 
             }
@@ -147,18 +146,13 @@ public class AddTaxCode extends BaseFragment{
 
     private void validateAndSaveData(String TaxName, String TaxDes) {
 
-        if(TaxName.equals(""))
-        {
+        if (TaxName.equals("")) {
             Et_Tax_Name.setError(getString(R.string.error_field_required));
             Et_Tax_Name.requestFocus();
-        }
-        else if(TaxDes.equals(""))
-        {
+        } else if (TaxDes.equals("")) {
             Et_Tax_Description.setError(getString(R.string.error_field_required));
             Et_Tax_Description.requestFocus();
-        }
-        else
-        {
+        } else {
 
             DataSendToServerForAddTax();
 
@@ -167,52 +161,49 @@ public class AddTaxCode extends BaseFragment{
 
     }
 
-    void DataSendToServerForAddTax()
-    {
+    void DataSendToServerForAddTax() {
         progressbar.ShowProgress();
 
         initVolleyCallbackForAddTax();
-        mVolleyService = new VolleyService(mResultCallback,getActivity());
+        mVolleyService = new VolleyService(mResultCallback, getActivity());
 
-        JSONObject Data=new JSONObject();
-        JSONObject jsonObject1=new JSONObject();
+        JSONObject Data = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
         JSONArray array = new JSONArray();
 
         for (String string : Ids) {
-        array.put(string);
+            array.put(string);
 
-    }
-
+        }
 
 
         try {
 
 
-            jsonObject1.put("code",Et_Tax_Name.getText().toString());
-            jsonObject1.put("description",Et_Tax_Description.getText().toString());
+            jsonObject1.put("code", Et_Tax_Name.getText().toString());
+            jsonObject1.put("description", Et_Tax_Description.getText().toString());
             jsonObject1.put("company_tax_ids", array);
 
-            Data.put("tax_code",jsonObject1);
+            Data.put("tax_code", jsonObject1);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddTaxCode,Data );
+        mVolleyService.postDataVolleyForHeadersWithJson("POSTCALL", NetworkURLs.BaseURL + NetworkURLs.AddTaxCode, Data);
 
     }
 
-    void initVolleyCallbackForAddTax(){
+    void initVolleyCallbackForAddTax() {
         mResultCallback = new IResult() {
             @Override
-            public void notifySuccess(String requestType,String response) {
+            public void notifySuccess(String requestType, String response) {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
                     JSONObject jsonObject1 = jsonObject.getJSONObject("data");
                     boolean status = jsonObject1.getBoolean("status");
-                    if(status)
-                    {
+                    if (status) {
 
                         progressbar.HideProgress();
                         progressbar.ShowConfirmation();
@@ -221,16 +212,16 @@ public class AddTaxCode extends BaseFragment{
                             public void run() {
 
                                 progressbar.HideConfirmation();
-                                loadFragment(new TaxConfigurations(),null);
+                                loadFragment(new TaxConfigurations(), null);
 
                             }
                         }, 1000);
 
-                        snackbar = Snackbar.make(main_layout,"Tax Code Added Successfully", Snackbar.LENGTH_LONG);
+                        snackbar = Snackbar.make(main_layout, "Tax Code Added Successfully", Snackbar.LENGTH_LONG);
                         snackbar.show();
                     } else {
                         String error = jsonObject.getString("Error");
-                        Toasty.error(getActivity(),error, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), error, Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
@@ -253,7 +244,7 @@ public class AddTaxCode extends BaseFragment{
         };
     }
 
-    public boolean isValidString(String Str){
+    public boolean isValidString(String Str) {
 
         return !Str.isEmpty() && !Str.equalsIgnoreCase("null");
     }
@@ -262,7 +253,7 @@ public class AddTaxCode extends BaseFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof FragmentAddClient.OnItemSelectedListener){      // context instanceof YourActivity
+        if (context instanceof FragmentAddClient.OnItemSelectedListener) {      // context instanceof YourActivity
             this.listener = (FragmentAddClient.OnItemSelectedListener) context; // = (YourActivity) context
         } else {
             throw new ClassCastException(context.toString()
@@ -299,8 +290,8 @@ public class AddTaxCode extends BaseFragment{
                     if (status) {
                         JSONObject data = jsonObject.getJSONObject("data");
                         /*JSONArray company_taxes = data.getJSONArray("tax_codes");*/
-                       // JSONArray company_taxes = data.getJSONArray("tax_codes");
-                      //  JSONObject jj=data.getJSONObject(0);
+                        // JSONArray company_taxes = data.getJSONArray("tax_codes");
+                        //  JSONObject jj=data.getJSONObject(0);
                         JSONArray codes_taxes = data.getJSONArray("company_taxes");
 
                         Toast.makeText(getActivity(), String.valueOf(codes_taxes.length()), Toast.LENGTH_SHORT).show();
@@ -309,7 +300,7 @@ public class AddTaxCode extends BaseFragment{
                             TaxModel taxModel = new TaxModel(codes_taxes.getJSONObject(i));
                             taxModels.add(taxModel);
 
-                            MultiSelectModel multiSelectModel = new MultiSelectModel(Integer.valueOf(taxModel.getId()),taxModel.getName());
+                            MultiSelectModel multiSelectModel = new MultiSelectModel(Integer.valueOf(taxModel.getId()), taxModel.getName());
                             taxlist.add(multiSelectModel);
                         }
 

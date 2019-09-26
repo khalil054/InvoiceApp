@@ -1,8 +1,5 @@
 package test.invoicegenerator.general;
 
-/**
- * Created by User on 10/9/2018.
- */
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,6 +15,7 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
 public class DrawingView extends View {
     //drawing path
     private Path drawPath, circlePath, mPath;
@@ -33,12 +31,14 @@ public class DrawingView extends View {
     private float brushSize, lastBrushSize;
     //erase flag
     private boolean erase = false;
-    public DrawingView(Context context, AttributeSet attrs){
+
+    public DrawingView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setupDrawing();
     }
+
     //setup drawing
-    private void setupDrawing(){
+    private void setupDrawing() {
         //prepare for drawing and setup paint stroke properties
         brushSize = 5;
         lastBrushSize = brushSize;
@@ -61,6 +61,7 @@ public class DrawingView extends View {
         circlePaint.setStrokeJoin(Paint.Join.MITER);
         circlePaint.setStrokeWidth(1f);
     }
+
     //size assigned to view
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -70,10 +71,11 @@ public class DrawingView extends View {
         drawCanvas = new Canvas(canvasBitmap);
         //            drawCanvas.drawColor(Color.BLACK);
     }
+
     //draw the view - will be called after touch event
     @Override
     protected void onDraw(Canvas canvas) {
-        if(erase) {
+        if (erase) {
             canvas.drawBitmap(canvasBitmap, 0, 0, mBitmapPaint);
             //                  canvas.drawPath(mPath, drawPaint);
             canvas.drawPath(circlePath, circlePaint);
@@ -82,8 +84,10 @@ public class DrawingView extends View {
             canvas.drawPath(drawPath, drawPaint);
         }
     }
+
     float mX, mY;
     private static final float TOUCH_TOLERANCE = 1;
+
     //register user touches as drawing action
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -92,7 +96,7 @@ public class DrawingView extends View {
         //respond to down, move and up events
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(erase) {
+                if (erase) {
                     mPath.reset();
                     mPath.moveTo(touchX, touchY);
                     mX = touchX;
@@ -105,11 +109,11 @@ public class DrawingView extends View {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(erase) {
+                if (erase) {
                     float dx = Math.abs(touchX - mX);
                     float dy = Math.abs(touchY - mY);
                     if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                        mPath.quadTo(mX, mY, (touchX + mX)/2, (touchY + mY)/2);
+                        mPath.quadTo(mX, mY, (touchX + mX) / 2, (touchY + mY) / 2);
                         mX = touchX;
                         mY = touchY;
                         circlePath.reset();
@@ -135,11 +139,12 @@ public class DrawingView extends View {
         invalidate();
         return true;
     }
+
     //update color
-    public void setColor(String newColor){
+    public void setColor(String newColor) {
         invalidate();
         //check whether color value or pattern name
-        if(newColor.startsWith("#")){
+        if (newColor.startsWith("#")) {
             paintColor = Color.parseColor(newColor);
             drawPaint.setColor(paintColor);
             drawPaint.setShader(null);
@@ -149,30 +154,34 @@ public class DrawingView extends View {
             //decode
             Bitmap patternBMP = BitmapFactory.decodeResource(getResources(), patternID);
             //create shader
-            BitmapShader patternBMPshader = new BitmapShader(patternBMP,Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+            BitmapShader patternBMPshader = new BitmapShader(patternBMP, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             //color and shader
             drawPaint.setColor(0xFFFFFFFF);
             drawPaint.setShader(patternBMPshader);
         }
     }
+
     //set brush size
-    public void setBrushSize(float newSize){
+    public void setBrushSize(float newSize) {
         //            float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,newSize, getResources().getDisplayMetrics());
         //            brushSize=pixelAmount;
-        brushSize=newSize;
+        brushSize = newSize;
         drawPaint.setStrokeWidth(brushSize);
     }
+
     //get and set last brush size
-    public void setLastBrushSize(float lastSize){
-        lastBrushSize=lastSize;
+    public void setLastBrushSize(float lastSize) {
+        lastBrushSize = lastSize;
     }
-    public float getLastBrushSize(){
+
+    public float getLastBrushSize() {
         return lastBrushSize;
     }
+
     //set erase true or false
-    public void setErase(boolean isErase){
-        erase=isErase;
-        if(erase) {
+    public void setErase(boolean isErase) {
+        erase = isErase;
+        if (erase) {
             //      drawPaint.setStyle(Paint.Style.FILL);
             drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         } else {
@@ -181,6 +190,7 @@ public class DrawingView extends View {
             drawPaint.setXfermode(null);
         }
     }
+
     //start new drawing
     public void startNew() {
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
@@ -192,12 +202,13 @@ public class DrawingView extends View {
     }
 
     //return current alpha
-    public int getPaintAlpha(){
-        return Math.round((float)paintAlpha/255*100);
+    public int getPaintAlpha() {
+        return Math.round((float) paintAlpha / 255 * 100);
     }
+
     //set alpha
-    public void setPaintAlpha(int newAlpha){
-        paintAlpha=Math.round((float)newAlpha/100*255);
+    public void setPaintAlpha(int newAlpha) {
+        paintAlpha = Math.round((float) newAlpha / 100 * 255);
         drawPaint.setColor(paintColor);
         drawPaint.setAlpha(paintAlpha);
     }

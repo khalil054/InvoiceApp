@@ -20,9 +20,7 @@ import test.invoicegenerator.fragments.PlaceLogo;
 import test.invoicegenerator.fragments.UserProfilePic;
 
 public class MyCompanyDetail extends AppCompatActivity {
-
-  //  private Toolbar toolbar;
-    private TabLayout tabLayout;
+  private TabLayout tabLayout;
     private ViewPager viewPager;
 
 
@@ -30,10 +28,6 @@ public class MyCompanyDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_company_detail);
-/*
-        toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         viewPager =  findViewById(R.id.viewpager);
 
@@ -41,8 +35,6 @@ public class MyCompanyDetail extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabs_ss);
         tabLayout.setupWithViewPager(viewPager);
-    /*    tabLayout.setTabTextColors(getResources().getColor(R.color.white_color),
-                getResources().getColor(R.color.white_color));*/
         tabLayout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"));
         setupTabIcons();
     }
@@ -52,7 +44,7 @@ public class MyCompanyDetail extends AppCompatActivity {
                 R.drawable.enterprise,
                 R.drawable.flag_white,
                 R.drawable.podcast,
-                R.drawable.podcast_cover,
+               /* R.drawable.podcast_cover,*/
                 R.drawable.stamp,
                 R.drawable.signature,
                 R.drawable.user_pic
@@ -61,23 +53,22 @@ public class MyCompanyDetail extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+      //  tabLayout.getTabAt(3).setIcon(tabIcons[3]);
         tabLayout.getTabAt(3).setIcon(tabIcons[3]);
         tabLayout.getTabAt(4).setIcon(tabIcons[4]);
         tabLayout.getTabAt(5).setIcon(tabIcons[5]);
-        tabLayout.getTabAt(6).setIcon(tabIcons[6]);
     }
 
     private void setupViewPager(ViewPager viewPager) {
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CompanyDetailsUpdate(), "Company Details");
         adapter.addFrag(new CountryFragment(), "Country");
         adapter.addFrag(new PlaceLogo(), "Place Logo");
-        adapter.addFrag(new HeadersFragment(), "Header Details");
+      /*  adapter.addFrag(new HeadersFragment(), "Header Details");*/
         adapter.addFrag(new AddStamp(), "Stamp");
         adapter.addFrag(new DigitalSignature(), "Signature");
         adapter.addFrag(new UserProfilePic(), "Profile Pic");
-
-
         viewPager.setAdapter(adapter);
     }
 

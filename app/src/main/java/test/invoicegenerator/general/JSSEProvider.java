@@ -1,13 +1,8 @@
 package test.invoicegenerator.general;
 
-/**
- * Created by User on 9/28/2018.
- */
-
 import java.security.AccessController;
 
 import java.security.Provider;
-
 
 
 public final class JSSEProvider extends Provider {

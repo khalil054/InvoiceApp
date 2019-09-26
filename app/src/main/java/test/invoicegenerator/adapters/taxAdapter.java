@@ -13,15 +13,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import test.invoicegenerator.R;
-import test.invoicegenerator.model.ClientModel;
 import test.invoicegenerator.model.TaxModel;
 
 public class taxAdapter extends ArrayAdapter<String> implements Filterable {
 
-    ArrayList<TaxModel> taxModels;
+    private ArrayList<TaxModel> taxModels;
     private Activity context;
     private taxAdapter.ItemFilter mFilter = new taxAdapter.ItemFilter();
-    ArrayList<TaxModel> list = new ArrayList<TaxModel>();
+    ArrayList<TaxModel> list;
 
 
     public taxAdapter( Activity context, ArrayList<TaxModel> taxModels)
@@ -47,8 +46,8 @@ public class taxAdapter extends ArrayAdapter<String> implements Filterable {
         }
 
         TaxModel taxModel = taxModels.get(position);
-        TextView tvName = (TextView) rootView.findViewById(R.id.name_txt);
-        TextView tvPhone = (TextView) rootView.findViewById(R.id.percentage_txt);
+        TextView tvName =rootView.findViewById(R.id.name_txt);
+        TextView tvPhone =  rootView.findViewById(R.id.percentage_txt);
 
         tvName.setText(taxModel.getName());
         tvPhone.setText(String.valueOf(taxModel.getPercent()));

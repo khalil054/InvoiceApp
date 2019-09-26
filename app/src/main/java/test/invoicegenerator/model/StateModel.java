@@ -1,9 +1,5 @@
 package test.invoicegenerator.model;
 
-/**
- * Created by User on 10/30/2018.
- */
-
 public class StateModel {
     private String id,name,country_id;
 

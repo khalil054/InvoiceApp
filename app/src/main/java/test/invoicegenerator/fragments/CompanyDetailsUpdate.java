@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import test.invoicegenerator.R;
@@ -46,7 +47,6 @@ public class CompanyDetailsUpdate extends BaseFragment {
     LinearLayout LayoutParent;
 
 
-
     public static CompanyDetailsUpdate newInstance() {
         CompanyDetailsUpdate fragment = new CompanyDetailsUpdate();
         return fragment;
@@ -61,8 +61,8 @@ public class CompanyDetailsUpdate extends BaseFragment {
         return rootView;
 
     }
-    private void init()
-    {
+
+    private void init() {
 
         BtnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,77 +84,55 @@ public class CompanyDetailsUpdate extends BaseFragment {
     }
 
     private void validateAndSendDataToNext() {
-        if(company_name.getText().toString().equals(""))
-        {
+        if (company_name.getText().toString().equals("")) {
             company_name.setError(getString(R.string.error_field_required));
             company_name.requestFocus();
-        }
-        else if(!Util.isFullname(company_name.getText().toString()))
-        {
+        } else if (!Util.isFullname(company_name.getText().toString())) {
             company_name.setError(getString(R.string.error_invalid_name));
             company_name.requestFocus();
-        }
-        else if(company_email.getText().toString().equals(""))
-        {
+        } else if (company_email.getText().toString().equals("")) {
             company_email.setError(getString(R.string.error_field_required));
             company_email.requestFocus();
-        }
-        else if(!Util.isEmailValid(company_email.getText().toString()))
-        {
+        } else if (!Util.isEmailValid(company_email.getText().toString())) {
             company_email.setError(getString(R.string.error_invalid_email));
             company_email.requestFocus();
-        }
-        else if(company_phone.getText().toString().equals(""))
-        {
+        } else if (company_phone.getText().toString().equals("")) {
             company_phone.setError(getString(R.string.error_field_required));
             company_phone.requestFocus();
-        }
-        else if(company_address.getText().toString().equals(""))
-        {
+        } else if (company_address.getText().toString().equals("")) {
             company_address.setError(getString(R.string.error_field_required));
             company_address.requestFocus();
-        }
-        else if(city.getText().toString().equals(""))
-        {
+        } else if (city.getText().toString().equals("")) {
             city.setError(getString(R.string.error_field_required));
             city.requestFocus();
-        }
-        else if(country.getText().toString().equals(""))
-        {
+        } else if (country.getText().toString().equals("")) {
             country.setError(getString(R.string.error_field_required));
             country.requestFocus();
-        }
-        else if(state.getText().toString().equals(""))
-        {
+        } else if (state.getText().toString().equals("")) {
             state.setError(getString(R.string.error_field_required));
             state.requestFocus();
-        }
-        else if(zip_code.getText().toString().equals(""))
-        {
+        } else if (zip_code.getText().toString().equals("")) {
             zip_code.setError(getString(R.string.error_field_required));
             zip_code.requestFocus();
-        }
-        else if(!Util.isZipCodeValid(zip_code.getText().toString()))
-        {
+        } else if (!Util.isZipCodeValid(zip_code.getText().toString())) {
             zip_code.setError(getString(R.string.error_invalid_zip_code));
             zip_code.requestFocus();
-        }else {
-            GlobalData.StrCompanyName=company_name.getText().toString();
-            GlobalData.StrCompanyEmail=company_email.getText().toString();
-            GlobalData.StrCompanyPhone=company_phone.getText().toString();
-            GlobalData.StrCompanyAddress=company_address.getText().toString();
-            GlobalData.StrCompanyCity=city.getText().toString();
-            GlobalData.StrCompanyState=state.getText().toString();
-            GlobalData.StrCompanyCountry=country.getText().toString();
-            GlobalData.StrCompanyZipCode=zip_code.getText().toString();
+        } else {
+            GlobalData.StrCompanyName = company_name.getText().toString();
+            GlobalData.StrCompanyEmail = company_email.getText().toString();
+            GlobalData.StrCompanyPhone = company_phone.getText().toString();
+            GlobalData.StrCompanyAddress = company_address.getText().toString();
+            GlobalData.StrCompanyCity = city.getText().toString();
+            GlobalData.StrCompanyState = state.getText().toString();
+            GlobalData.StrCompanyCountry = country.getText().toString();
+            GlobalData.StrCompanyZipCode = zip_code.getText().toString();
 
-            showErrorMessage(LayoutParent,"Switch Tab To Fill Other Informations,Thanks");
+            showErrorMessage(LayoutParent, "Switch Tab To Fill Other Informations,Thanks");
 
 
         }
 
     }
-
 
 
 }

@@ -2,9 +2,6 @@ package test.invoicegenerator.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by User on 10/10/2018.
- */
 
 public class Company {
     private String line1, line2, country, city, state, zip_code, tax_code, notes;
